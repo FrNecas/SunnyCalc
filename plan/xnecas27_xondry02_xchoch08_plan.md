@@ -69,3 +69,113 @@ Kód i programová dokumentace kódu je psána anglicky. Rozhraní aplikace čes
 ### V termínech není zahrnuto:
 * průběžné testování, které bude probíhat po celou dobu vývoje při výrazné změně kódu a při přidání nové funkcionality,
 * dokumentace kódu, kterou budou sepisovat všichni členové týmu zároveň se psaním kódu a která bude průběžně doplňována.
+
+---
+## Rozdělení úkolů
+
+* návrh plánu | **společná práce**
+    - domluvení základních praktik vývoje
+    - rozdělení práce a přidělení úkolů jednotlivým členům
+    - sestavení plánu | **xchoch08**
+    - zvolení jazyka pro vývoj kalkulačky: C# (.NET Core 3.1) s GUI frameworkem Avalonia
+
+* správa GitHub repozitáře | **xnecas27**
+    - vytvoření kostry repozitáře
+    - provázání repozitáře s ostatními členy a nastavení oprávnění
+    - průběžná kontrola stavu repozitáře
+    - řešení GitHub issues a pull requestů
+
+* vytvoření komunikačního serveru na Discordu | **xondry02**
+    - rozdělení místností s nastavením příslušných oprávnění
+    - správa serveru a kontrola aktualizace oznámení a pinů
+
+* celková kontrola průběhu vývoje a reprezentace týmu pro komunikaci zvenčí | **xchoch08**
+    - zajištění dodržování termínů a přerozdělování úkolů jednotlivým členům
+    - kontrola plnění povinností členů týmu
+    - zajišťování interní komunikace mezi členy týmu
+    - komunikace se zákazníkem
+    - odevzdání produktu a jeho částí
+
+* vytvoření kostry projektu | **xondry02**
+    - základní sestavení struktury projektu pro propojení všech částí
+    - provázání knihovny a obslužných funkcí s GUI
+
+* Makefile | **xondry02**
+    - nastavení Makefilu pro přeložení programu a zajištění základních operací se zdrojovými kódy
+
+* matematická knihovna | **xchoch08** (výpomoc **xnecas27**)
+    - návrh matematické knihovny
+    - základní matematické funkce (sčítání, odčítání, násobení, dělení)
+    - další matematické funkce (faktoriál, umocňování s přirozenými exponenty, obecná odmocnina)
+    - speciální funkce (1 + volitelné další)
+    - vyhodnocování výrazů
+    - dokumentace kódu
+
+* GUI | **xondry02**
+    - návrh GUI
+    - implementace GUI a viewmodel vrstvy
+    - naprogramování ovládácích prvků kalkulačky a jejich propojení s matematickou knihovnou
+
+* průběžné testování | **xnecas27**
+    - ověření funkčnosti částí aplikace
+    - test-driven development – testy matematické knihovny
+    - testování pokrytí mezních situací a řešení chyb
+    - oznámení objevených chyb příslušnému členovi týmu
+
+* Beta testování | **společná práce se zapojením uživatelů**
+    - celkové testy vyžadované funkčnosti aplikace
+    - zátěžové testy
+    - testování a kontrola pokrytí
+
+* Doxyfile | **společná práce**
+    - sestavení Doxyfilu pro generování dokumentace
+    - vybrání nejlepší verze Doxyfilu pro použití v produktu
+
+* instalátor | **xnecas27, xondry02**
+    - spustitelný instalátor aplikace pro Linux a Windows
+    - podpora řízené odinstalace aplikace
+
+* profiling | **xchoch08**
+    - sestavení samostatného spustitelného programu pro výpočet výběrové směrodatné odchylky
+    - využití Profile-guided optimization (PGO)
+    - shrnutí efektivity výpočtu a návrh možností optimalizace
+
+* nápověda | **xchoch08**
+    - nápověda pro použití aplikace spustitelná přímo z aplikace
+    - příklady použití
+
+* zajištění podpory pro zvolené platformy (multiplatformní aplikace)
+    - podpora pro Linux | **xnecas27**
+    - podpora pro Windows | **xondry02**
+
+* code review | **společná práce**
+    - vzájemné kontrolování si kódu
+    - revize změn
+
+* dokumentace | **společná práce**
+    - programová dokumentace k projektu
+    - průběžně sestavovaná členy odpovědnými za danou část kódu
+    - sestavení dokumentace a kontrola chyb a nedostatků dokumentace
+
+* uživatelská příručka | **xondry02**
+    - návod na instalaci programu
+    - podrobný popis funkcí kalkulačky a jejího ovládání
+
+* mockup | **společná práce**
+    - mockup uživatelského rozhraní další verze kalkulačky
+    - podpora vědeckého módu, vykreslování grafů a další potenciálně užitečné funkce
+
+* revize projektu | **xchoch08**
+    - finální kontrola projektu
+    - ověření splnění všech podmínek a požadavků zákazníka
+
+* instalace u zákazníka | **společná práce**
+    - předvedení produktu u zákazníka
+    - ukázka funkcí kalkulačky a práce s ní
+    - příprava materiálů pro prezentaci aplikace
+
+* individuální hodnocení průběhu vývoje | **společná práce**
+
+Vedoucí týmu může po odsouhlasení navržené změny všemi členy týmu podle potřeby a aktuální situace přerozdělit úkoly mezi členy jinak, než jak je uvedeno v plánu.
+
+Člen týmu má možnost požádat o změnu činnosti, pozdržení termínu dokončení činnosti či pomoc ze strany ostatích členů týmu, pokud bude možné, že by neúspěch mohl ohrozit vývoj celého produktu. Je na vedoucím týmu, aby zajistil, že všichni členové týmu se budou plně podílet na vývoji a že práce bude rovnoměrně rozložena i při nepředpokládaných překážkách ve vývoji.
