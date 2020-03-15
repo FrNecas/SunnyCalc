@@ -39,3 +39,33 @@ Průběžná kontrola repozitáře na serveru GitHub zákazníkem bude možná p
 
 #### Jazyk
 Kód i programová dokumentace kódu je psána anglicky. Rozhraní aplikace česky a uživatelská příručka psána taktéž česky.
+
+---
+## Termíny
+
+| Datum | Činnost |
+| ----- | ------- |
+| 12. 03. | návrh plánu, založení repozitáře na GitHubu a vytvoření komunikačního serveru na Discordu |
+| 15. 03. | schálení plánu a rozdělení práce |
+| 18. 03. | odevzdání plánu |
+| 21. 03. | návrh matematické knihovny pro kalkulačku a vytvoření kostry projektu |
+| 23. 03. | sepsání testů pro matematickou knihovnu (rozhraní pro testy knihovny) |
+| 24. 03. | Makefile |
+| 30. 03. | matematická knihovna |
+| 05. 04. | návrh GUI |
+| 06. 04. | návrh mockupu |
+| 09. 04. | mockup |
+| 10. 04. | vytvoření GUI |
+| 11. 04. | Beta testování |
+| 11. 04. | Doxyfile |
+| 12. 04. | vytvoření instalátoru |
+| 13. 04. | uživatelská příručka, nápověda |
+| 15. 04. | profiling (+ Profile-guided optimization) |
+| 20. 04. | revize projektu |
+| 21. 04. | odevzdání projektu |
+| 24. 04. | individuální hodnocení průběhu vývoje |
+| *zkouškové* | instalace u zákazníka |
+
+### V termínech není zahrnuto:
+* průběžné testování, které bude probíhat po celou dobu vývoje při výrazné změně kódu a při přidání nové funkcionality,
+* dokumentace kódu, kterou budou sepisovat všichni členové týmu zároveň se psaním kódu a která bude průběžně doplňována.
