@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using SunnyCalc.App.ViewModels;
 using SunnyCalc.App.Views;
+using SunnyCalc.Maths;
 
 namespace SunnyCalc.App
 {
@@ -17,9 +18,11 @@ namespace SunnyCalc.App
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                var mathsService = new MathsService();
+
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new MainWindowViewModel(mathsService),
                 };
             }
 
