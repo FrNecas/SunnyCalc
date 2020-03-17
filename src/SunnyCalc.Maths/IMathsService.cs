@@ -10,21 +10,21 @@ namespace SunnyCalc.Maths
         /// <param name="a">The first operand.</param>
         /// <param name="b">The second operand.</param>
         /// <returns>The sum of <paramref name="a"/> and <paramref name="b"/> (<paramref name="a"/> + <paramref name="b"/>).</returns>
-        int Sum(int a, int b);
+        int Add(int a, int b);
         /// <summary>
         /// Calculates the sum of two real numbers represented as <see cref="System.Double"/> (<paramref name="a"/> + <paramref name="b"/>).
         /// </summary>
         /// <param name="a">The first operand.</param>
         /// <param name="b">The second operand.</param>
         /// <returns>The sum of <paramref name="a"/> and <paramref name="b"/> (<paramref name="a"/> + <paramref name="b"/>).</returns>
-        double Sum(double a, double b);
+        double Add(double a, double b);
         /// <summary>
         /// Calculates the sum of two real numbers represented as <see cref="System.Decimal"/> (<paramref name="a"/> + <paramref name="b"/>).
         /// </summary>
         /// <param name="a">The first operand.</param>
         /// <param name="b">The second operand.</param>
         /// <returns>The sum of <paramref name="a"/> and <paramref name="b"/> (<paramref name="a"/> + <paramref name="b"/>).</returns>
-        decimal Sum(decimal a, decimal b);
+        decimal Add(decimal a, decimal b);
 
         /// <summary>
         /// Calculates the difference of two integers (<paramref name="a"/> - <paramref name="b"/>).
@@ -32,21 +32,21 @@ namespace SunnyCalc.Maths
         /// <param name="a">The first operand.</param>
         /// <param name="b">The second operand.</param>
         /// <returns>The difference of <paramref name="a"/> and <paramref name="b"/> (<paramref name="a"/> - <paramref name="b"/>).</returns>
-        int Difference(int a, int b);
+        int Subtract(int a, int b);
         /// <summary>
         /// Calculates the difference of two real numbers represented as <see cref="System.Double"/> (<paramref name="a"/> - <paramref name="b"/>).
         /// </summary>
         /// <param name="a">The first operand.</param>
         /// <param name="b">The second operand.</param>
         /// <returns>The difference of <paramref name="a"/> and <paramref name="b"/> (<paramref name="a"/> - <paramref name="b"/>).</returns>
-        double Difference(double a, double b);
+        double Subtract(double a, double b);
         /// <summary>
         /// Calculates the difference of two real numbers represented as <see cref="System.Decimal"/> (<paramref name="a"/> - <paramref name="b"/>).
         /// </summary>
         /// <param name="a">The first operand.</param>
         /// <param name="b">The second operand.</param>
         /// <returns>The difference of <paramref name="a"/> and <paramref name="b"/> (<paramref name="a"/> - <paramref name="b"/>).</returns>
-        decimal Difference(decimal a, decimal b);
+        decimal Subtract(decimal a, decimal b);
 
         /// <summary>
         /// Calculates the product of two integers (<paramref name="a"/> * <paramref name="b"/>).

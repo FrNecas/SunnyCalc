@@ -3,37 +3,37 @@ namespace SunnyCalc.Maths
     public class MathsService : IMathsService
     {
         /// <inheritdoc/>
-        public int Sum(int a, int b)
+        public int Add(int a, int b)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
-        public double Sum(double a, double b)
+        public double Add(double a, double b)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
-        public decimal Sum(decimal a, decimal b)
+        public decimal Add(decimal a, decimal b)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
-        public int Difference(int a, int b)
+        public int Subtract(int a, int b)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
-        public double Difference(double a, double b)
+        public double Subtract(double a, double b)
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
-        public decimal Difference(decimal a, decimal b)
+        public decimal Subtract(decimal a, decimal b)
         {
             throw new System.NotImplementedException();
         }
@@ -75,7 +75,7 @@ namespace SunnyCalc.Maths
         }
 
         /// <inheritdoc/>
-        public int Factorial(int a)
+        public uint Factorial(uint a)
         {
             throw new System.NotImplementedException();
         }
