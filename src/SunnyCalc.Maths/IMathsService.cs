@@ -101,7 +101,7 @@ namespace SunnyCalc.Maths
         /// <remarks>A factorial is the product of all positive integers less than or equal to the operand.</remarks>
         /// <param name="a">The integer to calculate factorial for.</param>
         /// <returns>The factorial of <paramref name="a"/>. One if <paramref name="a"/> is zero.</returns>
-        int Factorial(int a);
+        uint Factorial(uint a);
 
         /// <summary>
         /// Calculates the <paramref name="exp"/>-th power of the integer <paramref name="a"/>.
