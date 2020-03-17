@@ -163,6 +163,8 @@ namespace SunnyCalc.Maths
         /// Whitespaces are ignored.
         /// </remarks>
         /// <param name="expression">The expression to solve.</param>
+        /// <exception cref="ArgumentException">Thrown when the expression is null or an empty string.</exception>
+        /// <exception cref="ExpressionSolvingException">Thrown when the expression cannot be solved.</exception>
         /// <returns>The value of the expression.</returns>
         double SolveExpression(string expression);
     }
