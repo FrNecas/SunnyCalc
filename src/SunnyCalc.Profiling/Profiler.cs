@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using SunnyCalc.Maths;
 
-namespace SunnyCalc.Profiler
+namespace SunnyCalc.Profiling
 {
     public class Profiler : IDisposable
     {
@@ -19,27 +19,28 @@ namespace SunnyCalc.Profiler
             public override string ToString()
             {
                 return
-                    $"{TotalMilliseconds / (double) Samples} ms ({TotalTicks / (Samples * 1000.0)} kTicks), used {Samples} samples";
+                    $"{TotalMilliseconds / (double) Samples} ms | {TotalTicks / (Samples * TicksPerUs)} μs, used {Samples} samples";
             }
         }
 
         private readonly IMathsService _mathsService;
 
-        private List<double> _doubleValues = new List<double>();
-        private Dictionary<string, Measurement> _categoryMeasurements = new Dictionary<string, Measurement>();
+        private List<double> _doubleValues;
+        private readonly Dictionary<string, Measurement> _categoryMeasurements = new Dictionary<string, Measurement>();
 
         private StreamWriter _outputWriter;
         private TextReader _inputReader;
         private Stopwatch _stopwatch;
 
         private bool HasOutput => _outputWriter != null;
+        private static readonly double TicksPerUs = Stopwatch.Frequency / (1000.0 * 1000.0);
 
         public Profiler(IMathsService mathsService)
         {
             _mathsService = mathsService;
         }
 
-        public void UseSummaryFile(string fileName)
+        public void UseSummary(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return;
 
@@ -47,20 +48,37 @@ namespace SunnyCalc.Profiler
             _outputWriter = new StreamWriter(fileName, false, Encoding.UTF8);
         }
 
-        public void UseSummaryStream(Stream stream)
+        public void UseSummary(Stream stream)
         {
             _outputWriter?.Dispose();
             _outputWriter = new StreamWriter(stream, Encoding.UTF8);
         }
 
+        public void UseInput(string fileName)
+        {
+            _inputReader?.Dispose();
+            _inputReader = new StreamReader(fileName);
+        }
+        
         public void UseInput(TextReader reader)
         {
             _inputReader?.Dispose();
             _inputReader = reader;
         }
-        
+
+        public void UseInput(IEnumerable<double> values)
+        {
+            _inputReader?.Dispose();
+            _doubleValues = new List<double>(values);
+        }
+
         public double Run()
         {
+            if (!this.ReadInput())
+            {
+                return -1;
+            }
+
             if (this.HasOutput)
             {
                 double result = 0;
@@ -73,7 +91,7 @@ namespace SunnyCalc.Profiler
                 this.ProfileActionTime(CalculateDoublesWithProfiling, nameof(CalculateDoublesWithProfiling));
                 this.Log("Running expression solver profiling");
                 this.ProfileActionTime(CalculateExpressionWithProfiling, nameof(CalculateExpressionWithProfiling));
-                this.Log("-------------------------------------------------------\n\nCategory reports:");
+                _outputWriter.WriteLine("-------------------------------------------------------\n\nCategory reports:");
 
                 foreach (var m in _categoryMeasurements)
                 {
@@ -82,25 +100,31 @@ namespace SunnyCalc.Profiler
 
                 _outputWriter.WriteLine();
                 this.Log("Finished.");
-                
-                return result;
 
+                return result;
             }
 
             return this.CalculateDoubles();
         }
 
-        private void ReadInput()
+        private bool ReadInput()
         {
-            string line = null;
+            if(_doubleValues == null) _doubleValues = new List<double>();
             
-            while ((line = Console.In.ReadLine()) != null)
+            if (_inputReader != null)
             {
-                if (double.TryParse(line, out var n))
+                string line = null;
+
+                while ((line = _inputReader.ReadLine()) != null)
                 {
-                    _doubleValues.Add(n);
+                    if (double.TryParse(line, out var n))
+                    {
+                        _doubleValues.Add(n);
+                    }
                 }
             }
+
+            return _doubleValues.Count > 0;
         }
 
         private double CalculateDoubles()
@@ -139,7 +163,7 @@ namespace SunnyCalc.Profiler
 
                 var xSq = this.ProfileActionTime(() => _mathsService.Power(x, 2), null, "Power");
                 var sum = squareSum;
-                squareSum = this.ProfileActionTime(() => _mathsService.Add(sum, xSq));
+                squareSum = this.ProfileActionTime(() => _mathsService.Add(sum, xSq), null, "Add");
             }
 
             var avg1 = avg;
@@ -211,7 +235,7 @@ namespace SunnyCalc.Profiler
             time = _stopwatch.ElapsedMilliseconds - time;
             ticks = _stopwatch.ElapsedTicks - ticks;
 
-            if (name != null) this.Log($"Finished '{name}'. Took {time} ms ({ticks} ticks).");
+            if (name != null) this.Log($"Finished '{name}'. Took {time} ms ({ticks / TicksPerUs} μs).");
 
             if (category != null)
             {
@@ -237,11 +261,11 @@ namespace SunnyCalc.Profiler
             time = _stopwatch.ElapsedMilliseconds - time;
             ticks = _stopwatch.ElapsedTicks - ticks;
 
-            if (name != null) this.Log($"Finished '{name}'. Took {time} ms ({ticks} ticks).");
+            if (name != null) this.Log($"Finished '{name}'. Took {time} ms ({ticks / TicksPerUs} μs).");
 
             if (category != null)
             {
-                if (_categoryMeasurements.ContainsKey(category))
+                if (!_categoryMeasurements.ContainsKey(category))
                 {
                     _categoryMeasurements.Add(category, new Measurement());
                 }

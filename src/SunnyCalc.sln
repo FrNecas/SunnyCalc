@@ -17,7 +17,7 @@ ProjectSection(SolutionItems) = preProject
 	..\Makefile = ..\Makefile
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Profiler", "SunnyCalc.Profiler\SunnyCalc.Profiler.csproj", "{533636F6-9610-4232-844D-F745243DD3E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Profiling", "SunnyCalc.Profiling\SunnyCalc.Profiling.csproj", "{533636F6-9610-4232-844D-F745243DD3E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
