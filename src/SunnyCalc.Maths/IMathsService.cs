@@ -160,11 +160,12 @@ namespace SunnyCalc.Maths
         /// Solves a mathematical expression.
         /// </summary>
         /// <remarks>
-        /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,sin,cos,tan.
+        /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,rt,sin,cos,tan.
         /// Whitespaces are ignored.
         /// </remarks>
         /// <param name="expression">The expression to solve.</param>
         /// <exception cref="ArgumentException">Thrown when the expression is null or an empty string.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the expression contains an invalid operation (e.g. sqrt of a negative number).</exception>
         /// <exception cref="ExpressionSolvingException">Thrown when the expression cannot be solved.</exception>
         /// <returns>The value of the expression.</returns>
         double SolveExpression(string expression);
