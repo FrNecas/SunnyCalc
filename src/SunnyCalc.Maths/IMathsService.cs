@@ -131,6 +131,7 @@ namespace SunnyCalc.Maths
         /// <remarks>The n-th root of a number x, when n is a positive integer, is a number r which, when raised to the power n, yields the number x.</remarks>
         /// <param name="a">The base of exponentiation.</param>
         /// <param name="n">The degree of the root. Must not be zero.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the value of <paramref name="a"/> is less than zero and <paramref name="n"/> is even.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="n"/> is zero.</exception>
         /// <returns>The <paramref name="exp"/>-th root of <paramref name="a"/>, a real number represented as <see cref="System.Double"/>.</returns>
         double Root(int a, uint n);
@@ -156,14 +157,37 @@ namespace SunnyCalc.Maths
         decimal Root(decimal a, uint n);
 
         /// <summary>
+        /// Calculates the sine of <paramref name="a"/> given in radians.
+        /// </summary>
+        /// <param name="a">The argument of sine.</param>
+        /// <returns>The result of sin(<paramref name="a"/>).</returns>
+        double Sin(double a);
+
+        /// <summary>
+        /// Calculates the cosine of <paramref name="a"/> given in radians.
+        /// </summary>
+        /// <param name="a">The argument of cosine.</param>
+        /// <returns>The result of cos(<paramref name="a"/>).</returns>
+        double Cos(double a);
+
+        /// <summary>
+        /// Calculates the tangent of <paramref name="a"/> given in radians.
+        /// </summary>
+        /// <param name="a">The argument of tangent.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="a"/> is equal to pi/2 + k * pi.</exception>
+        /// <returns>The result of tan(<paramref name="a"/>).</returns>
+        double Tan(double a);
+
+        /// <summary>
         /// Solves a mathematical expression.
         /// </summary>
         /// <remarks>
-        /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,sin,cos,tan.
+        /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,rt,sin,cos,tan.
         /// Whitespaces are ignored.
         /// </remarks>
         /// <param name="expression">The expression to solve.</param>
         /// <exception cref="ArgumentException">Thrown when the expression is null or an empty string.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the expression contains an invalid operation (e.g. sqrt of a negative number).</exception>
         /// <exception cref="ExpressionSolvingException">Thrown when the expression cannot be solved.</exception>
         /// <returns>The value of the expression.</returns>
         double SolveExpression(string expression);
