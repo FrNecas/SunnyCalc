@@ -131,6 +131,7 @@ namespace SunnyCalc.Maths
         /// <remarks>The n-th root of a number x, when n is a positive integer, is a number r which, when raised to the power n, yields the number x.</remarks>
         /// <param name="a">The base of exponentiation.</param>
         /// <param name="n">The degree of the root. Must not be zero.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the value of <paramref name="a"/> is less than zero and <paramref name="n"/> is even.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="n"/> is zero.</exception>
         /// <returns>The <paramref name="exp"/>-th root of <paramref name="a"/>, a real number represented as <see cref="System.Double"/>.</returns>
         double Root(int a, uint n);
