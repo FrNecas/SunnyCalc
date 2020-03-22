@@ -360,5 +360,50 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<ArgumentException>(() => _service.Root(5.5m, 0));
             Assert.Throws<ArgumentException>(() => _service.Root(-5.5m, 0));
         }
+
+        [Test]
+        public void Sin()
+        {
+            // Trigonometric calculations are imprecise, check only a few decimals.
+            Assert.AreEqual(0, _service.Sin(0), 1e-10);
+            Assert.AreEqual(0.5, _service.Sin(Math.PI/6), 1e-10);
+            Assert.AreEqual(Math.Sqrt(2)/2, _service.Sin(Math.PI/4), 1e-10);
+            Assert.AreEqual(Math.Sqrt(3)/2, _service.Sin(Math.PI/3), 1e-10);
+            Assert.AreEqual(1, _service.Sin(Math.PI / 2), 1e-10);
+            Assert.AreEqual(0, _service.Sin(Math.PI), 1e-10);
+            Assert.AreEqual(-1, _service.Sin(3 * Math.PI/2), 1e-10);
+            Assert.AreEqual(0, _service.Sin(2 * Math.PI), 1e-10);
+        }
+        
+        [Test]
+        public void Cos()
+        {
+            // Trigonometric calculations are imprecise, check only a few decimals.
+            Assert.AreEqual(1, _service.Cos(0), 1e-10);
+            Assert.AreEqual(Math.Sqrt(3)/2, _service.Cos(Math.PI/6), 1e-10);
+            Assert.AreEqual(Math.Sqrt(2)/2, _service.Cos(Math.PI/4), 1e-10);
+            Assert.AreEqual(0.5, _service.Cos(Math.PI/3), 1e-10);
+            Assert.AreEqual(0, _service.Cos(Math.PI / 2), 1e-10);
+            Assert.AreEqual(-1, _service.Cos(Math.PI), 1e-10);
+            Assert.AreEqual(0, _service.Cos(3 * Math.PI/2), 1e-10);
+            Assert.AreEqual(1, _service.Cos(2 * Math.PI), 1e-10);
+        }
+        
+        [Test]
+        public void Tan()
+        {
+            // Trigonometric calculations are imprecise, check only a few decimals.
+            Assert.AreEqual(0, _service.Tan(0), 1e-10);
+            Assert.AreEqual(Math.Sqrt(3)/3, _service.Tan(Math.PI/6), 1e-10);
+            Assert.AreEqual(1, _service.Tan(Math.PI/4), 1e-10);
+            Assert.AreEqual(Math.Sqrt(3), _service.Tan(Math.PI/3), 1e-10);
+            Assert.AreEqual(0, _service.Tan(Math.PI), 1e-10);
+            Assert.AreEqual(0, _service.Tan(2 * Math.PI), 1e-10);
+
+            Assert.Throws<InvalidOperationException>(() => _service.Tan(Math.PI / 2));
+            Assert.Throws<InvalidOperationException>(() => _service.Tan(3 * Math.PI / 2));
+            Assert.Throws<InvalidOperationException>(() => _service.Tan(-Math.PI / 2));
+            Assert.Throws<InvalidOperationException>(() => _service.Tan(-3 * Math.PI / 2));
+        }
     }
 }
