@@ -274,5 +274,91 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<DivideByZeroException>(() => _service.Divide(-5.5m, 0m));
             Assert.Throws<DivideByZeroException>(() => _service.Divide(0m, 0m));
         }
+
+        [Test]
+        public void Factorial()
+        {
+            Assert.AreEqual(120, _service.Factorial(5));
+            Assert.AreEqual(1, _service.Factorial(0));
+            Assert.AreEqual(2, _service.Factorial(2));
+            Assert.AreEqual(3628800 , _service.Factorial(10));
+            
+            // On most systems this would result in Stack Overflow if Factorial was implemented using
+            // recursion. But at the same time it's not going to slow down the tests.
+            _service.Factorial(1000000);
+        }
+
+        [Test]
+        public void IntegerPower()
+        {
+            Assert.AreEqual(5, _service.Power(5, 0));
+            Assert.AreEqual(5, _service.Power(5, 1));
+            Assert.AreEqual(125, _service.Power(5, 3));
+            Assert.AreEqual(3111696, _service.Power(42, 4));
+        }
+
+        [Test]
+        public void DoublePower()
+        {
+            Assert.AreEqual(2.5, _service.Power(2.5, 1), Double.Epsilon);
+            Assert.AreEqual(1, _service.Power(2.5, 0), Double.Epsilon);
+            Assert.AreEqual(6.25, _service.Power(2.5, 2), Double.Epsilon);
+            Assert.AreEqual(3262539.0625, _service.Power(42.5, 4), Double.Epsilon);
+        }
+        
+        [Test]
+        public void DecimalPower()
+        {
+            Assert.AreEqual(2.5m, _service.Power(2.5m, 1));
+            Assert.AreEqual(1m, _service.Power(2.5m, 0));
+            Assert.AreEqual(6.25m, _service.Power(2.5m, 2));
+            Assert.AreEqual(3262539.0625m, _service.Power(42.5m, 4));
+        }
+
+        [Test]
+        public void IntegerRoot()
+        {
+            Assert.AreEqual(2, _service.Root(4, 2), Double.Epsilon);
+            Assert.AreEqual(4, _service.Root(4, 1), Double.Epsilon);
+            Assert.AreEqual(5, _service.Root(125, 3), Double.Epsilon);
+            Assert.AreEqual(-3, _service.Root(-9, 3), Double.Epsilon);
+            Assert.AreEqual(1.41421356, _service.Root(2, 2), 1e-5);
+            
+            Assert.Throws<InvalidOperationException>(() => _service.Root(-5, 2));
+            Assert.Throws<InvalidOperationException>(() => _service.Root(-42, 4));
+            
+            Assert.Throws<ArgumentException>(() => _service.Root(5, 0));
+            Assert.Throws<ArgumentException>(() => _service.Root(-5, 0));
+        }
+
+        [Test]
+        public void DoubleRoot()
+        {
+            Assert.AreEqual(2.5, _service.Root(6.25, 2), Double.Epsilon);
+            Assert.AreEqual(2.5, _service.Root(2.5, 1), Double.Epsilon);
+            Assert.AreEqual(2.5, _service.Root(15.625, 3), Double.Epsilon);
+            Assert.AreEqual(-2.5, _service.Root(-15.625, 3), Double.Epsilon);
+            
+            Assert.Throws<InvalidOperationException>(() => _service.Root(-5.5, 2));
+            Assert.Throws<InvalidOperationException>(() => _service.Root(-5.5, 4));
+            
+            Assert.Throws<ArgumentException>(() => _service.Root(5.5, 0));
+            Assert.Throws<ArgumentException>(() => _service.Root(-5.5, 0));
+        }
+        
+        [Test]
+        public void DecimalRoot()
+        {
+            Assert.AreEqual(2.5m, _service.Root(6.25m, 2));
+            Assert.AreEqual(2.5m, _service.Root(2.5m, 1));
+            Assert.AreEqual(2.5m, _service.Root(15.625m, 3));
+            Assert.AreEqual(-2.5m, _service.Root(-15.625m, 3));
+            
+            Assert.Throws<InvalidOperationException>(() => _service.Root(-5.5m, 2));
+            Assert.Throws<InvalidOperationException>(() => _service.Root(-5.5m, 4));
+            
+            Assert.Throws<ArgumentException>(() => _service.Root(5.5m, 0));
+            Assert.Throws<ArgumentException>(() => _service.Root(-5.5m, 0));
+        }
     }
 }
