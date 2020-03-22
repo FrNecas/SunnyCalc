@@ -117,6 +117,24 @@ namespace SunnyCalc.Maths
         }
 
         /// <inheritdoc/>
+        public double Sin(double a)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public double Cos(double a)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public double Tan(double a)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc/>
         public double SolveExpression(string expression)
         {
             throw new System.NotImplementedException();

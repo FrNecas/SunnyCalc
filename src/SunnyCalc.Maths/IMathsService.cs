@@ -157,6 +157,28 @@ namespace SunnyCalc.Maths
         decimal Root(decimal a, uint n);
 
         /// <summary>
+        /// Calculates the sine of <paramref name="a"/> given in radians.
+        /// </summary>
+        /// <param name="a">The argument of sine.</param>
+        /// <returns>The result of sin(<paramref name="a"/>).</returns>
+        double Sin(double a);
+
+        /// <summary>
+        /// Calculates the cosine of <paramref name="a"/> given in radians.
+        /// </summary>
+        /// <param name="a">The argument of cosine.</param>
+        /// <returns>The result of cos(<paramref name="a"/>).</returns>
+        double Cos(double a);
+
+        /// <summary>
+        /// Calculates the tangent of <paramref name="a"/> given in radians.
+        /// </summary>
+        /// <param name="a">The argument of tangent.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <paramref name="a"/> is equal to pi/2 + k * pi.</exception>
+        /// <returns>The result of tan(<paramref name="a"/>).</returns>
+        double Tan(double a);
+
+        /// <summary>
         /// Solves a mathematical expression.
         /// </summary>
         /// <remarks>
