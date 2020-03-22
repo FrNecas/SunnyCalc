@@ -9,6 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Maths", "SunnyCal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Maths.Tests", "SunnyCalc.Maths.Tests\SunnyCalc.Maths.Tests.csproj", "{F5126EFD-C72E-40E3-B479-ADA1369F019B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BE8B5F65-53C8-4482-BB34-337F1AA38FA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9BDEC4CD-EB3C-4EB8-B98A-C78B47D363BC}"
+ProjectSection(SolutionItems) = preProject
+	..\README.md = ..\README.md
+	..\Makefile = ..\Makefile
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Profiler", "SunnyCalc.Profiler\SunnyCalc.Profiler.csproj", "{533636F6-9610-4232-844D-F745243DD3E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +68,23 @@ Global
 		{F5126EFD-C72E-40E3-B479-ADA1369F019B}.Release|x64.Build.0 = Release|Any CPU
 		{F5126EFD-C72E-40E3-B479-ADA1369F019B}.Release|x86.ActiveCfg = Release|Any CPU
 		{F5126EFD-C72E-40E3-B479-ADA1369F019B}.Release|x86.Build.0 = Release|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Debug|x64.Build.0 = Debug|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Debug|x86.Build.0 = Debug|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Release|x64.ActiveCfg = Release|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Release|x64.Build.0 = Release|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Release|x86.ActiveCfg = Release|Any CPU
+		{533636F6-9610-4232-844D-F745243DD3E0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8D6B5DF8-E67C-44FD-8D4F-4CB746230439} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
+		{25E9A36F-89A5-46EE-9B71-0F5E98A66F4A} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
+		{F5126EFD-C72E-40E3-B479-ADA1369F019B} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
+		{533636F6-9610-4232-844D-F745243DD3E0} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
 	EndGlobalSection
 EndGlobal
