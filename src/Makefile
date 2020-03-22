@@ -20,7 +20,9 @@ SELF_CONTAINED_FLAGS_LINUX = --runtime linux-x64 --self-contained true --nologo 
 SELF_CONTAINED_SP_FLAGS_WINDOWS = ${SELF_CONTAINED_FLAGS_WINDOWS} /p:PublishSingleFile=true
 SELF_CONTAINED_SP_FLAGS_LINUX = ${SELF_CONTAINED_FLAGS_LINUX} /p:PublishSingleFile=true
 
-all: clean profile app doc
+.PHONY: all test run pack doc installer clean clean_src clean_pack clean_publish profile app
+
+all: profile app doc
 
 test: SunnyCalc.Maths.Tests/SunnyCalc.Maths.Tests.csproj
 	dotnet test --nologo $<
