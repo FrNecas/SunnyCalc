@@ -227,28 +227,7 @@ namespace SunnyCalc.Profiling
 
         private void ProfileActionTime(Action action, string name = null, string category = null)
         {
-            if (name != null) this.Log($"Running '{name}'.");
-
-            var time = _stopwatch.ElapsedMilliseconds;
-            var ticks = _stopwatch.ElapsedTicks;
-            action();
-            time = _stopwatch.ElapsedMilliseconds - time;
-            ticks = _stopwatch.ElapsedTicks - ticks;
-
-            if (name != null) this.Log($"Finished '{name}'. Took {time} ms ({ticks / TicksPerUs} μs).");
-
-            if (category != null)
-            {
-                if (_categoryMeasurements.ContainsKey(category))
-                {
-                    _categoryMeasurements.Add(category, new Measurement());
-                }
-
-                var m = _categoryMeasurements[category];
-                m.TotalMilliseconds += time;
-                m.TotalTicks += ticks;
-                m.Samples++;
-            }
+            this.ProfileActionTime(() => action, name, category);
         }
 
         private T ProfileActionTime<T>(Func<T> action, string name = null, string category = null)
