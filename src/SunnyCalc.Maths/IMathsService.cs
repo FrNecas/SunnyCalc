@@ -159,6 +159,9 @@ namespace SunnyCalc.Maths
         /// <summary>
         /// Calculates the sine of <paramref name="a"/> given in radians.
         /// </summary>
+        /// <remarks>
+        /// The implementations should return accurate values when the value of the <see cref="SunnyCalc.Maths.Constants.Pi"/> constant is passed.
+        /// </remarks>
         /// <param name="a">The argument of sine.</param>
         /// <returns>The result of sin(<paramref name="a"/>).</returns>
         double Sin(double a);
@@ -166,6 +169,9 @@ namespace SunnyCalc.Maths
         /// <summary>
         /// Calculates the cosine of <paramref name="a"/> given in radians.
         /// </summary>
+        /// <remarks>
+        /// The implementations should return accurate values when the value of the <see cref="SunnyCalc.Maths.Constants.Pi"/> constant is passed.
+        /// </remarks>
         /// <param name="a">The argument of cosine.</param>
         /// <returns>The result of cos(<paramref name="a"/>).</returns>
         double Cos(double a);
@@ -173,6 +179,9 @@ namespace SunnyCalc.Maths
         /// <summary>
         /// Calculates the tangent of <paramref name="a"/> given in radians.
         /// </summary>
+        /// <remarks>
+        /// The implementations should return accurate values when the value of the <see cref="SunnyCalc.Maths.Constants.Pi"/> constant is passed.
+        /// </remarks>
         /// <param name="a">The argument of tangent.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="a"/> is equal to pi/2 + k * pi.</exception>
         /// <returns>The result of tan(<paramref name="a"/>).</returns>
@@ -182,8 +191,9 @@ namespace SunnyCalc.Maths
         /// Solves a mathematical expression.
         /// </summary>
         /// <remarks>
-        /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,rt,sin,cos,tan.
+        /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,rt,sin,cos,tan,pi.
         /// Whitespaces are ignored.
+        /// The "pi" symbol will be interpreted as the value of <see cref="SunnyCalc.Maths.Constants.Pi"/>.
         /// </remarks>
         /// <param name="expression">The expression to solve.</param>
         /// <exception cref="ArgumentException">Thrown when the expression is null or an empty string.</exception>
