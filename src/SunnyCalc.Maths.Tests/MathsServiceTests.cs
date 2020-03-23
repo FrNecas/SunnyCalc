@@ -405,5 +405,145 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<InvalidOperationException>(() => _service.Tan(-Math.PI / 2));
             Assert.Throws<InvalidOperationException>(() => _service.Tan(-3 * Math.PI / 2));
         }
+
+        [Test]
+        public void SolveExpressionSimpleArithmetic()
+        {
+            // Check whitespace handling
+            Assert.AreEqual(10, _service.SolveExpression("5 + 5"));
+            Assert.AreEqual(10, _service.SolveExpression("5+ 5"));
+            Assert.AreEqual(10, _service.SolveExpression("5 +5"));
+            Assert.AreEqual(10, _service.SolveExpression("5+5"));
+            
+            // Check all operations
+            // Add
+            Assert.AreEqual(6, _service.SolveExpression("3+3"));
+            Assert.AreEqual(9, _service.SolveExpression("3 + 3+ 3"));
+            Assert.AreEqual(0, _service.SolveExpression("-3 + 3"));
+            Assert.AreEqual(7.5, _service.SolveExpression("5+2.5"), Double.Epsilon);
+            
+            // Subtract
+            Assert.AreEqual(3, _service.SolveExpression("6-3"));
+            Assert.AreEqual(3, _service.SolveExpression("6-2-1"));
+            Assert.AreEqual(0, _service.SolveExpression("-3 - -3"));
+            Assert.AreEqual(2.5, _service.SolveExpression("5-2.5"), Double.Epsilon);
+            
+            // Multiply
+            Assert.AreEqual(9, _service.SolveExpression("3*3"));
+            Assert.AreEqual(27, _service.SolveExpression("3*3*3"));
+            Assert.AreEqual(-9, _service.SolveExpression("-3 * 3"));
+            Assert.AreEqual(9, _service.SolveExpression("-3 * -3"));
+            Assert.AreEqual(6.25, _service.SolveExpression("2.5 * 2.5"), Double.Epsilon);
+            
+            // Divide
+            Assert.AreEqual(3, _service.SolveExpression("9/3"));
+            Assert.AreEqual(-3, _service.SolveExpression("-9/3"));
+            Assert.AreEqual(-3, _service.SolveExpression("9/-3"));
+            Assert.AreEqual(3, _service.SolveExpression("-9/-3"));
+            Assert.AreEqual(2.5, _service.SolveExpression("6.25 / 2.5"), Double.Epsilon);
+        }
+
+        [Test]
+        public void SolveExpressionAdvancedOperations()
+        {
+            // Factorial
+            Assert.AreEqual(120, _service.SolveExpression("5!"));
+            Assert.AreEqual(-120, _service.SolveExpression("-5!"));
+            Assert.AreEqual(1, _service.SolveExpression("0!"));
+            
+            // Power
+            Assert.AreEqual(4, _service.SolveExpression("2^2"));
+            Assert.AreEqual(4, _service.SolveExpression("(-2)^2"));
+            Assert.AreEqual(-4, _service.SolveExpression("-2^2"));
+            Assert.AreEqual(6.25, _service.SolveExpression("2.5^2"), Double.Epsilon);
+            
+            // Squared root
+            Assert.AreEqual(4, _service.SolveExpression("sqrt(16)"));
+            Assert.AreEqual(2.5, _service.SolveExpression("sqrt(6.25)"), Double.Epsilon);
+            
+            // Root
+            Assert.AreEqual(4, _service.SolveExpression("rt(16, 2)"));
+            Assert.AreEqual(-3, _service.SolveExpression("rt(-27, 3)"));
+            Assert.AreEqual(2.5, _service.SolveExpression("rt(6.25, 2)"), Double.Epsilon);
+
+            // Trigonometry
+            Assert.AreEqual(0, _service.SolveExpression("sin(0)"), 1e-10);
+            Assert.AreEqual(1, _service.SolveExpression("cos(0)"), 1e-10);
+            Assert.AreEqual(0, _service.SolveExpression("tan(0)"), 1e-10);
+        }
+        
+        [Test]
+        public void SolveExpressionPrecedence()
+        {
+            // Simple operations
+            Assert.AreEqual(20, _service.SolveExpression("5 + 5 * 3"));
+            Assert.AreEqual(28, _service.SolveExpression("5 * 5 + 3"));
+            
+            Assert.AreEqual(-10, _service.SolveExpression("5 - 5 * 3"));
+            Assert.AreEqual(22, _service.SolveExpression("5 * 5 - 3"));
+            
+            Assert.AreEqual(4, _service.SolveExpression("5 /5 + 3"));
+            Assert.AreEqual(8, _service.SolveExpression("4 + 20/5"));
+            Assert.AreEqual(5, _service.SolveExpression("5 * 5 / 5"));
+            
+            Assert.AreEqual(34, _service.SolveExpression("3 * 3 + 5 * 5"));
+            Assert.AreEqual(2, _service.SolveExpression("3 /3 + 5 / 5"));
+            
+            // Advanced operations
+            Assert.AreEqual(125, _service.SolveExpression("5 + 5!"));
+            Assert.AreEqual(125, _service.SolveExpression("5 * 5^2"));
+            Assert.AreEqual(25, _service.SolveExpression("5 * rt(25, 2)"));
+            Assert.AreEqual(5, _service.SolveExpression("sqrt(5 * 5)"));
+            Assert.AreEqual(5, _service.SolveExpression("rt(5 * 5, 2)"));
+        }
+
+        [Test]
+        public void SolveExpressionInvalidInput()
+        {
+            Assert.Throws<ArgumentException>(() => _service.SolveExpression(null));
+            Assert.Throws<ArgumentException>(() => _service.SolveExpression(""));
+            Assert.Throws<ArgumentException>(() => _service.SolveExpression("  "));
+
+            // Incomplete expressions
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 +"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(" +5"));
+            
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 -"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(" -5"));
+            
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 *"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("*5"));
+            
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 /"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 ^ "));
+            
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("!"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("!5"));
+                
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("sqrt()"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("rt(5)"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("rt(,2)"));
+            
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("sin()"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("cos()"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("tan()"));
+            
+            // Invalid operations
+            Assert.Throws<DivideByZeroException>(() => _service.SolveExpression("5/0"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("sqrt(-2)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("rt(-2, 2)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("rt(-2, 4)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("rt(2, -4)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("rt(2, -4.5)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("rt(2, 4.5)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("(-1)!"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("0.5!"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("(-0.5)!"));
+            // pi/2 = 1.57079632679
+            // TODO: Perhaps we should add a pi constant to the app and to expression solver?
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan(1.57079532679"));
+        }
+        
+        // TODO: Parentheses testing if we decide to implement their parsing
     }
 }
