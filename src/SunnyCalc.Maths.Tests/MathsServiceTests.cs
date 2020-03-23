@@ -471,6 +471,31 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(1, _service.SolveExpression("cos(0)"), 1e-10);
             Assert.AreEqual(0, _service.SolveExpression("tan(0)"), 1e-10);
         }
+        
+        [Test]
+        public void SolveExpressionPrecedence()
+        {
+            // Simple operations
+            Assert.AreEqual(20, _service.SolveExpression("5 + 5 * 3"));
+            Assert.AreEqual(28, _service.SolveExpression("5 * 5 + 3"));
+            
+            Assert.AreEqual(-10, _service.SolveExpression("5 - 5 * 3"));
+            Assert.AreEqual(22, _service.SolveExpression("5 * 5 - 3"));
+            
+            Assert.AreEqual(4, _service.SolveExpression("5 /5 + 3"));
+            Assert.AreEqual(8, _service.SolveExpression("4 + 20/5"));
+            Assert.AreEqual(5, _service.SolveExpression("5 * 5 / 5"));
+            
+            Assert.AreEqual(34, _service.SolveExpression("3 * 3 + 5 * 5"));
+            Assert.AreEqual(2, _service.SolveExpression("3 /3 + 5 / 5"));
+            
+            // Advanced operations
+            Assert.AreEqual(125, _service.SolveExpression("5 + 5!"));
+            Assert.AreEqual(125, _service.SolveExpression("5 * 5^2"));
+            Assert.AreEqual(25, _service.SolveExpression("5 * rt(25, 2)"));
+            Assert.AreEqual(5, _service.SolveExpression("sqrt(5 * 5)"));
+            Assert.AreEqual(5, _service.SolveExpression("rt(5 * 5, 2)"));
+        }
 
         [Test]
         public void SolveExpressionInvalidInput()
