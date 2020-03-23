@@ -468,8 +468,13 @@ namespace SunnyCalc.Maths.Tests
 
             // Trigonometry
             Assert.AreEqual(0, _service.SolveExpression("sin(0)"), 1e-10);
+            Assert.AreEqual(1, _service.SolveExpression("sin(pi/2)"), 1e-10);
             Assert.AreEqual(1, _service.SolveExpression("cos(0)"), 1e-10);
+            Assert.AreEqual(-1, _service.SolveExpression("cos(pi)"), 1e-10);
             Assert.AreEqual(0, _service.SolveExpression("tan(0)"), 1e-10);
+            Assert.AreEqual(0, _service.SolveExpression("tan(pi)"), 1e-10);
+            Assert.AreEqual(1, _service.SolveExpression("tan(pi/4)"), 1e-10);
+            
         }
         
         [Test]
@@ -539,9 +544,9 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("(-1)!"));
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("0.5!"));
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("(-0.5)!"));
-            // pi/2 = 1.57079632679
-            // TODO: Perhaps we should add a pi constant to the app and to expression solver?
-            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan(1.57079532679"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan(pi/2)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan(5*pi/2)"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan((-3)*pi/2)"));
         }
         
         // TODO: Parentheses testing if we decide to implement their parsing
