@@ -318,10 +318,10 @@ namespace SunnyCalc.Maths.Tests
         [Test]
         public void IntegerRoot()
         {
-            Assert.AreEqual(2, _service.Root(4, 2), Double.Epsilon);
-            Assert.AreEqual(4, _service.Root(4, 1), Double.Epsilon);
-            Assert.AreEqual(5, _service.Root(125, 3), Double.Epsilon);
-            Assert.AreEqual(-3, _service.Root(-27, 3), Double.Epsilon);
+            Assert.AreEqual(2, _service.Root(4, 2), 1e-10);
+            Assert.AreEqual(4, _service.Root(4, 1), 1e-10);
+            Assert.AreEqual(5, _service.Root(125, 3), 1e-10);
+            Assert.AreEqual(-3, _service.Root(-27, 3), 1e-10);
             Assert.AreEqual(1.41421356, _service.Root(2, 2), 1e-5);
             
             Assert.Throws<InvalidOperationException>(() => _service.Root(-5, 2));
@@ -334,10 +334,10 @@ namespace SunnyCalc.Maths.Tests
         [Test]
         public void DoubleRoot()
         {
-            Assert.AreEqual(2.5, _service.Root(6.25, 2), Double.Epsilon);
-            Assert.AreEqual(2.5, _service.Root(2.5, 1), Double.Epsilon);
-            Assert.AreEqual(2.5, _service.Root(15.625, 3), Double.Epsilon);
-            Assert.AreEqual(-2.5, _service.Root(-15.625, 3), Double.Epsilon);
+            Assert.AreEqual(2.5, _service.Root(6.25, 2), 1e-10);
+            Assert.AreEqual(2.5, _service.Root(2.5, 1), 1e-10);
+            Assert.AreEqual(2.5, _service.Root(15.625, 3), 1e-10);
+            Assert.AreEqual(-2.5, _service.Root(-15.625, 3), 1e-10);
             
             Assert.Throws<InvalidOperationException>(() => _service.Root(-5.5, 2));
             Assert.Throws<InvalidOperationException>(() => _service.Root(-5.5, 4));
