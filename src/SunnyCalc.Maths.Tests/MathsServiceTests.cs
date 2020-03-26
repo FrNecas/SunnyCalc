@@ -291,7 +291,7 @@ namespace SunnyCalc.Maths.Tests
         [Test]
         public void IntegerPower()
         {
-            Assert.AreEqual(5, _service.Power(5, 0));
+            Assert.AreEqual(1, _service.Power(5, 0));
             Assert.AreEqual(5, _service.Power(5, 1));
             Assert.AreEqual(125, _service.Power(5, 3));
             Assert.AreEqual(3111696, _service.Power(42, 4));
@@ -321,7 +321,7 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(2, _service.Root(4, 2), Double.Epsilon);
             Assert.AreEqual(4, _service.Root(4, 1), Double.Epsilon);
             Assert.AreEqual(5, _service.Root(125, 3), Double.Epsilon);
-            Assert.AreEqual(-3, _service.Root(-9, 3), Double.Epsilon);
+            Assert.AreEqual(-3, _service.Root(-27, 3), Double.Epsilon);
             Assert.AreEqual(1.41421356, _service.Root(2, 2), 1e-5);
             
             Assert.Throws<InvalidOperationException>(() => _service.Root(-5, 2));
