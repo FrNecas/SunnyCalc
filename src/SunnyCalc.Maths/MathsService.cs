@@ -91,43 +91,119 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public uint Factorial(uint a)
         {
-            throw new System.NotImplementedException();
+            uint fact = 1;
+            for (var i = a; i > 1; i--)
+            {
+                fact *= i;
+            }
+            
+            return fact;
         }
 
         /// <inheritdoc/>
         public int Power(int a, uint exp)
         {
-            throw new System.NotImplementedException();
+            if (exp.Equals(0)) // valid even for 0 to the power of 0 (0^0)
+            {
+                return 1;
+            }
+            
+            var pow = a;
+            while (exp > 1)
+            {
+                pow *= a;
+                exp--;
+            }
+
+            return pow;
         }
 
         /// <inheritdoc/>
         public double Power(double a, uint exp)
         {
-            throw new System.NotImplementedException();
+            if (exp.Equals(0)) // valid even for 0 to the power of 0 (0^0)
+            {
+                return 1;
+            }
+            
+            var pow = a;
+            while (exp > 1)
+            {
+                pow *= a;
+                exp--;
+            }
+
+            return pow;
         }
 
         /// <inheritdoc/>
         public decimal Power(decimal a, uint exp)
         {
-            throw new System.NotImplementedException();
-        }
+            if (exp.Equals(0)) // valid even for 0 to the power of 0 (0^0)
+            {
+                return 1;
+            }
+            
+            var pow = a;
+            while (exp > 1)
+            {
+                pow *= a;
+                exp--;
+            }
 
+            return pow;
+        }
+        
+        
         /// <inheritdoc/>
         public double Root(int a, uint n)
         {
-            throw new System.NotImplementedException();
+            // The exception is thrown when the degree of the root is zero.
+            if (n == 0) throw new System.ArgumentException("A degree of a root cannot be equal to 0.");
+            
+            // The exception is thrown if the degree of the root is even number and value of the base is less than zero.
+            if (a < 0 && n % 2 == 0) throw new System.InvalidOperationException("Root operation with base value less than 0 and root being even number cannot be evaluated.");
+            
+            // valid arguments 
+            if (a < 0 && n % 2 == 1)
+            {
+                return - Math.Pow(Math.Abs(a), 1.0 / n);    
+            }
+            return Math.Pow(a, 1.0 / n);
         }
 
         /// <inheritdoc/>
         public double Root(double a, uint n)
         {
-            throw new System.NotImplementedException();
+            // The exception is thrown when the degree of the root is zero.
+            if (n == 0) throw new System.ArgumentException("A degree of a root cannot be equal to 0.");
+            
+            // The exception is thrown if the degree of the root is even number and value of the base is less than zero.
+            if (a < 0 && n % 2 == 0) throw new System.InvalidOperationException("Root operation with base value less than 0 and root being even number cannot be evaluated.");
+            
+            // valid arguments
+            if (a < 0 && n % 2 == 1)
+            {
+                return - Math.Pow(Math.Abs(a), 1.0 / n);    
+            }
+            return Math.Pow(a, 1.0 / n);
         }
 
         /// <inheritdoc/>
         public decimal Root(decimal a, uint n)
         {
-            throw new System.NotImplementedException();
+            // The exception is thrown when the degree of the root is zero.
+            if (n == 0) throw new System.ArgumentException("A degree of a root cannot be equal to 0.");
+            
+            // The exception is thrown if the degree of the root is even number and value of the base is less than zero.
+            if (a < 0 && n % 2 == 0) throw new System.InvalidOperationException("Root operation with base value less than 0 and root being even number cannot be evaluated.");
+            
+            // valid arguments
+            if (a < 0 && n % 2 == 1)
+            {
+                return (decimal) - Math.Pow((double) Math.Abs(a), 1.0 / n);    
+            }
+            return (decimal) Math.Pow((double) a, 1.0 / n);
         }
 
         /// <inheritdoc/>
