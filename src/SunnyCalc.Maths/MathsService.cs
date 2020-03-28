@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
 namespace SunnyCalc.Maths
 {
     public class MathsService : IMathsService
@@ -5,73 +10,82 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public int Add(int a, int b)
         {
-            throw new System.NotImplementedException();
+            return a + b; 
         }
 
         /// <inheritdoc/>
         public double Add(double a, double b)
         {
-            throw new System.NotImplementedException();
+            return a + b;
         }
 
         /// <inheritdoc/>
         public decimal Add(decimal a, decimal b)
         {
-            throw new System.NotImplementedException();
+            return a + b;
         }
 
         /// <inheritdoc/>
         public int Subtract(int a, int b)
         {
-            throw new System.NotImplementedException();
+            return a - b;
         }
 
         /// <inheritdoc/>
         public double Subtract(double a, double b)
         {
-            throw new System.NotImplementedException();
+            return a - b;
         }
 
         /// <inheritdoc/>
         public decimal Subtract(decimal a, decimal b)
         {
-            throw new System.NotImplementedException();
+            return a - b;
         }
 
         /// <inheritdoc/>
         public int Multiply(int a, int b)
         {
-            throw new System.NotImplementedException();
+            return a * b;
         }
 
         /// <inheritdoc/>
         public double Multiply(double a, double b)
         {
-            throw new System.NotImplementedException();
+            return a * b;
         }
 
         /// <inheritdoc/>
         public decimal Multiply(decimal a, decimal b)
         {
-            throw new System.NotImplementedException();
+            return a * b;
         }
 
         /// <inheritdoc/>
         public int Divide(int a, int b)
         {
-            throw new System.NotImplementedException();
+            //  trying to divide by 0
+            if (b.Equals(0)) throw new System.DivideByZeroException("Trying to divide by 0.");
+            
+            return a / b;
         }
 
         /// <inheritdoc/>
         public double Divide(double a, double b)
         {
-            throw new System.NotImplementedException();
+            // trying to divide by 0
+            if (b.Equals(0)) throw new System.DivideByZeroException("Trying to divide by 0.");
+            
+            return a / b;
         }
 
         /// <inheritdoc/>
         public decimal Divide(decimal a, decimal b)
         {
-            throw new System.NotImplementedException();
+            // trying to divide by 0
+            if (b.Equals(0)) throw new System.DivideByZeroException("Trying to divide by 0.");
+            
+            return a / b;
         }
 
         /// <inheritdoc/>
