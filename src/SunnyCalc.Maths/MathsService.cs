@@ -209,19 +209,23 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Sin(double a)
         {
-            throw new System.NotImplementedException();
+            return Math.Sin(a);
         }
 
         /// <inheritdoc/>
         public double Cos(double a)
         {
-            throw new System.NotImplementedException();
+            return Math.Cos(a);
         }
 
         /// <inheritdoc/>
         public double Tan(double a)
         {
-            throw new System.NotImplementedException();
+            const double eps = 1e-10d; // Set value of acceptable epsilon for double-precision floating-point comparison for undefined angles of tangent
+            var isOdd = Math.Abs(a * 2 / Constants.Pi); // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi 
+            if (Math.Abs(isOdd % 2 - 1) <= eps) throw new System.InvalidOperationException("Tangent is not defined in given angle equal to pi/2 + k * pi.");
+            
+            return Math.Tan(a);
         }
 
         /// <inheritdoc/>
