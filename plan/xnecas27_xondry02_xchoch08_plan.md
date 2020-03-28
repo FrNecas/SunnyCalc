@@ -46,7 +46,7 @@ Kód i programová dokumentace kódu je psána anglicky. Rozhraní aplikace čes
 | Datum | Činnost |
 | ----- | ------- |
 | 12. 03. | návrh plánu, založení repozitáře na GitHubu a vytvoření komunikačního serveru na Discordu |
-| 15. 03. | schálení plánu a rozdělení práce |
+| 15. 03. | schválení plánu a rozdělení práce |
 | 18. 03. | odevzdání plánu |
 | 21. 03. | návrh matematické knihovny pro kalkulačku a vytvoření kostry projektu |
 | 23. 03. | sepsání testů pro matematickou knihovnu (rozhraní pro testy knihovny) |
