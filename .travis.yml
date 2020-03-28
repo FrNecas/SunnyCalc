@@ -1,0 +1,18 @@
+language: csharp
+solution: src/SunnyCalc.sln
+mono: none
+matrix:
+    include:
+        - stage: build
+          os: windows
+          before_script:
+              - choco install dotnetcore-sdk
+          script:
+              - cd src && dotnet test --nologo
+
+        - stage: build
+          os: linux
+          dist: xenial
+          dotnet: 3.1
+          script:
+              - cd src && make test
