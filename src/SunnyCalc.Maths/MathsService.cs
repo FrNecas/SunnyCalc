@@ -65,7 +65,7 @@ namespace SunnyCalc.Maths
         public int Divide(int a, int b)
         {
             //  trying to divide by 0
-            if (b.Equals(0)) throw new System.DivideByZeroException("Trying to divide by 0.");
+            if (b == 0) throw new System.DivideByZeroException("Trying to divide by 0.");
             
             return a / b;
         }
@@ -74,7 +74,7 @@ namespace SunnyCalc.Maths
         public double Divide(double a, double b)
         {
             // trying to divide by 0
-            if (b.Equals(0)) throw new System.DivideByZeroException("Trying to divide by 0.");
+            if (b == 0) throw new System.DivideByZeroException("Trying to divide by 0.");
             
             return a / b;
         }
@@ -83,7 +83,7 @@ namespace SunnyCalc.Maths
         public decimal Divide(decimal a, decimal b)
         {
             // trying to divide by 0
-            if (b.Equals(0)) throw new System.DivideByZeroException("Trying to divide by 0.");
+            if (b == 0) throw new System.DivideByZeroException("Trying to divide by 0.");
             
             return a / b;
         }
@@ -103,7 +103,7 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public int Power(int a, uint exp)
         {
-            if (exp.Equals(0)) // valid even for 0 to the power of 0 (0^0)
+            if (exp == 0) // valid even for 0 to the power of 0 (0^0)
             {
                 return 1;
             }
@@ -121,7 +121,7 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Power(double a, uint exp)
         {
-            if (exp.Equals(0)) // valid even for 0 to the power of 0 (0^0)
+            if (exp == 0) // valid even for 0 to the power of 0 (0^0)
             {
                 return 1;
             }
@@ -139,7 +139,7 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public decimal Power(decimal a, uint exp)
         {
-            if (exp.Equals(0)) // valid even for 0 to the power of 0 (0^0)
+            if (exp == 0) // valid even for 0 to the power of 0 (0^0)
             {
                 return 1;
             }
@@ -221,7 +221,7 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Tan(double a)
         {
-            const double eps = 1e-10d; // Set value of acceptable epsilon for double-precision floating-point comparison for undefined angles of tangent
+            const double eps = 1e-10d; //  acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception than get a completely inaccurate result
             var isOdd = Math.Abs(a * 2 / Constants.Pi); // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi 
             if (Math.Abs(isOdd % 2 - 1) <= eps) throw new System.InvalidOperationException("Tangent is not defined in given angle equal to pi/2 + k * pi.");
             
