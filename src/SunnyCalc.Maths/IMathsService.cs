@@ -129,6 +129,7 @@ namespace SunnyCalc.Maths
         /// Calculates the <paramref name="exp"/>-th root of the integer <paramref name="a"/>.
         /// </summary>
         /// <remarks>The n-th root of a number x, when n is a positive integer, is a number r which, when raised to the power n, yields the number x.</remarks>
+        /// <remarks>Precision only up to 1e-5 can be guaranteed for any number, however for calculations yielding integer values, the precision can be much better.</remarks>
         /// <param name="a">The base of exponentiation.</param>
         /// <param name="n">The degree of the root. Must not be zero.</param>
         /// <exception cref="InvalidOperationException">Thrown when the value of <paramref name="a"/> is less than zero and <paramref name="n"/> is even.</exception>
@@ -139,6 +140,7 @@ namespace SunnyCalc.Maths
         /// Calculates the <paramref name="exp"/>-th root of the real number <paramref name="a"/> represented as <see cref="System.Double"/>.
         /// </summary>
         /// <remarks>The n-th root of a number x, when n is a positive integer, is a number r which, when raised to the power n, yields the number x.</remarks>
+        /// <remarks>Precision only up to 1e-5 can be guaranteed for any number, however for calculations yielding integer values, the precision can be much better.</remarks>
         /// <param name="a">The base of exponentiation.</param>
         /// <param name="n">The degree of the root. Must not be zero.</param>
         /// <exception cref="InvalidOperationException">Thrown when the value of <paramref name="a"/> is less than zero and <paramref name="n"/> is even.</exception>
@@ -149,6 +151,7 @@ namespace SunnyCalc.Maths
         /// Calculates the <paramref name="exp"/>-th root of the real number <paramref name="a"/> represented as <see cref="System.Decimal"/>.
         /// </summary>
         /// <remarks>The n-th root of a number x, when n is a positive integer, is a number r which, when raised to the power n, yields the number x.</remarks>
+        /// <remarks>Precision only up to 1e-5 can be guaranteed for any number, however for calculations yielding integer values, the precision can be much better.</remarks>
         /// <param name="a">The base of exponentiation.</param>
         /// <param name="n">The degree of the root. Must not be zero.</param>
         /// <exception cref="InvalidOperationException">Thrown when the value of <paramref name="a"/> is less than zero and <paramref name="n"/> is even.</exception>
@@ -161,6 +164,7 @@ namespace SunnyCalc.Maths
         /// </summary>
         /// <remarks>
         /// The implementations should return accurate values when the value of the <see cref="SunnyCalc.Maths.Constants.Pi"/> constant is passed.
+        /// Otherwise precision of 1e-10 can be expected.
         /// </remarks>
         /// <param name="a">The argument of sine.</param>
         /// <returns>The result of sin(<paramref name="a"/>).</returns>
@@ -171,6 +175,7 @@ namespace SunnyCalc.Maths
         /// </summary>
         /// <remarks>
         /// The implementations should return accurate values when the value of the <see cref="SunnyCalc.Maths.Constants.Pi"/> constant is passed.
+        /// Otherwise precision of 1e-10 can be expected.
         /// </remarks>
         /// <param name="a">The argument of cosine.</param>
         /// <returns>The result of cos(<paramref name="a"/>).</returns>
@@ -181,6 +186,7 @@ namespace SunnyCalc.Maths
         /// </summary>
         /// <remarks>
         /// The implementations should return accurate values when the value of the <see cref="SunnyCalc.Maths.Constants.Pi"/> constant is passed.
+        /// Otherwise precision of 1e-10 can be expected.
         /// </remarks>
         /// <param name="a">The argument of tangent.</param>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="a"/> is equal to pi/2 + k * pi.</exception>
@@ -194,6 +200,7 @@ namespace SunnyCalc.Maths
         /// The expression may contain the following symbols: +,-,*,/,(,),^,sqrt,rt,sin,cos,tan,pi.
         /// Whitespaces are ignored.
         /// The "pi" symbol will be interpreted as the value of <see cref="SunnyCalc.Maths.Constants.Pi"/>.
+        /// The precision may vary depending on the operations used.
         /// </remarks>
         /// <param name="expression">The expression to solve.</param>
         /// <exception cref="ArgumentException">Thrown when the expression is null or an empty string.</exception>
