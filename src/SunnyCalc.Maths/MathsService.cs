@@ -440,6 +440,25 @@ namespace SunnyCalc.Maths
                     i += listSingleOperators[indexOperators++].Length;
                 }
             }
+
+            // test correct factorial format
+            if (listExpression.Contains("!"))
+            {
+                for (var i = 0; i < listExpression.Count; i++)
+                {
+                    if (listExpression[i] == "!")
+                    {
+                        if (i == 0 || (! double.TryParse(listExpression[i - 1], out _) && listExpression[i - 1] != ")")) // number of closing parenthesis before factorial
+                        {
+                            throw new Maths.ExpressionSolvingException("Factorial without operand before it.");
+                        }
+                        if (i > 0 && listExpression[i - 1] == ")") // set 'parenthesisBeforeFactorial' to test if parenthesis evaluated into valid operand 
+                        {
+                            parenthesisBeforeFactorial = true;
+                        }
+                    }
+                }
+            }
         }
     }
 
