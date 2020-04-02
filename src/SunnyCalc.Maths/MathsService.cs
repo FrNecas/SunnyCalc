@@ -262,9 +262,35 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double SolveExpression(string expression)
         {
-            throw new System.NotImplementedException();
-        }
+            // local function to decide which operator should be evaluated first
+            bool SolvePrecedence(string operator1, string operator2)
+            {
+                _operatorsDict.TryGetValue(operator1, out var oper1);
+                _operatorsDict.TryGetValue(operator2, out var oper2);
+                return oper1.RightAssociative ? oper1.Precedence < oper2.Precedence : oper1.Precedence <= oper2.Precedence;
+            }
+            
+            var stack = new Stack<string>(); // stack of operators to be evaluate and operands to be used in operation
+            var expressionQueue = new Queue<string>(); // queue for evaluating operations
+            var leftParenthesis = new List<string> { "(", "sqrt(", "rt(", "sin(", "cos(", "tan(", }; // list of all allowed left parenthesis formats
+            var listSingleOperators = new List<string>(); // list of single operators (every operator is one element) in an appropriate order
+
+            // exception for string being null, empty or string that consists only of white-space characters
+            if (string.IsNullOrWhiteSpace(expression))
+                throw new System.ArgumentException(
+                    "The expression is null, an empty string or consists only of white-space characters.");
+
+            expression = expression.Replace(" ", string.Empty); // get rid of all whitespaces in exception
+
+            // get all numbers in expression
+            string[] operators = {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi"}; // allowed operators for splitting of expression
+            var strOperands = expression.Split(operators, System.StringSplitOptions.RemoveEmptyEntries); // string array of operators-only characters
+            // get all operators in expression
+            string[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d", }; // allowed number characters for splitting of expression 
+            var strOperators = expression.Split(numbers, System.StringSplitOptions.RemoveEmptyEntries); // get array of operators (possible groups of operators in one element)
+    	}
     }
+
     
     public static class Constants
     {
