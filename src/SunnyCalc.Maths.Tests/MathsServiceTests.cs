@@ -415,6 +415,10 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(10, _service.SolveExpression("5 +5"));
             Assert.AreEqual(10, _service.SolveExpression("5+5"));
             
+            // Check single operand expression
+            Assert.AreEqual(-5, _service.SolveExpression(" -5"));
+            Assert.AreEqual(5, _service.SolveExpression(" +5"));
+
             // Check all operations
             // Add
             Assert.AreEqual(6, _service.SolveExpression("3+3"));
@@ -457,7 +461,7 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(-4, _service.SolveExpression("-2^2"));
             Assert.AreEqual(6.25, _service.SolveExpression("2.5^2"), Double.Epsilon);
             
-            // Squared root
+            // Square root
             Assert.AreEqual(4, _service.SolveExpression("sqrt(16)"));
             Assert.AreEqual(2.5, _service.SolveExpression("sqrt(6.25)"), Double.Epsilon);
             
@@ -476,7 +480,43 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(1, _service.SolveExpression("tan(pi/4)"), 1e-10);
             
         }
+
+        [Test]
+        public void SolveExpressionTrigonometry()
+        {
+            Assert.AreEqual(0, _service.SolveExpression("sin(0)"), 1e-10);
+            Assert.AreEqual(1, _service.SolveExpression("sin(pi/2)"), 1e-10);
+            Assert.AreEqual(1, _service.SolveExpression("cos(0)"), 1e-10);
+            Assert.AreEqual(-1, _service.SolveExpression("cos(pi)"), 1e-10);
+            Assert.AreEqual(0, _service.SolveExpression("tan(0)"), 1e-10);
+            Assert.AreEqual(0, _service.SolveExpression("tan(pi)"), 1e-10);
+            Assert.AreEqual(1, _service.SolveExpression("tan(pi/4 + 0)"), 1e-10);
+        }
         
+        [Test]
+        public void SolveExpressionSquareRootNRoot()
+        {
+             // Square root
+            Assert.AreEqual(4, _service.SolveExpression("sqrt(14+2)"));
+            Assert.AreEqual(2.5, _service.SolveExpression("sqrt(6.25)"), Double.Epsilon);
+            Assert.AreEqual(6, _service.SolveExpression("2 + sqrt(14+2)"));
+                
+            // Root
+            Assert.AreEqual(4, _service.SolveExpression("rt(16, 2)"));
+            Assert.AreEqual(-3, _service.SolveExpression("rt(-27, 3)"));
+            Assert.AreEqual(2.5, _service.SolveExpression("rt(6.25, 2)"), Double.Epsilon);
+        }
+
+        [Test]
+        public void SolveExpressionParenthesis()
+        {
+            Assert.AreEqual(4, _service.SolveExpression("(3+1)"));
+            Assert.AreEqual(-4, _service.SolveExpression("-(4)"));
+            Assert.AreEqual(-16, _service.SolveExpression("-(2^4)"));
+            Assert.AreEqual(-6, _service.SolveExpression("-(2+4)"));
+            
+        }
+
         [Test]
         public void SolveExpressionPrecedence()
         {
@@ -495,6 +535,7 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(2, _service.SolveExpression("3 /3 + 5 / 5"));
             
             // Advanced operations
+            
             Assert.AreEqual(125, _service.SolveExpression("5 + 5!"));
             Assert.AreEqual(125, _service.SolveExpression("5 * 5^2"));
             Assert.AreEqual(25, _service.SolveExpression("5 * rt(25, 2)"));
@@ -511,10 +552,7 @@ namespace SunnyCalc.Maths.Tests
 
             // Incomplete expressions
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 +"));
-            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(" +5"));
-            
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 -"));
-            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(" -5"));
             
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("5 *"));
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("*5"));
@@ -532,7 +570,7 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("sin()"));
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("cos()"));
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("tan()"));
-            
+
             // Invalid operations
             Assert.Throws<DivideByZeroException>(() => _service.SolveExpression("5/0"));
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("sqrt(-2)"));
@@ -548,7 +586,27 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan(5*pi/2)"));
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("tan((-3)*pi/2)"));
         }
-        
-        // TODO: Parentheses testing if we decide to implement their parsing
+
+        [Test]
+        public void SolveExpressionUnaryMinus()
+        {
+            // unary minus and parenthesis
+            Assert.AreEqual(-3, _service.SolveExpression("-3"));
+            Assert.AreEqual(3, _service.SolveExpression("--3"));
+            Assert.AreEqual(-3, _service.SolveExpression("-(3+5) + 5"));
+            Assert.AreEqual(-4, _service.SolveExpression("-2^2"));
+            Assert.AreEqual(-4, _service.SolveExpression("-(2)^2"));
+            Assert.AreEqual(-4, _service.SolveExpression("-(2^2)"));
+            Assert.AreEqual(4, _service.SolveExpression("(-2)^2"));
+            Assert.AreEqual(-4, _service.SolveExpression("-(-2)^2"));
+            Assert.AreEqual(9, _service.SolveExpression("-3 * -3"));
+            Assert.AreEqual(-9, _service.SolveExpression("--3 * -3"));
+            Assert.AreEqual(9, _service.SolveExpression("(-3) * (-3)"));
+            Assert.AreEqual(9, _service.SolveExpression("-(3 * -3)"));
+            
+            // unary minus with factorial
+            Assert.AreEqual(-6, _service.SolveExpression("-3!"));
+            Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("(-5)!"));
+        }
     }
 }
