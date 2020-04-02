@@ -530,6 +530,125 @@ namespace SunnyCalc.Maths
                 var popped = stack.Pop();
                 expressionQueue.Enqueue(popped);
             } // stack is empty (and ready to be used for operands in evaluating operations)
+
+
+            while (expressionQueue.Any()) // solve queue
+            {
+                var dequeued = expressionQueue.Dequeue(); // get the first token of the queue
+                if (double.TryParse(dequeued, out _)) // 'dequeued' is a number
+                {
+                    stack.Push(dequeued);
+                }
+                else // 'dequeued' is an operator
+                {
+                    var operands = new List<string>(3); // maximal amount of operators to be popped from the stack
+                    _operatorsDict.TryGetValue(dequeued, out var @operator);
+                    if (@operator != null) // operator is found in '_operatorsDict' (operators dictionary)
+                    {
+                        for (var i = 0; i < @operator.Operands; i++) // get expected amount of operators from stack
+                        {
+                            try
+                            {
+                                operands.Add(stack.Pop());
+                            }
+                            catch (System.InvalidOperationException)
+                            {
+                                if (@operator.Notation == "-" && i == 1) // handling unary '-' and negative numbers in expression
+                                {
+                                    operands.Add("0");
+                                }
+                                else // not enough operands for given operator 
+                                {
+                                    throw new Maths.ExpressionSolvingException("There are no operands left for given operators to calculate with.");    
+                                }
+                            }
+                        }
+                        if (dequeued == ",") // push ',' to stack so it can be tested for correct single operation format 
+                        {
+                            stack.Push(dequeued);
+                            continue;
+                        }
+                    }
+                    else // There is no such operator in _operatorsDict
+                    {
+                        throw new Maths.ExpressionSolvingException("Given operator is not supported in Sunny-Calc or is not an operator at all.");
+                    }
+
+                    // evaluate single operation
+                    double result = 0;
+                    switch (@operator.Name)
+                    {
+                        case "Add":
+                            result = this.Add(double.Parse(operands[1]), double.Parse(operands[0]));
+                            break;
+                        case "Subtract":
+                            result = this.Subtract(double.Parse(operands[1]), double.Parse(operands[0]));
+                            break;
+                        case "Multiply":
+                            result = this.Multiply(double.Parse(operands[1]), double.Parse(operands[0]));
+                            break;
+                        case "Divide":
+                            result = this.Divide(double.Parse(operands[1]), double.Parse(operands[0]));
+                            break;
+                        case "Factorial":
+                            try
+                            {
+                                result = this.Factorial(uint.Parse(operands[0]));
+                            }
+                            catch (System.OverflowException)
+                            {
+                                if (parenthesisBeforeFactorial && double.Parse(operands[0]) < 0) // if number in parenthesis is negative
+                                {
+                                    throw new System.InvalidOperationException("Wrong format of factorial expression. Invalid values.");
+                                }
+
+                                // for greater values of 'uint' with '-' before it  
+                                var num = Math.Abs(long.Parse(operands[0]));
+                                result = - this.Factorial((uint) num);
+                            }
+                            catch
+                            {
+                                throw new System.InvalidOperationException("Wrong format of factorial expression. Invalid values.");
+                            }
+
+                            break;
+                        case "Power":
+                            result = this.Power(double.Parse(operands[1]), uint.Parse(operands[0]));
+                            break;
+                        case "Sin":
+                            result = this.Sin(double.Parse(operands[0]));
+                            break;
+                        case "Cos":
+                            result = this.Cos(double.Parse(operands[0]));
+                            break;
+                        case "Tan":
+                            result = this.Tan(double.Parse(operands[0]));
+                            break;
+                        case "Pi":
+                            result = Constants.Pi;
+                            break;
+                        case "SquareRoot":
+                            result = this.Root(double.Parse(operands[0]), 2);
+                            break;
+                        case "Root":
+                            // root operation without separating ','
+                            if (operands[0] != ",") throw new Maths.ExpressionSolvingException("Missing ',' in expression.");
+                            try
+                            {
+                                result = this.Root(double.Parse(operands[2]), uint.Parse(operands[1]));
+                            }
+                            catch // any exception is considered as 'InvalidOperationException'
+                            {
+                                throw new System.InvalidOperationException("Wrong format of root expression. Invalid values."); 
+                            }
+                            break;
+                    }
+                    // push result of single operation to stack
+                    stack.Push(result.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            // get the final result from stack
+            return double.Parse(stack.Pop());
         }
     }
 
