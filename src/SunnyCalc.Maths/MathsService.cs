@@ -287,8 +287,102 @@ namespace SunnyCalc.Maths
             var strOperands = expression.Split(operators, System.StringSplitOptions.RemoveEmptyEntries); // string array of operators-only characters
             // get all operators in expression
             string[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d", }; // allowed number characters for splitting of expression 
-            var strOperators = expression.Split(numbers, System.StringSplitOptions.RemoveEmptyEntries); // get array of operators (possible groups of operators in one element)
-    	}
+            var strOperators = expression.Split(numbers, System.StringSplitOptions.RemoveEmptyEntries); // get array of operators (possible groups of operators in one element) 
+
+             
+            foreach (var strElement in strOperators) // divide single string element into valid operators and operands 
+            {
+                var characters = strElement.ToCharArray(); // char array of single string element got from 'expression.split' operations
+                for (var i = 0; i < strElement.Length; i++)
+                {
+
+                    switch (strElement[i])
+                    {
+                        // one-char operators
+                        case '!': // factorial operator
+                        case '+': // addition operator
+                        case '-': // subtract operator
+                        case '*': // multiplication operator
+                        case '/': // division operator
+                        case '^': // power operator
+                        case ',': // comma
+                        case '(': // opening parenthesis
+                        case ')': // closing parenthesis
+                            listSingleOperators.Add(strElement[i].ToString());
+                            break;
+                        
+                        // operators with two and more chars
+                        case 'p':
+                            if (strElement.Length >= 2 && strElement.Substring(i, 2) == "pi") // pi constant operator equal to 'Constants.Pi'
+                            {
+                                listSingleOperators.Add("pi");
+                                i += 1;
+                            }
+                            else // not a valid operator
+                            {
+                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                            }
+                            break;
+                        
+                        case 'r':
+                            if (strElement.Length >= 3 && strElement.Substring(i, 3) == "rt(") // root operator
+                            {
+                                listSingleOperators.Add("rt(");
+                                i += 2;
+                            }
+                            else // not a valid operator
+                            {
+                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                            }
+                            break;
+                        
+                        case 'c':
+                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "cos(") // cosinus operator
+                            {
+                                listSingleOperators.Add("cos(");
+                                i += 3;
+                            }
+                            else // not a valid operator
+                            {
+                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                            }
+                            break;
+                        
+                        case 't':
+                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "tan(") // tangens operator
+                            {
+                                listSingleOperators.Add("tan(");
+                                i += 3;
+                            }
+                            else // not a valid operator
+                            {
+                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                            }
+                            break;
+                        
+                        case 's':
+                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "sin(") // sinus operator
+                            {
+                                listSingleOperators.Add("sin(");
+                                i += 3;
+                            }
+                            else if (strElement.Length >= 5 && strElement.Substring(i, 5) == "sqrt(") // square root operator
+                            {
+                                listSingleOperators.Add("sqrt(");
+                                i += 4;
+                            }
+                            else // not a valid operator
+                            {
+                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                            }
+                            break;
+                        
+                        default: // not a valid operator
+                            throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                    }
+                }
+            }
+        }
     }
 
     
