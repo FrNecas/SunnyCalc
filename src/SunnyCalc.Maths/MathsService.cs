@@ -228,6 +228,37 @@ namespace SunnyCalc.Maths
             return Math.Tan(a);
         }
 
+        //===========================================================================
+        // SolveExpression() method and supporting members
+
+        private class Operator
+        {
+            public string Name { get; set; }
+            public string Notation { get; set; }
+            public int Precedence { get; set; }
+            public bool RightAssociative { get; set; }
+            public int Operands { get; set; }
+        }
+
+        private readonly Dictionary<string, MathsService.Operator> _operatorsDict = new Dictionary<string, MathsService.Operator>
+        {
+            ["+"] = new MathsService.Operator { Name = "Add", Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2, },
+            ["-"] = new MathsService.Operator { Name = "Subtract", Notation = "-", Precedence = 1, RightAssociative = false, Operands = 2,  },
+            ["*"] = new MathsService.Operator { Name = "Multiply", Notation = "*", Precedence = 2, RightAssociative = false, Operands = 2,  },
+            ["/"] = new MathsService.Operator { Name = "Divide", Notation = "/", Precedence = 2, RightAssociative = false, Operands = 2,  },
+            ["^"] = new MathsService.Operator { Name = "Power", Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2, },
+            ["!"] = new MathsService.Operator { Name = "Factorial", Notation = "!", Precedence = 5, RightAssociative = false, Operands = 1, },
+            ["sin("] = new MathsService.Operator { Name = "Sin", Notation = "sin(", Precedence = 3, RightAssociative = false, Operands = 1, },
+            ["cos("] = new MathsService.Operator { Name = "Cos", Notation = "cos(", Precedence = 3, RightAssociative = false, Operands = 1, },
+            ["tan("] = new MathsService.Operator { Name = "Tan", Notation = "tan(", Precedence = 3, RightAssociative = false, Operands = 1, },
+            ["pi"] = new MathsService.Operator { Name = "Pi", Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0, },
+            ["sqrt("] = new MathsService.Operator { Name = "SquareRoot", Notation = "sqrt(", Precedence = 3, RightAssociative = false, Operands = 1, },
+            ["rt("] = new MathsService.Operator { Name = "Root", Notation = "rt(", Precedence = 3, RightAssociative = false, Operands = 3, },
+            [","] = new MathsService.Operator { Name = "Comma", Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0, },
+            ["("] = new MathsService.Operator { Name = "LeftParenthesis", Notation = "(", Precedence = 3, RightAssociative = false, Operands = 0, },
+            
+        };
+
         /// <inheritdoc/>
         public double SolveExpression(string expression)
         {
