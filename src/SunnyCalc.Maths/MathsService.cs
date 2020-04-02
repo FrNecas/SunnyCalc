@@ -382,6 +382,64 @@ namespace SunnyCalc.Maths
                     }
                 }
             }
+            
+            var listOperands = new List<string>(strOperands); // list of operands in expression
+            var listExpression = new List<string>(); // complete expression in written order split in tokens as operands, operators, parenthesis and commas
+            var indexOperands = 0; // index of operands in 'listOperands' list
+            var indexOperators = 0; // index of operators in 'listSingleOperators' list
+            var parenthesisBeforeFactorial = false; // if there is a parenthesis before factorial in expression
+            string[] allowedOperatorsBeforeMinus = {"(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",",}; // operators that can be before unary '-'
+            var arrExpression = expression.ToCharArray(); // char array of expression to build 'listExpression' list
+            for (var i = 0; i < arrExpression.Length && arrExpression[i] != '\0';)
+            {
+                if (char.IsDigit(expression, i)) // if char is a digit, add whole number to 'listExpression' 
+                {
+                    listExpression.Add(listOperands[indexOperands]);
+                    i += listOperands[indexOperands++].Length;
+                }
+                
+                // solve negative numbers (with unary '-')
+                else if (arrExpression[i] == '-' && i + 1 < arrExpression.Length && char.IsDigit(arrExpression[i + 1]) &&
+                         (i == 0 || allowedOperatorsBeforeMinus.Contains(arrExpression[i - 1].ToString()))
+                         ) 
+                {
+                    if (listSingleOperators.Count > indexOperators + 1) // if there's other operator after '-'
+                    {
+                        if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator)) // test what next operator is, if there's one
+                        {
+                            // depending on 'RightAssociative' decide if you should add current '-' to 'listExpression' or not
+                            if (nextOperator != null && nextOperator.RightAssociative) 
+                            {
+                                listExpression.Add(listSingleOperators[indexOperators]);
+                                i += listSingleOperators[indexOperators++].Length;
+                            }    
+                        }
+                    }
+                    
+                    // remove unary '-' from operators and append it to the number as a negative number which should be added to 'listExpression'  
+                    listSingleOperators.RemoveAt(indexOperators);
+                    listExpression.Add("-" + listOperands[indexOperands]);
+                    listOperands[indexOperands++] = listExpression.Last();
+                    i += listExpression.Last().Length;
+                }
+                
+                // solve positive numbers with additional unary '+'
+                else if (arrExpression[i] == '+' && i + 1 < arrExpression.Length && char.IsDigit(arrExpression[i + 1]) &&
+                         (i == 0 || allowedOperatorsBeforeMinus.Contains(arrExpression[i - 1].ToString()))
+                         ) 
+                {
+                    // just remove unary '+' from 'listSingleOperators' list
+                    listSingleOperators.RemoveAt(indexOperators);
+                    listExpression.Add(listOperands[indexOperands]);
+                    listOperands[indexOperands++] = listExpression.Last();
+                    i += listExpression.Last().Length + 1;
+                }
+                else // anything else add to the 'listExpression'
+                {
+                    listExpression.Add(listSingleOperators[indexOperators]);
+                    i += listSingleOperators[indexOperators++].Length;
+                }
+            }
         }
     }
 
