@@ -459,6 +459,77 @@ namespace SunnyCalc.Maths
                     }
                 }
             }
+            
+            indexOperands = 0; // resetting index of operands in 'listOperands' list
+            var operandAfterMinus = true; // test for appropriate amount of operands for binary/unary '-'
+            foreach (var element in listExpression)
+            {
+                if (numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString())) // 'element' is a number
+                {
+                    if (indexOperands < listOperands.Count && element == listOperands[indexOperands]) // enqueue all valid operands
+                    {
+                        expressionQueue.Enqueue(element);
+                        indexOperands++;
+                        operandAfterMinus = true; // these is an operand after '-' in case these is '-' in expression
+                    }
+                    else // operand wasn't expected
+                    {
+                        throw new Maths.ExpressionSolvingException("There is an unreadable operand in an expression.");
+                    }
+                }
+                else // 'element' is an operator
+                {
+                    if (element == "-") // there should be an operand after '-' (binary or unary)
+                    {
+                        operandAfterMinus = false;
+                    }
+                    
+                    if (element == ")") // if the 'element' is closing parenthesis, enqueue from stack everything till an opening parenthesis
+                    {
+                        var popped = stack.Pop(); // element to be popped from the stack
+                        while (!leftParenthesis.Contains(popped)) // enqueue everything if 'popped' is NOT an opening parenthesis
+                        {
+                            expressionQueue.Enqueue(popped);
+                            popped = stack.Pop();
+                        }
+
+                        if (popped != "(") // if there is an operator attached to opening parenthesis, enqueue it too
+                        {
+                            expressionQueue.Enqueue(popped);
+                        }
+                    }
+                    else if (stack.Any() && (!leftParenthesis.Contains(stack.Peek()))) // stack is not empty
+                    {
+                        // solve which operator should be evaluated first in case of more operators in the row
+                        if (SolvePrecedence(element, stack.Peek()))
+                        {
+                            var popped = stack.Pop();
+                            expressionQueue.Enqueue(popped);
+                            stack.Push(element);
+                        }
+                        else
+                        {
+                            stack.Push(element);
+                        }
+                    }
+                    else // if the stack is empty, push 'element' to stack
+                    {
+                        stack.Push(element);
+                    }
+                }
+            }
+
+            if (! operandAfterMinus) // there is '-' in the expression without appropriate operands 
+            {
+                throw new Maths.ExpressionSolvingException("There is no operand after minus operator.");
+            }
+
+
+            while (stack.Any()) // if there are any tokens on stack, enqueue them.
+            {
+                var popped = stack.Pop();
+                expressionQueue.Enqueue(popped);
+            } // stack is empty (and ready to be used for operands in evaluating operations)
         }
     }
 
