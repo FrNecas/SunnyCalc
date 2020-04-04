@@ -229,7 +229,7 @@ namespace SunnyCalc.Maths
         }
 
         //===========================================================================
-        // SolveExpression() method and supporting members
+        //              SolveExpression() method and supporting members
 
         private class Operator
         {
@@ -263,7 +263,7 @@ namespace SunnyCalc.Maths
         public double SolveExpression(string expression)
         {
             // local function to decide which operator should be evaluated first
-            bool SolvePrecedence(string operator1, string operator2)
+            bool ComparePrecedence(string operator1, string operator2)
             {
                 _operatorsDict.TryGetValue(operator1, out var oper1);
                 _operatorsDict.TryGetValue(operator2, out var oper2);
@@ -276,11 +276,9 @@ namespace SunnyCalc.Maths
             var listSingleOperators = new List<string>(); // list of single operators (every operator is one element) in an appropriate order
 
             // exception for string being null, empty or string that consists only of white-space characters
-            if (string.IsNullOrWhiteSpace(expression))
-                throw new System.ArgumentException(
-                    "The expression is null, an empty string or consists only of white-space characters.");
+            if (string.IsNullOrWhiteSpace(expression)) throw new System.ArgumentException("The expression is null, an empty string or consists only of white-space characters.");
 
-            expression = expression.Replace(" ", string.Empty); // get rid of all whitespaces in exception
+            expression = expression.Replace(" ", string.Empty); // get rid of all whitespaces in expression
 
             // get all numbers in expression
             string[] operators = {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi"}; // allowed operators for splitting of expression
@@ -389,8 +387,7 @@ namespace SunnyCalc.Maths
             var indexOperators = 0; // index of operators in 'listSingleOperators' list
             var parenthesisBeforeFactorial = false; // if there is a parenthesis before factorial in expression
             string[] allowedOperatorsBeforeMinus = {"(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",",}; // operators that can be before unary '-'
-            var arrExpression = expression.ToCharArray(); // char array of expression to build 'listExpression' list
-            for (var i = 0; i < arrExpression.Length && arrExpression[i] != '\0';)
+            for (var i = 0; i < expression.Length && expression[i] != '\0';)
             {
                 if (char.IsDigit(expression, i)) // if char is a digit, add whole number to 'listExpression' 
                 {
@@ -399,13 +396,13 @@ namespace SunnyCalc.Maths
                 }
                 
                 // solve negative numbers (with unary '-')
-                else if (arrExpression[i] == '-' && i + 1 < arrExpression.Length && char.IsDigit(arrExpression[i + 1]) &&
-                         (i == 0 || allowedOperatorsBeforeMinus.Contains(arrExpression[i - 1].ToString()))
-                         ) 
+                else if (expression[i] == '-' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
+                         (i == 0 || allowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
                 {
                     if (listSingleOperators.Count > indexOperators + 1) // if there's other operator after '-'
                     {
-                        if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator)) // test what next operator is, if there's one
+                        // test what next operator is, if there's one
+                        if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator))
                         {
                             // depending on 'RightAssociative' decide if you should add current '-' to 'listExpression' or not
                             if (nextOperator != null && nextOperator.RightAssociative) 
@@ -424,9 +421,8 @@ namespace SunnyCalc.Maths
                 }
                 
                 // solve positive numbers with additional unary '+'
-                else if (arrExpression[i] == '+' && i + 1 < arrExpression.Length && char.IsDigit(arrExpression[i + 1]) &&
-                         (i == 0 || allowedOperatorsBeforeMinus.Contains(arrExpression[i - 1].ToString()))
-                         ) 
+                else if (expression[i] == '+' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
+                         (i == 0 || allowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
                 {
                     // just remove unary '+' from 'listSingleOperators' list
                     listSingleOperators.RemoveAt(indexOperators);
@@ -448,7 +444,7 @@ namespace SunnyCalc.Maths
                 {
                     if (listExpression[i] == "!")
                     {
-                        if (i == 0 || (! double.TryParse(listExpression[i - 1], out _) && listExpression[i - 1] != ")")) // number of closing parenthesis before factorial
+                        if (i == 0 || (! double.TryParse(listExpression[i - 1], out _) && listExpression[i - 1] != ")")) // amount of closing parenthesis before factorial
                         {
                             throw new Maths.ExpressionSolvingException("Factorial without operand before it.");
                         }
@@ -501,7 +497,7 @@ namespace SunnyCalc.Maths
                     else if (stack.Any() && (!leftParenthesis.Contains(stack.Peek()))) // stack is not empty
                     {
                         // solve which operator should be evaluated first in case of more operators in the row
-                        if (SolvePrecedence(element, stack.Peek()))
+                        if (ComparePrecedence(element, stack.Peek()))
                         {
                             var popped = stack.Pop();
                             expressionQueue.Enqueue(popped);
