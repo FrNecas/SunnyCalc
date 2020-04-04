@@ -258,18 +258,23 @@ namespace SunnyCalc.Maths
             ["("] = new MathsService.Operator { Name = "LeftParenthesis", Notation = "(", Precedence = 3, RightAssociative = false, Operands = 0, },
             
         };
+        
+        /// <summary>
+        /// Compares precedence of given operators.
+        /// </summary>
+        /// <param name="operator1">The first operator to be compared.</param>
+        /// <param name="operator2">The second operator to be compared.</param>
+        /// <returns>True if <paramref name="operator1"/> has higher precedence and should be evaluated first. False if <paramref name="operator2"/> has higher precedence and should be evaluated first.</returns>
+        private bool ComparePrecedence(string operator1, string operator2)
+        {
+            _operatorsDict.TryGetValue(operator1, out var oper1);
+            _operatorsDict.TryGetValue(operator2, out var oper2);
+            return oper1.RightAssociative ? oper1.Precedence < oper2.Precedence : oper1.Precedence <= oper2.Precedence;
+        }
 
         /// <inheritdoc/>
         public double SolveExpression(string expression)
         {
-            // local function to decide which operator should be evaluated first
-            bool ComparePrecedence(string operator1, string operator2)
-            {
-                _operatorsDict.TryGetValue(operator1, out var oper1);
-                _operatorsDict.TryGetValue(operator2, out var oper2);
-                return oper1.RightAssociative ? oper1.Precedence < oper2.Precedence : oper1.Precedence <= oper2.Precedence;
-            }
-            
             var stack = new Stack<string>(); // stack of operators to be evaluate and operands to be used in operation
             var expressionQueue = new Queue<string>(); // queue for evaluating operations
             var leftParenthesis = new List<string> { "(", "sqrt(", "rt(", "sin(", "cos(", "tan(", }; // list of all allowed left parenthesis formats
