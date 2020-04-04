@@ -277,20 +277,18 @@ namespace SunnyCalc.Maths
         {
             var stack = new Stack<string>(); // stack of operators to be evaluate and operands to be used in operation
             var expressionQueue = new Queue<string>(); // queue for evaluating operations
-            var leftParenthesis = new List<string> { "(", "sqrt(", "rt(", "sin(", "cos(", "tan(", }; // list of all allowed left parenthesis formats
             var listSingleOperators = new List<string>(); // list of single operators (every operator is one element) in an appropriate order
 
             // exception for string being null, empty or string that consists only of white-space characters
             if (string.IsNullOrWhiteSpace(expression)) throw new System.ArgumentException("The expression is null, an empty string or consists only of white-space characters.");
 
             expression = expression.Replace(" ", string.Empty); // get rid of all whitespaces in expression
-
+            
             // get all numbers in expression
-            string[] operators = {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi"}; // allowed operators for splitting of expression
-            var strOperands = expression.Split(operators, System.StringSplitOptions.RemoveEmptyEntries); // string array of operators-only characters
+            var strOperands = expression.Split(Maths.Constants.Operators, System.StringSplitOptions.RemoveEmptyEntries); // string array of operators-only characters
             // get all operators in expression
-            string[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d", }; // allowed number characters for splitting of expression 
-            var strOperators = expression.Split(numbers, System.StringSplitOptions.RemoveEmptyEntries); // get array of operators (possible groups of operators in one element) 
+             
+            var strOperators = expression.Split(Maths.Constants.Numbers, System.StringSplitOptions.RemoveEmptyEntries); // get array of operators (possible groups of operators in one element) 
 
              
             foreach (var strElement in strOperators) // divide single string element into valid operators and operands 
@@ -391,8 +389,8 @@ namespace SunnyCalc.Maths
             var indexOperands = 0; // index of operands in 'listOperands' list
             var indexOperators = 0; // index of operators in 'listSingleOperators' list
             var parenthesisBeforeFactorial = false; // if there is a parenthesis before factorial in expression
-            string[] allowedOperatorsBeforeMinus = {"(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",",}; // operators that can be before unary '-'
-            for (var i = 0; i < expression.Length && expression[i] != '\0';)
+            
+            for (var i = 0; i < expression.Length;)
             {
                 if (char.IsDigit(expression, i)) // if char is a digit, add whole number to 'listExpression' 
                 {
@@ -402,7 +400,7 @@ namespace SunnyCalc.Maths
                 
                 // solve negative numbers (with unary '-')
                 else if (expression[i] == '-' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
-                         (i == 0 || allowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
+                         (i == 0 || Maths.Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
                 {
                     if (listSingleOperators.Count > indexOperators + 1) // if there's other operator after '-'
                     {
@@ -427,7 +425,7 @@ namespace SunnyCalc.Maths
                 
                 // solve positive numbers with additional unary '+'
                 else if (expression[i] == '+' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
-                         (i == 0 || allowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
+                         (i == 0 || Maths.Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
                 {
                     // just remove unary '+' from 'listSingleOperators' list
                     listSingleOperators.RemoveAt(indexOperators);
@@ -465,7 +463,7 @@ namespace SunnyCalc.Maths
             var operandAfterMinus = true; // test for appropriate amount of operands for binary/unary '-'
             foreach (var element in listExpression)
             {
-                if (numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString())) // 'element' is a number
+                if (Maths.Constants.Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString())) // 'element' is a number
                 {
                     if (indexOperands < listOperands.Count && element == listOperands[indexOperands]) // enqueue all valid operands
                     {
@@ -488,7 +486,7 @@ namespace SunnyCalc.Maths
                     if (element == ")") // if the 'element' is closing parenthesis, enqueue from stack everything till an opening parenthesis
                     {
                         var popped = stack.Pop(); // element to be popped from the stack
-                        while (!leftParenthesis.Contains(popped)) // enqueue everything if 'popped' is NOT an opening parenthesis
+                        while (!Maths.Constants.LeftParenthesis.Contains(popped)) // enqueue everything if 'popped' is NOT an opening parenthesis
                         {
                             expressionQueue.Enqueue(popped);
                             popped = stack.Pop();
@@ -499,7 +497,7 @@ namespace SunnyCalc.Maths
                             expressionQueue.Enqueue(popped);
                         }
                     }
-                    else if (stack.Any() && (!leftParenthesis.Contains(stack.Peek()))) // stack is not empty
+                    else if (stack.Any() && (!Maths.Constants.LeftParenthesis.Contains(stack.Peek()))) // stack is not empty
                     {
                         // solve which operator should be evaluated first in case of more operators in the row
                         if (ComparePrecedence(element, stack.Peek()))
@@ -653,7 +651,9 @@ namespace SunnyCalc.Maths
         }
     }
 
-    
+    /// <summary>
+    /// Constants used in solveExpression and various operation implementations.
+    /// </summary>
     public static class Constants
     {
         /// <summary>
@@ -663,5 +663,27 @@ namespace SunnyCalc.Maths
         /// Constant set to a value of System.Math.PI which is considered valid value for Pi number to be used in SunnyCalc calculations.
         /// </remarks>
         public const double Pi = System.Math.PI;
+
+        /// <summary>
+        /// Operators that can be before unary '-'.
+        /// </summary>
+        public static readonly string[] AllowedOperatorsBeforeMinus = { "(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", };
+        
+        /// <summary>
+        /// List of all allowed left parenthesis formats.
+        /// </summary>
+        public static readonly List<string> LeftParenthesis = new List<string> { "(", "sqrt(", "rt(", "sin(", "cos(", "tan(", };
+        
+        /// <summary>
+        /// Allowed operators for splitting of expression.
+        /// </summary>
+        public static readonly string[] Operators = {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi", };
+        
+        /// <summary>
+        /// Allowed number characters for splitting of expression.
+        /// </summary>
+        public static readonly string[] Numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d", };
+        
+        
     }
 }
