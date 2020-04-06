@@ -242,7 +242,7 @@ namespace SunnyCalc.Maths
         }
 
         #region Expression Solver
-        
+
         /// <summary>
         /// Operators that can be used before unary '-'.
         /// </summary>
@@ -266,10 +266,28 @@ namespace SunnyCalc.Maths
         /// </summary>
         private static readonly string[] Numbers =
             {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d",};
-        
+
+        private enum Operation
+        {
+            Add,
+            Subtract,
+            Multiply,
+            Divide,
+            Power,
+            Factorial,
+            Sin,
+            Cos,
+            Tan,
+            Pi,
+            SquareRoot,
+            Root,
+            Comma,
+            LeftParenthesis
+        }
+
         private class Operator
         {
-            public string Name { get; set; }
+            public Operation Operation { get; set; }
             public string Notation { get; set; }
             public int Precedence { get; set; }
             public bool RightAssociative { get; set; }
@@ -295,7 +313,7 @@ namespace SunnyCalc.Maths
 
             protected bool Equals(Operator other)
             {
-                return this.Name == other.Name && this.Notation == other.Notation &&
+                return this.Operation == other.Operation && this.Notation == other.Notation &&
                        this.Precedence == other.Precedence && this.RightAssociative == other.RightAssociative &&
                        this.Operands == other.Operands;
             }
@@ -305,33 +323,45 @@ namespace SunnyCalc.Maths
             new Dictionary<string, Operator>
             {
                 ["+"] = new Operator
-                    {Name = "Add", Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2,},
+                    {Operation = Operation.Add, Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2,},
                 ["-"] = new Operator
-                    {Name = "Subtract", Notation = "-", Precedence = 1, RightAssociative = false, Operands = 2,},
+                {
+                    Operation = Operation.Subtract, Notation = "-", Precedence = 1, RightAssociative = false, Operands = 2,
+                },
                 ["*"] = new Operator
-                    {Name = "Multiply", Notation = "*", Precedence = 2, RightAssociative = false, Operands = 2,},
+                {
+                    Operation = Operation.Multiply, Notation = "*", Precedence = 2, RightAssociative = false, Operands = 2,
+                },
                 ["/"] = new Operator
-                    {Name = "Divide", Notation = "/", Precedence = 2, RightAssociative = false, Operands = 2,},
+                    {Operation = Operation.Divide, Notation = "/", Precedence = 2, RightAssociative = false, Operands = 2,},
                 ["^"] = new Operator
-                    {Name = "Power", Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2,},
+                    {Operation = Operation.Power, Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2,},
                 ["!"] = new Operator
-                    {Name = "Factorial", Notation = "!", Precedence = 5, RightAssociative = false, Operands = 1,},
+                {
+                    Operation = Operation.Factorial, Notation = "!", Precedence = 5, RightAssociative = false, Operands = 1,
+                },
                 ["sin("] = new Operator
-                    {Name = "Sin", Notation = "sin(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                    {Operation = Operation.Sin, Notation = "sin(", Precedence = 3, RightAssociative = false, Operands = 1,},
                 ["cos("] = new Operator
-                    {Name = "Cos", Notation = "cos(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                    {Operation = Operation.Cos, Notation = "cos(", Precedence = 3, RightAssociative = false, Operands = 1,},
                 ["tan("] = new Operator
-                    {Name = "Tan", Notation = "tan(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                    {Operation = Operation.Tan, Notation = "tan(", Precedence = 3, RightAssociative = false, Operands = 1,},
                 ["pi"] = new Operator
-                    {Name = "Pi", Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0,},
+                    {Operation = Operation.Pi, Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0,},
                 ["sqrt("] = new Operator
-                    {Name = "SquareRoot", Notation = "sqrt(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                {
+                    Operation = Operation.SquareRoot, Notation = "sqrt(", Precedence = 3, RightAssociative = false,
+                    Operands = 1,
+                },
                 ["rt("] = new Operator
-                    {Name = "Root", Notation = "rt(", Precedence = 3, RightAssociative = false, Operands = 3,},
+                    {Operation = Operation.Root, Notation = "rt(", Precedence = 3, RightAssociative = false, Operands = 3,},
                 [","] = new Operator
-                    {Name = "Comma", Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0,},
+                    {Operation = Operation.Comma, Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0,},
                 ["("] = new Operator
-                    {Name = "LeftParenthesis", Notation = "(", Precedence = 3, RightAssociative = false, Operands = 0,},
+                {
+                    Operation = Operation.LeftParenthesis, Notation = "(", Precedence = 3, RightAssociative = false,
+                    Operands = 0,
+                },
             };
 
         /// <inheritdoc/>
@@ -693,25 +723,25 @@ namespace SunnyCalc.Maths
 
                     // evaluate single operation
                     double result = 0;
-                    switch (@operator.Name)
+                    switch (@operator.Operation)
                     {
-                        case "Add":
+                        case Operation.Add:
                             result = this.Add(double.Parse(operands[1], CultureInfo.InvariantCulture),
                                 double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Subtract":
+                        case Operation.Subtract:
                             result = this.Subtract(double.Parse(operands[1], CultureInfo.InvariantCulture),
                                 double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Multiply":
+                        case Operation.Multiply:
                             result = this.Multiply(double.Parse(operands[1], CultureInfo.InvariantCulture),
                                 double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Divide":
+                        case Operation.Divide:
                             result = this.Divide(double.Parse(operands[1], CultureInfo.InvariantCulture),
                                 double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Factorial":
+                        case Operation.Factorial:
                             if (!long.TryParse(operands[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var op))
                             {
                                 throw new InvalidOperationException(
@@ -743,26 +773,26 @@ namespace SunnyCalc.Maths
                             }
 
                             break;
-                        case "Power":
+                        case Operation.Power:
                             result = this.Power(double.Parse(operands[1], CultureInfo.InvariantCulture),
                                 uint.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Sin":
+                        case Operation.Sin:
                             result = this.Sin(double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Cos":
+                        case Operation.Cos:
                             result = this.Cos(double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Tan":
+                        case Operation.Tan:
                             result = this.Tan(double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
-                        case "Pi":
+                        case Operation.Pi:
                             result = Constants.Pi;
                             break;
-                        case "SquareRoot":
+                        case Operation.SquareRoot:
                             result = this.Root(double.Parse(operands[0], CultureInfo.InvariantCulture), 2);
                             break;
-                        case "Root":
+                        case Operation.Root:
                             if (operands[0] != ",")
                             {
                                 // root operation without separating ','
@@ -792,7 +822,7 @@ namespace SunnyCalc.Maths
             // get the final result from stack
             return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
         }
-        
+
         #endregion
     }
 }
