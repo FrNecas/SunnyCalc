@@ -1,0 +1,20 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SunnyCalc.App.Controls.DoubleButton">
+  <!-- The styles globally used for double buttons are defined in App.xaml -->
+  <Border BorderBrush="{StaticResource CalcButtonBorder}" BorderThickness="1" DataContext="{Binding $parent}">
+    <Grid RowDefinitions="*" ColumnDefinitions="1*,1*">
+      <Button Classes="doubleBtnInner" Name="firstButton" Content="{Binding FirstButton}"
+              Grid.Column="0" Grid.Row="0" 
+              BorderThickness="0"></Button>
+
+      <Button Classes="doubleBtnInner" Name="secondButton" Content="{Binding SecondButton}"
+              Grid.Column="1" Grid.Row="0" 
+              BorderThickness="0"></Button>
+    </Grid>
+  </Border>
+
+</UserControl>
