@@ -287,11 +287,20 @@ namespace SunnyCalc.Maths
 
         private class Operator
         {
-            public Operation Operation { get; set; }
-            public string Notation { get; set; }
-            public int Precedence { get; set; }
-            public bool RightAssociative { get; set; }
-            public int Operands { get; set; }
+            public Operation Operation { get; }
+            public string Notation { get; }
+            public int Precedence { get; }
+            public bool RightAssociative { get; }
+            public int Operands { get; }
+
+            public Operator(Operation operation, string notation, int precedence, bool rightAssociative, int operands)
+            {
+                this.Operation = operation;
+                this.Notation = notation;
+                this.Precedence = precedence;
+                this.RightAssociative = rightAssociative;
+                this.Operands = operands;
+            }
 
             /// <summary>
             /// Compares the precedence of given operators. 
@@ -310,84 +319,25 @@ namespace SunnyCalc.Maths
             {
                 return !(first > second);
             }
-
-            protected bool Equals(Operator other)
-            {
-                return this.Operation == other.Operation && this.Notation == other.Notation &&
-                       this.Precedence == other.Precedence && this.RightAssociative == other.RightAssociative &&
-                       this.Operands == other.Operands;
-            }
         }
 
         private readonly Dictionary<string, Operator> _operatorsDict =
             new Dictionary<string, Operator>
             {
-                ["+"] = new Operator
-                {
-                    Operation = Operation.Add, Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2,
-                },
-                ["-"] = new Operator
-                {
-                    Operation = Operation.Subtract, Notation = "-", Precedence = 1, RightAssociative = false,
-                    Operands = 2,
-                },
-                ["*"] = new Operator
-                {
-                    Operation = Operation.Multiply, Notation = "*", Precedence = 2, RightAssociative = false,
-                    Operands = 2,
-                },
-                ["/"] = new Operator
-                {
-                    Operation = Operation.Divide, Notation = "/", Precedence = 2, RightAssociative = false,
-                    Operands = 2,
-                },
-                ["^"] = new Operator
-                {
-                    Operation = Operation.Power, Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2,
-                },
-                ["!"] = new Operator
-                {
-                    Operation = Operation.Factorial, Notation = "!", Precedence = 5, RightAssociative = false,
-                    Operands = 1,
-                },
-                ["sin("] = new Operator
-                {
-                    Operation = Operation.Sin, Notation = "sin(", Precedence = 3, RightAssociative = false,
-                    Operands = 1,
-                },
-                ["cos("] = new Operator
-                {
-                    Operation = Operation.Cos, Notation = "cos(", Precedence = 3, RightAssociative = false,
-                    Operands = 1,
-                },
-                ["tan("] = new Operator
-                {
-                    Operation = Operation.Tan, Notation = "tan(", Precedence = 3, RightAssociative = false,
-                    Operands = 1,
-                },
-                ["pi"] = new Operator
-                {
-                    Operation = Operation.Pi, Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0,
-                },
-                ["sqrt("] = new Operator
-                {
-                    Operation = Operation.SquareRoot, Notation = "sqrt(", Precedence = 3, RightAssociative = false,
-                    Operands = 1,
-                },
-                ["rt("] = new Operator
-                {
-                    Operation = Operation.Root, Notation = "rt(", Precedence = 3, RightAssociative = false,
-                    Operands = 3,
-                },
-                [","] = new Operator
-                {
-                    Operation = Operation.Comma, Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0,
-                },
-                ["("] = new Operator
-                {
-                    Operation = Operation.LeftParenthesis, Notation = "(", Precedence = 3, RightAssociative = false,
-                    Operands = 0,
-                },
+                ["+"] = new Operator(Operation.Add, "+", 1, false, 2),
+                ["-"] = new Operator(Operation.Subtract, "-", 1, false, 2),
+                ["*"] = new Operator(Operation.Multiply, "*", 2, false, 2),
+                ["/"] = new Operator(Operation.Divide, "/", 2, false, 2),
+                ["^"] = new Operator(Operation.Power, "^", 4, true, 2),
+                ["!"] = new Operator(Operation.Factorial, "!", 5, false, 1),
+                ["sin("] = new Operator(Operation.Sin, "sin(", 3, false, 1),
+                ["cos("] = new Operator(Operation.Cos, "cos(", 3, false, 1),
+                ["tan("] = new Operator(Operation.Tan, "tan(", 3, false, 1),
+                ["pi"] = new Operator(Operation.Pi, "pi", 6, false, 0),
+                ["sqrt("] = new Operator(Operation.SquareRoot, "sqrt(", 3, false, 1),
+                ["rt("] = new Operator(Operation.Root, "rt(", 3, false, 3),
+                [","] = new Operator(Operation.Comma, ",", 0, false, 0),
+                ["("] = new Operator(Operation.LeftParenthesis, "(", 3, false, 0)
             };
 
         /// <inheritdoc/>
@@ -554,7 +504,7 @@ namespace SunnyCalc.Maths
                         if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator))
                         {
                             // depending on 'RightAssociative' decide if you should add current '-' to 'listExpression' or not
-                            if (nextOperator != null && nextOperator.RightAssociative)
+                            if (nextOperator.Operation != default && nextOperator.RightAssociative)
                             {
                                 listExpression.Add(listSingleOperators[indexOperators]);
                                 i += listSingleOperators[indexOperators++].Length;
@@ -806,8 +756,6 @@ namespace SunnyCalc.Maths
                     {
                         return this.Factorial((uint) op);
                     }
-
-                    break;
                 case Operation.Power:
                     return this.Power(double.Parse(operands[1], CultureInfo.InvariantCulture),
                         uint.Parse(operands[0], CultureInfo.InvariantCulture));
