@@ -243,6 +243,30 @@ namespace SunnyCalc.Maths
 
         #region Expression Solver
         
+        /// <summary>
+        /// Operators that can be used before unary '-'.
+        /// </summary>
+        private static readonly string[] AllowedOperatorsBeforeMinus =
+            {"(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",",};
+
+        /// <summary>
+        /// List of all allowed left parenthesis formats.
+        /// </summary>
+        private static readonly List<string> LeftParenthesis = new List<string>
+            {"(", "sqrt(", "rt(", "sin(", "cos(", "tan(",};
+
+        /// <summary>
+        /// Allowed operators for splitting an expression.
+        /// </summary>
+        private static readonly string[] Operators =
+            {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi",};
+
+        /// <summary>
+        /// Allowed number characters for splitting an expression.
+        /// </summary>
+        private static readonly string[] Numbers =
+            {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d",};
+        
         private class Operator
         {
             public string Name { get; set; }
@@ -329,11 +353,11 @@ namespace SunnyCalc.Maths
 
             // get all numbers in expression
             // string array of operators-only characters
-            var strOperands = expression.Split(Constants.Operators, StringSplitOptions.RemoveEmptyEntries);
+            var strOperands = expression.Split(Operators, StringSplitOptions.RemoveEmptyEntries);
 
             // get all operators in expression
             // get array of operators (possible groups of operators in one element)
-            var strOperators = expression.Split(Constants.Numbers, StringSplitOptions.RemoveEmptyEntries);
+            var strOperators = expression.Split(Numbers, StringSplitOptions.RemoveEmptyEntries);
 
             // divide single string element into valid operators and operands
             foreach (var strElement in strOperators)
@@ -465,7 +489,7 @@ namespace SunnyCalc.Maths
 
                 // solve negative numbers (with unary '-')
                 else if (expression[i] == '-' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
-                         (i == 0 || Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
+                         (i == 0 || AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
                 {
                     if (listSingleOperators.Count > indexOperators + 1)
                     {
@@ -491,7 +515,7 @@ namespace SunnyCalc.Maths
 
                 // solve positive numbers with additional unary '+'
                 else if (expression[i] == '+' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
-                         (i == 0 || Maths.Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
+                         (i == 0 || AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
                 {
                     // just remove unary '+' from 'listSingleOperators' list
                     listSingleOperators.RemoveAt(indexOperators);
@@ -537,7 +561,7 @@ namespace SunnyCalc.Maths
             var operandAfterMinus = true;
             foreach (var element in listExpression)
             {
-                if (Constants.Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString()))
+                if (Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString()))
                 {
                     // 'element' is a number
 
@@ -570,7 +594,7 @@ namespace SunnyCalc.Maths
                         // element to be popped from the stack
                         var popped = stack.Pop();
                         // enqueue everything if 'popped' is NOT an opening parenthesis
-                        while (!Constants.LeftParenthesis.Contains(popped))
+                        while (!LeftParenthesis.Contains(popped))
                         {
                             expressionQueue.Enqueue(popped);
                             popped = stack.Pop();
@@ -582,7 +606,7 @@ namespace SunnyCalc.Maths
                             expressionQueue.Enqueue(popped);
                         }
                     }
-                    else if (stack.Count > 0 && !Constants.LeftParenthesis.Contains(stack.Peek())) // stack is not empty
+                    else if (stack.Count > 0 && !LeftParenthesis.Contains(stack.Peek())) // stack is not empty
                     {
                         // Decide which operator should be evaluated first in case of more operators in the row
                         // At this point, the operators should be guaranteed to be present in _operatorsDict
@@ -770,44 +794,5 @@ namespace SunnyCalc.Maths
         }
         
         #endregion
-    }
-    
-
-    /// <summary>
-    /// Constants used in solveExpression and various operation implementations.
-    /// </summary>
-    public static class Constants
-    {
-        /// <summary>
-        /// Represents the ratio of the circumference of a circle to its diameter, specified by the constant, π.
-        /// </summary>
-        /// <remarks>
-        /// Constant set to a value of System.Math.PI which is considered valid value for Pi number to be used in SunnyCalc calculations.
-        /// </remarks>
-        public const double Pi = Math.PI;
-
-        /// <summary>
-        /// Operators that can be before unary '-'.
-        /// </summary>
-        public static readonly string[] AllowedOperatorsBeforeMinus =
-            {"(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",",};
-
-        /// <summary>
-        /// List of all allowed left parenthesis formats.
-        /// </summary>
-        public static readonly List<string> LeftParenthesis = new List<string>
-            {"(", "sqrt(", "rt(", "sin(", "cos(", "tan(",};
-
-        /// <summary>
-        /// Allowed operators for splitting of expression.
-        /// </summary>
-        public static readonly string[] Operators =
-            {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi",};
-
-        /// <summary>
-        /// Allowed number characters for splitting of expression.
-        /// </summary>
-        public static readonly string[] Numbers =
-            {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d",};
     }
 }
