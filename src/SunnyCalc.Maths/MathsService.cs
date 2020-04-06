@@ -323,40 +323,66 @@ namespace SunnyCalc.Maths
             new Dictionary<string, Operator>
             {
                 ["+"] = new Operator
-                    {Operation = Operation.Add, Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2,},
+                {
+                    Operation = Operation.Add, Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2,
+                },
                 ["-"] = new Operator
                 {
-                    Operation = Operation.Subtract, Notation = "-", Precedence = 1, RightAssociative = false, Operands = 2,
+                    Operation = Operation.Subtract, Notation = "-", Precedence = 1, RightAssociative = false,
+                    Operands = 2,
                 },
                 ["*"] = new Operator
                 {
-                    Operation = Operation.Multiply, Notation = "*", Precedence = 2, RightAssociative = false, Operands = 2,
+                    Operation = Operation.Multiply, Notation = "*", Precedence = 2, RightAssociative = false,
+                    Operands = 2,
                 },
                 ["/"] = new Operator
-                    {Operation = Operation.Divide, Notation = "/", Precedence = 2, RightAssociative = false, Operands = 2,},
+                {
+                    Operation = Operation.Divide, Notation = "/", Precedence = 2, RightAssociative = false,
+                    Operands = 2,
+                },
                 ["^"] = new Operator
-                    {Operation = Operation.Power, Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2,},
+                {
+                    Operation = Operation.Power, Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2,
+                },
                 ["!"] = new Operator
                 {
-                    Operation = Operation.Factorial, Notation = "!", Precedence = 5, RightAssociative = false, Operands = 1,
+                    Operation = Operation.Factorial, Notation = "!", Precedence = 5, RightAssociative = false,
+                    Operands = 1,
                 },
                 ["sin("] = new Operator
-                    {Operation = Operation.Sin, Notation = "sin(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                {
+                    Operation = Operation.Sin, Notation = "sin(", Precedence = 3, RightAssociative = false,
+                    Operands = 1,
+                },
                 ["cos("] = new Operator
-                    {Operation = Operation.Cos, Notation = "cos(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                {
+                    Operation = Operation.Cos, Notation = "cos(", Precedence = 3, RightAssociative = false,
+                    Operands = 1,
+                },
                 ["tan("] = new Operator
-                    {Operation = Operation.Tan, Notation = "tan(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                {
+                    Operation = Operation.Tan, Notation = "tan(", Precedence = 3, RightAssociative = false,
+                    Operands = 1,
+                },
                 ["pi"] = new Operator
-                    {Operation = Operation.Pi, Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0,},
+                {
+                    Operation = Operation.Pi, Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0,
+                },
                 ["sqrt("] = new Operator
                 {
                     Operation = Operation.SquareRoot, Notation = "sqrt(", Precedence = 3, RightAssociative = false,
                     Operands = 1,
                 },
                 ["rt("] = new Operator
-                    {Operation = Operation.Root, Notation = "rt(", Precedence = 3, RightAssociative = false, Operands = 3,},
+                {
+                    Operation = Operation.Root, Notation = "rt(", Precedence = 3, RightAssociative = false,
+                    Operands = 3,
+                },
                 [","] = new Operator
-                    {Operation = Operation.Comma, Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0,},
+                {
+                    Operation = Operation.Comma, Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0,
+                },
                 ["("] = new Operator
                 {
                     Operation = Operation.LeftParenthesis, Notation = "(", Precedence = 3, RightAssociative = false,
@@ -722,97 +748,8 @@ namespace SunnyCalc.Maths
                     }
 
                     // evaluate single operation
-                    double result = 0;
-                    switch (@operator.Operation)
-                    {
-                        case Operation.Add:
-                            result = this.Add(double.Parse(operands[1], CultureInfo.InvariantCulture),
-                                double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Subtract:
-                            result = this.Subtract(double.Parse(operands[1], CultureInfo.InvariantCulture),
-                                double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Multiply:
-                            result = this.Multiply(double.Parse(operands[1], CultureInfo.InvariantCulture),
-                                double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Divide:
-                            result = this.Divide(double.Parse(operands[1], CultureInfo.InvariantCulture),
-                                double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Factorial:
-                            if (!long.TryParse(operands[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var op))
-                            {
-                                throw new InvalidOperationException(
-                                    "The operand of a factorial is not a valid unsigned integer.");
-                            }
+                    var result = this.EvaluateOperation(@operator, operands, parenthesisBeforeFactorial);
 
-                            if (op < 0)
-                            {
-                                if (parenthesisBeforeFactorial)
-                                {
-                                    throw new InvalidOperationException(
-                                        "Cannot calculate the factorial of a negative number.");
-                                }
-
-                                op = -op;
-                                if (op <= uint.MaxValue)
-                                {
-                                    result = -this.Factorial((uint) op);
-                                }
-                                else
-                                {
-                                    throw new InvalidOperationException(
-                                        "The operand of a factorial is not a valid unsigned integer (it is too large).");
-                                }
-                            }
-                            else
-                            {
-                                result = this.Factorial((uint) op);
-                            }
-
-                            break;
-                        case Operation.Power:
-                            result = this.Power(double.Parse(operands[1], CultureInfo.InvariantCulture),
-                                uint.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Sin:
-                            result = this.Sin(double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Cos:
-                            result = this.Cos(double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Tan:
-                            result = this.Tan(double.Parse(operands[0], CultureInfo.InvariantCulture));
-                            break;
-                        case Operation.Pi:
-                            result = Constants.Pi;
-                            break;
-                        case Operation.SquareRoot:
-                            result = this.Root(double.Parse(operands[0], CultureInfo.InvariantCulture), 2);
-                            break;
-                        case Operation.Root:
-                            if (operands[0] != ",")
-                            {
-                                // root operation without separating ','
-                                throw new ExpressionSolvingException("Missing ',' in expression.");
-                            }
-
-                            try
-                            {
-                                result = this.Root(double.Parse(operands[2], CultureInfo.InvariantCulture),
-                                    uint.Parse(operands[1], CultureInfo.InvariantCulture));
-                            }
-                            catch (Exception e)
-                            {
-                                // any exception is considered as 'InvalidOperationException'
-                                throw new InvalidOperationException(
-                                    "Wrong format of a root expression.", e);
-                            }
-
-                            break;
-                    }
 
                     // push result of single operation to stack
                     stack.Push(result.ToString(CultureInfo.InvariantCulture));
@@ -821,6 +758,92 @@ namespace SunnyCalc.Maths
 
             // get the final result from stack
             return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
+        }
+
+        private double EvaluateOperation(Operator oper, List<string> operands, bool parenthesisBeforeFactorial)
+        {
+            switch (oper.Operation)
+            {
+                case Operation.Add:
+                    return this.Add(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                        double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Subtract:
+                    return this.Subtract(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                        double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Multiply:
+                    return this.Multiply(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                        double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Divide:
+                    return this.Divide(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                        double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Factorial:
+                    if (!long.TryParse(operands[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var op))
+                    {
+                        throw new InvalidOperationException(
+                            "The operand of a factorial is not a valid unsigned integer.");
+                    }
+
+                    if (op < 0)
+                    {
+                        if (parenthesisBeforeFactorial)
+                        {
+                            throw new InvalidOperationException(
+                                "Cannot calculate the factorial of a negative number.");
+                        }
+
+                        op = -op;
+                        if (op <= uint.MaxValue)
+                        {
+                            return -this.Factorial((uint) op);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException(
+                                "The operand of a factorial is not a valid unsigned integer (it is too large).");
+                        }
+                    }
+                    else
+                    {
+                        return this.Factorial((uint) op);
+                    }
+
+                    break;
+                case Operation.Power:
+                    return this.Power(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                        uint.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Sin:
+                    return this.Sin(double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Cos:
+                    return this.Cos(double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Tan:
+                    return this.Tan(double.Parse(operands[0], CultureInfo.InvariantCulture));
+                case Operation.Pi:
+                    return Constants.Pi;
+                case Operation.SquareRoot:
+                    return this.Root(double.Parse(operands[0], CultureInfo.InvariantCulture), 2);
+                case Operation.Root:
+                    if (operands[0] != ",")
+                    {
+                        // root operation without separating ','
+                        throw new ExpressionSolvingException("Missing ',' in expression.");
+                    }
+
+                    try
+                    {
+                        return this.Root(double.Parse(operands[2], CultureInfo.InvariantCulture),
+                            uint.Parse(operands[1], CultureInfo.InvariantCulture));
+                    }
+                    catch (Exception e)
+                    {
+                        // any exception is considered as 'InvalidOperationException'
+                        throw new InvalidOperationException(
+                            "Wrong format of a root expression.", e);
+                    }
+                case Operation.Comma:
+                case Operation.LeftParenthesis:
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         #endregion
