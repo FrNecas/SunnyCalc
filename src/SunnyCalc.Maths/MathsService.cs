@@ -10,7 +10,7 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public int Add(int a, int b)
         {
-            return a + b; 
+            return a + b;
         }
 
         /// <inheritdoc/>
@@ -66,7 +66,7 @@ namespace SunnyCalc.Maths
         {
             //  trying to divide by 0
             if (b == 0) throw new System.DivideByZeroException("Trying to divide by 0.");
-            
+
             return a / b;
         }
 
@@ -75,7 +75,7 @@ namespace SunnyCalc.Maths
         {
             // trying to divide by 0
             if (b == 0) throw new System.DivideByZeroException("Trying to divide by 0.");
-            
+
             return a / b;
         }
 
@@ -84,7 +84,7 @@ namespace SunnyCalc.Maths
         {
             // trying to divide by 0
             if (b == 0) throw new System.DivideByZeroException("Trying to divide by 0.");
-            
+
             return a / b;
         }
 
@@ -96,7 +96,7 @@ namespace SunnyCalc.Maths
             {
                 fact *= i;
             }
-            
+
             return fact;
         }
 
@@ -107,7 +107,7 @@ namespace SunnyCalc.Maths
             {
                 return 1;
             }
-            
+
             var pow = a;
             while (exp > 1)
             {
@@ -125,7 +125,7 @@ namespace SunnyCalc.Maths
             {
                 return 1;
             }
-            
+
             var pow = a;
             while (exp > 1)
             {
@@ -143,7 +143,7 @@ namespace SunnyCalc.Maths
             {
                 return 1;
             }
-            
+
             var pow = a;
             while (exp > 1)
             {
@@ -153,22 +153,25 @@ namespace SunnyCalc.Maths
 
             return pow;
         }
-        
-        
+
+
         /// <inheritdoc/>
         public double Root(int a, uint n)
         {
             // The exception is thrown when the degree of the root is zero.
             if (n == 0) throw new System.ArgumentException("A degree of a root cannot be equal to 0.");
-            
+
             // The exception is thrown if the degree of the root is even number and value of the base is less than zero.
-            if (a < 0 && n % 2 == 0) throw new System.InvalidOperationException("Root operation with base value less than 0 and root being even number cannot be evaluated.");
-            
+            if (a < 0 && n % 2 == 0)
+                throw new System.InvalidOperationException(
+                    "Root operation with base value less than 0 and root being even number cannot be evaluated.");
+
             // valid arguments 
             if (a < 0 && n % 2 == 1)
             {
-                return - Math.Pow(Math.Abs(a), 1.0 / n);    
+                return -Math.Pow(Math.Abs(a), 1.0 / n);
             }
+
             return Math.Pow(a, 1.0 / n);
         }
 
@@ -177,15 +180,18 @@ namespace SunnyCalc.Maths
         {
             // The exception is thrown when the degree of the root is zero.
             if (n == 0) throw new System.ArgumentException("A degree of a root cannot be equal to 0.");
-            
+
             // The exception is thrown if the degree of the root is even number and value of the base is less than zero.
-            if (a < 0 && n % 2 == 0) throw new System.InvalidOperationException("Root operation with base value less than 0 and root being even number cannot be evaluated.");
-            
+            if (a < 0 && n % 2 == 0)
+                throw new System.InvalidOperationException(
+                    "Root operation with base value less than 0 and root being even number cannot be evaluated.");
+
             // valid arguments
             if (a < 0 && n % 2 == 1)
             {
-                return - Math.Pow(Math.Abs(a), 1.0 / n);    
+                return -Math.Pow(Math.Abs(a), 1.0 / n);
             }
+
             return Math.Pow(a, 1.0 / n);
         }
 
@@ -194,15 +200,18 @@ namespace SunnyCalc.Maths
         {
             // The exception is thrown when the degree of the root is zero.
             if (n == 0) throw new System.ArgumentException("A degree of a root cannot be equal to 0.");
-            
+
             // The exception is thrown if the degree of the root is even number and value of the base is less than zero.
-            if (a < 0 && n % 2 == 0) throw new System.InvalidOperationException("Root operation with base value less than 0 and root being even number cannot be evaluated.");
-            
+            if (a < 0 && n % 2 == 0)
+                throw new System.InvalidOperationException(
+                    "Root operation with base value less than 0 and root being even number cannot be evaluated.");
+
             // valid arguments
             if (a < 0 && n % 2 == 1)
             {
-                return (decimal) - Math.Pow((double) Math.Abs(a), 1.0 / n);    
+                return (decimal) -Math.Pow((double) Math.Abs(a), 1.0 / n);
             }
+
             return (decimal) Math.Pow((double) a, 1.0 / n);
         }
 
@@ -221,16 +230,19 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Tan(double a)
         {
-            const double eps = 1e-10d; //  acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception than get a completely inaccurate result
-            var isOdd = Math.Abs(a * 2 / Constants.Pi); // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi 
-            if (Math.Abs(isOdd % 2 - 1) <= eps) throw new System.InvalidOperationException("Tangent is not defined in given angle equal to pi/2 + k * pi.");
-            
+            const double
+                eps = 1e-10d; //  acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception than get a completely inaccurate result
+            var isOdd = Math.Abs(a * 2 / Constants
+                                     .Pi); // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi 
+            if (Math.Abs(isOdd % 2 - 1) <= eps)
+                throw new System.InvalidOperationException(
+                    "Tangent is not defined in given angle equal to pi/2 + k * pi.");
+
             return Math.Tan(a);
         }
 
-        //===========================================================================
-        //              SolveExpression() method and supporting members
-
+        #region Expression Solver
+        
         private class Operator
         {
             public string Name { get; set; }
@@ -238,65 +250,96 @@ namespace SunnyCalc.Maths
             public int Precedence { get; set; }
             public bool RightAssociative { get; set; }
             public int Operands { get; set; }
+
+            /// <summary>
+            /// Compares the precedence of given operators. 
+            /// </summary>
+            /// <param name="first">The first operator to be compared.</param>
+            /// <param name="second">The second operator to be compared.</param>
+            /// <returns>True if <paramref name="first"/> has higher precedence and should be evaluated first.</returns>
+            public static bool operator >(Operator first, Operator second)
+            {
+                return first.RightAssociative
+                    ? first.Precedence < second.Precedence
+                    : first.Precedence <= second.Precedence;
+            }
+
+            public static bool operator <(Operator first, Operator second)
+            {
+                return !(first > second);
+            }
+
+            protected bool Equals(Operator other)
+            {
+                return this.Name == other.Name && this.Notation == other.Notation &&
+                       this.Precedence == other.Precedence && this.RightAssociative == other.RightAssociative &&
+                       this.Operands == other.Operands;
+            }
         }
 
-        private readonly Dictionary<string, MathsService.Operator> _operatorsDict = new Dictionary<string, MathsService.Operator>
-        {
-            ["+"] = new MathsService.Operator { Name = "Add", Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2, },
-            ["-"] = new MathsService.Operator { Name = "Subtract", Notation = "-", Precedence = 1, RightAssociative = false, Operands = 2,  },
-            ["*"] = new MathsService.Operator { Name = "Multiply", Notation = "*", Precedence = 2, RightAssociative = false, Operands = 2,  },
-            ["/"] = new MathsService.Operator { Name = "Divide", Notation = "/", Precedence = 2, RightAssociative = false, Operands = 2,  },
-            ["^"] = new MathsService.Operator { Name = "Power", Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2, },
-            ["!"] = new MathsService.Operator { Name = "Factorial", Notation = "!", Precedence = 5, RightAssociative = false, Operands = 1, },
-            ["sin("] = new MathsService.Operator { Name = "Sin", Notation = "sin(", Precedence = 3, RightAssociative = false, Operands = 1, },
-            ["cos("] = new MathsService.Operator { Name = "Cos", Notation = "cos(", Precedence = 3, RightAssociative = false, Operands = 1, },
-            ["tan("] = new MathsService.Operator { Name = "Tan", Notation = "tan(", Precedence = 3, RightAssociative = false, Operands = 1, },
-            ["pi"] = new MathsService.Operator { Name = "Pi", Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0, },
-            ["sqrt("] = new MathsService.Operator { Name = "SquareRoot", Notation = "sqrt(", Precedence = 3, RightAssociative = false, Operands = 1, },
-            ["rt("] = new MathsService.Operator { Name = "Root", Notation = "rt(", Precedence = 3, RightAssociative = false, Operands = 3, },
-            [","] = new MathsService.Operator { Name = "Comma", Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0, },
-            ["("] = new MathsService.Operator { Name = "LeftParenthesis", Notation = "(", Precedence = 3, RightAssociative = false, Operands = 0, },
-            
-        };
-        
-        /// <summary>
-        /// Compares precedence of given operators.
-        /// </summary>
-        /// <param name="operator1">The first operator to be compared.</param>
-        /// <param name="operator2">The second operator to be compared.</param>
-        /// <returns>True if <paramref name="operator1"/> has higher precedence and should be evaluated first. False if <paramref name="operator2"/> has higher precedence and should be evaluated first.</returns>
-        private bool ComparePrecedence(string operator1, string operator2)
-        {
-            _operatorsDict.TryGetValue(operator1, out var oper1);
-            _operatorsDict.TryGetValue(operator2, out var oper2);
-            return oper1.RightAssociative ? oper1.Precedence < oper2.Precedence : oper1.Precedence <= oper2.Precedence;
-        }
+        private readonly Dictionary<string, Operator> _operatorsDict =
+            new Dictionary<string, Operator>
+            {
+                ["+"] = new Operator
+                    {Name = "Add", Notation = "+", Precedence = 1, RightAssociative = false, Operands = 2,},
+                ["-"] = new Operator
+                    {Name = "Subtract", Notation = "-", Precedence = 1, RightAssociative = false, Operands = 2,},
+                ["*"] = new Operator
+                    {Name = "Multiply", Notation = "*", Precedence = 2, RightAssociative = false, Operands = 2,},
+                ["/"] = new Operator
+                    {Name = "Divide", Notation = "/", Precedence = 2, RightAssociative = false, Operands = 2,},
+                ["^"] = new Operator
+                    {Name = "Power", Notation = "^", Precedence = 4, RightAssociative = true, Operands = 2,},
+                ["!"] = new Operator
+                    {Name = "Factorial", Notation = "!", Precedence = 5, RightAssociative = false, Operands = 1,},
+                ["sin("] = new Operator
+                    {Name = "Sin", Notation = "sin(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                ["cos("] = new Operator
+                    {Name = "Cos", Notation = "cos(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                ["tan("] = new Operator
+                    {Name = "Tan", Notation = "tan(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                ["pi"] = new Operator
+                    {Name = "Pi", Notation = "pi", Precedence = 6, RightAssociative = false, Operands = 0,},
+                ["sqrt("] = new Operator
+                    {Name = "SquareRoot", Notation = "sqrt(", Precedence = 3, RightAssociative = false, Operands = 1,},
+                ["rt("] = new Operator
+                    {Name = "Root", Notation = "rt(", Precedence = 3, RightAssociative = false, Operands = 3,},
+                [","] = new Operator
+                    {Name = "Comma", Notation = ",", Precedence = 0, RightAssociative = false, Operands = 0,},
+                ["("] = new Operator
+                    {Name = "LeftParenthesis", Notation = "(", Precedence = 3, RightAssociative = false, Operands = 0,},
+            };
 
         /// <inheritdoc/>
         public double SolveExpression(string expression)
         {
-            var stack = new Stack<string>(); // stack of operators to be evaluate and operands to be used in operation
-            var expressionQueue = new Queue<string>(); // queue for evaluating operations
-            var listSingleOperators = new List<string>(); // list of single operators (every operator is one element) in an appropriate order
+            // stack of operators to be evaluate and operands to be used in operation
+            var stack = new Stack<string>();
+            // queue for evaluating operations
+            var expressionQueue = new Queue<string>();
+            // list of single operators (every operator is one element) in an appropriate order
+            var listSingleOperators = new List<string>();
 
             // exception for string being null, empty or string that consists only of white-space characters
-            if (string.IsNullOrWhiteSpace(expression)) throw new System.ArgumentException("The expression is null, an empty string or consists only of white-space characters.");
+            if (string.IsNullOrWhiteSpace(expression))
+                throw new ArgumentException("Expression must not be empty.", nameof(expression));
 
-            expression = expression.Replace(" ", string.Empty); // get rid of all whitespaces in expression
-            
+            // get rid of all whitespaces in expression
+            expression = expression.Replace(" ", string.Empty);
+
             // get all numbers in expression
-            var strOperands = expression.Split(Maths.Constants.Operators, System.StringSplitOptions.RemoveEmptyEntries); // string array of operators-only characters
-            // get all operators in expression
-             
-            var strOperators = expression.Split(Maths.Constants.Numbers, System.StringSplitOptions.RemoveEmptyEntries); // get array of operators (possible groups of operators in one element) 
+            // string array of operators-only characters
+            var strOperands = expression.Split(Constants.Operators, StringSplitOptions.RemoveEmptyEntries);
 
-             
-            foreach (var strElement in strOperators) // divide single string element into valid operators and operands 
+            // get all operators in expression
+            // get array of operators (possible groups of operators in one element)
+            var strOperators = expression.Split(Constants.Numbers, StringSplitOptions.RemoveEmptyEntries);
+
+            // divide single string element into valid operators and operands
+            foreach (var strElement in strOperators)
             {
-                var characters = strElement.ToCharArray(); // char array of single string element got from 'expression.split' operations
                 for (var i = 0; i < strElement.Length; i++)
                 {
-
                     switch (strElement[i])
                     {
                         // one-char operators
@@ -311,121 +354,144 @@ namespace SunnyCalc.Maths
                         case ')': // closing parenthesis
                             listSingleOperators.Add(strElement[i].ToString());
                             break;
-                        
+
                         // operators with two and more chars
                         case 'p':
-                            if (strElement.Length >= 2 && strElement.Substring(i, 2) == "pi") // pi constant operator equal to 'Constants.Pi'
+                            if (strElement.Length >= 2 && strElement.Substring(i, 2) == "pi")
                             {
+                                // pi constant operator equal to 'Constants.Pi'
                                 listSingleOperators.Add("pi");
                                 i += 1;
                             }
-                            else // not a valid operator
+                            else
                             {
-                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                                // not a valid operator
+                                throw new ExpressionSolvingException(expression, $"Invalid operator at index {i}.");
                             }
+
                             break;
-                        
+
                         case 'r':
-                            if (strElement.Length >= 3 && strElement.Substring(i, 3) == "rt(") // root operator
+                            if (strElement.Length >= 3 && strElement.Substring(i, 3) == "rt(")
                             {
+                                // root operator
                                 listSingleOperators.Add("rt(");
                                 i += 2;
                             }
-                            else // not a valid operator
+                            else
                             {
-                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                                // not a valid operator
+                                throw new ExpressionSolvingException(expression, $"Invalid operator at index {i}.");
                             }
+
                             break;
-                        
+
                         case 'c':
-                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "cos(") // cosinus operator
+                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "cos(")
                             {
+                                // cosine operator
                                 listSingleOperators.Add("cos(");
                                 i += 3;
                             }
-                            else // not a valid operator
+                            else
                             {
-                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                                // not a valid operator
+                                throw new ExpressionSolvingException(expression, $"Invalid operator at index {i}.");
                             }
+
                             break;
-                        
+
                         case 't':
-                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "tan(") // tangens operator
+                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "tan(")
                             {
+                                // tangent operator
                                 listSingleOperators.Add("tan(");
                                 i += 3;
                             }
-                            else // not a valid operator
+                            else
                             {
-                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                                // not a valid operator
+                                throw new ExpressionSolvingException(expression, $"Invalid operator at index {i}.");
                             }
+
                             break;
-                        
+
                         case 's':
-                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "sin(") // sinus operator
+                            if (strElement.Length >= 4 && strElement.Substring(i, 4) == "sin(")
                             {
+                                // sine operator
                                 listSingleOperators.Add("sin(");
                                 i += 3;
                             }
-                            else if (strElement.Length >= 5 && strElement.Substring(i, 5) == "sqrt(") // square root operator
+                            else if (strElement.Length >= 5 && strElement.Substring(i, 5) == "sqrt(")
                             {
+                                // square root operator
                                 listSingleOperators.Add("sqrt(");
                                 i += 4;
                             }
-                            else // not a valid operator
+                            else
                             {
-                                throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                                // not a valid operator
+                                throw new ExpressionSolvingException(expression, $"Invalid operator at index {i}.");
                             }
+
                             break;
-                        
+
                         default: // not a valid operator
-                            throw new Maths.ExpressionSolvingException("Not a valid operator in an expression.");
+                            throw new ExpressionSolvingException(expression, $"Invalid operator at index {i}.");
                     }
                 }
             }
-            
-            var listOperands = new List<string>(strOperands); // list of operands in expression
-            var listExpression = new List<string>(); // complete expression in written order split in tokens as operands, operators, parenthesis and commas
-            var indexOperands = 0; // index of operands in 'listOperands' list
-            var indexOperators = 0; // index of operators in 'listSingleOperators' list
-            var parenthesisBeforeFactorial = false; // if there is a parenthesis before factorial in expression
-            
+
+            // list of operands in expression
+            var listOperands = new List<string>(strOperands);
+            // complete expression in written order split in tokens as operands, operators, parenthesis and commas
+            var listExpression = new List<string>();
+            // index of operands in 'listOperands' list
+            var indexOperands = 0;
+            // index of operators in 'listSingleOperators' list
+            var indexOperators = 0;
+            // if there is a parenthesis before factorial in expression
+            var parenthesisBeforeFactorial = false;
+
             for (var i = 0; i < expression.Length;)
             {
-                if (char.IsDigit(expression, i)) // if char is a digit, add whole number to 'listExpression' 
+                // if char is a digit, add whole number to 'listExpression'
+                if (char.IsDigit(expression, i))
                 {
                     listExpression.Add(listOperands[indexOperands]);
                     i += listOperands[indexOperands++].Length;
                 }
-                
+
                 // solve negative numbers (with unary '-')
                 else if (expression[i] == '-' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
-                         (i == 0 || Maths.Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
+                         (i == 0 || Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
                 {
-                    if (listSingleOperators.Count > indexOperators + 1) // if there's other operator after '-'
+                    if (listSingleOperators.Count > indexOperators + 1)
                     {
+                        // if there's other operator after '-'
                         // test what next operator is, if there's one
                         if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator))
                         {
                             // depending on 'RightAssociative' decide if you should add current '-' to 'listExpression' or not
-                            if (nextOperator != null && nextOperator.RightAssociative) 
+                            if (nextOperator != null && nextOperator.RightAssociative)
                             {
                                 listExpression.Add(listSingleOperators[indexOperators]);
                                 i += listSingleOperators[indexOperators++].Length;
-                            }    
+                            }
                         }
                     }
-                    
+
                     // remove unary '-' from operators and append it to the number as a negative number which should be added to 'listExpression'  
                     listSingleOperators.RemoveAt(indexOperators);
                     listExpression.Add("-" + listOperands[indexOperands]);
                     listOperands[indexOperands++] = listExpression.Last();
                     i += listExpression.Last().Length;
                 }
-                
+
                 // solve positive numbers with additional unary '+'
                 else if (expression[i] == '+' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
-                         (i == 0 || Maths.Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString()))) 
+                         (i == 0 || Maths.Constants.AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
                 {
                     // just remove unary '+' from 'listSingleOperators' list
                     listSingleOperators.RemoveAt(indexOperators);
@@ -433,8 +499,9 @@ namespace SunnyCalc.Maths
                     listOperands[indexOperands++] = listExpression.Last();
                     i += listExpression.Last().Length + 1;
                 }
-                else // anything else add to the 'listExpression'
+                else
                 {
+                    // anything else add to the 'listExpression'
                     listExpression.Add(listSingleOperators[indexOperators]);
                     i += listSingleOperators[indexOperators++].Length;
                 }
@@ -447,60 +514,79 @@ namespace SunnyCalc.Maths
                 {
                     if (listExpression[i] == "!")
                     {
-                        if (i == 0 || (! double.TryParse(listExpression[i - 1], out _) && listExpression[i - 1] != ")")) // amount of closing parenthesis before factorial
+                        if (i == 0 || (!double.TryParse(listExpression[i - 1], NumberStyles.Any,
+                                           CultureInfo.InvariantCulture, out _) && listExpression[i - 1] != ")"))
                         {
-                            throw new Maths.ExpressionSolvingException("Factorial without operand before it.");
+                            // amount of closing parenthesis before factorial
+                            throw new ExpressionSolvingException(
+                                $"No operand found for the factorial operation at index {i}.");
                         }
-                        if (i > 0 && listExpression[i - 1] == ")") // set 'parenthesisBeforeFactorial' to test if parenthesis evaluated into valid operand 
+
+                        if (i > 0 && listExpression[i - 1] == ")")
                         {
+                            // set 'parenthesisBeforeFactorial' to test if parenthesis evaluated into valid operand
                             parenthesisBeforeFactorial = true;
                         }
                     }
                 }
             }
-            
-            indexOperands = 0; // resetting index of operands in 'listOperands' list
-            var operandAfterMinus = true; // test for appropriate amount of operands for binary/unary '-'
+
+            // resetting index of operands in 'listOperands' list
+            indexOperands = 0;
+            // test for appropriate amount of operands for binary/unary '-'
+            var operandAfterMinus = true;
             foreach (var element in listExpression)
             {
-                if (Maths.Constants.Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString())) // 'element' is a number
+                if (Constants.Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString()))
                 {
-                    if (indexOperands < listOperands.Count && element == listOperands[indexOperands]) // enqueue all valid operands
+                    // 'element' is a number
+
+                    if (indexOperands < listOperands.Count && element == listOperands[indexOperands])
                     {
+                        // enqueue all valid operands
                         expressionQueue.Enqueue(element);
                         indexOperands++;
-                        operandAfterMinus = true; // these is an operand after '-' in case these is '-' in expression
+                        // these is an operand after '-' in case these is '-' in expression
+                        operandAfterMinus = true;
                     }
-                    else // operand wasn't expected
+                    else
                     {
-                        throw new Maths.ExpressionSolvingException("There is an unreadable operand in an expression.");
+                        // operand wasn't expected
+                        throw new ExpressionSolvingException($"Unexpected operand {listOperands[indexOperands]}.");
                     }
                 }
-                else // 'element' is an operator
+                else
                 {
-                    if (element == "-") // there should be an operand after '-' (binary or unary)
+                    // 'element' is an operator
+                    if (element == "-")
                     {
+                        // there should be an operand after '-' (binary or unary)
                         operandAfterMinus = false;
                     }
-                    
-                    if (element == ")") // if the 'element' is closing parenthesis, enqueue from stack everything till an opening parenthesis
+
+                    // if the 'element' is closing parenthesis, enqueue from stack everything till an opening parenthesis
+                    if (element == ")")
                     {
-                        var popped = stack.Pop(); // element to be popped from the stack
-                        while (!Maths.Constants.LeftParenthesis.Contains(popped)) // enqueue everything if 'popped' is NOT an opening parenthesis
+                        // element to be popped from the stack
+                        var popped = stack.Pop();
+                        // enqueue everything if 'popped' is NOT an opening parenthesis
+                        while (!Constants.LeftParenthesis.Contains(popped))
                         {
                             expressionQueue.Enqueue(popped);
                             popped = stack.Pop();
                         }
 
-                        if (popped != "(") // if there is an operator attached to opening parenthesis, enqueue it too
+                        if (popped != "(")
                         {
+                            // if there is an operator attached to opening parenthesis, enqueue it too
                             expressionQueue.Enqueue(popped);
                         }
                     }
-                    else if (stack.Any() && (!Maths.Constants.LeftParenthesis.Contains(stack.Peek()))) // stack is not empty
+                    else if (stack.Count > 0 && !Constants.LeftParenthesis.Contains(stack.Peek())) // stack is not empty
                     {
-                        // solve which operator should be evaluated first in case of more operators in the row
-                        if (ComparePrecedence(element, stack.Peek()))
+                        // Decide which operator should be evaluated first in case of more operators in the row
+                        // At this point, the operators should be guaranteed to be present in _operatorsDict
+                        if (_operatorsDict[element] > _operatorsDict[stack.Peek()])
                         {
                             var popped = stack.Pop();
                             expressionQueue.Enqueue(popped);
@@ -511,38 +597,40 @@ namespace SunnyCalc.Maths
                             stack.Push(element);
                         }
                     }
-                    else // if the stack is empty, push 'element' to stack
+                    else
                     {
+                        // if the stack is empty, push 'element' to stack
                         stack.Push(element);
                     }
                 }
             }
 
-            if (! operandAfterMinus) // there is '-' in the expression without appropriate operands 
+            if (!operandAfterMinus)
             {
-                throw new Maths.ExpressionSolvingException("There is no operand after minus operator.");
+                // there is '-' in the expression without appropriate operands
+                throw new ExpressionSolvingException(expression, "No valid operand found after the minus operator.");
             }
 
-
-            while (stack.Any()) // if there are any tokens on stack, enqueue them.
+            // if there are any tokens on stack, enqueue them.
+            while (stack.TryPop(out var popped))
             {
-                var popped = stack.Pop();
                 expressionQueue.Enqueue(popped);
-            } // stack is empty (and ready to be used for operands in evaluating operations)
+            } // the stack is empty (and ready to be used for operands in evaluating operations)
 
-
-            while (expressionQueue.Any()) // solve queue
+            while (expressionQueue.TryDequeue(out var dequeued)) // solve queue
             {
-                var dequeued = expressionQueue.Dequeue(); // get the first token of the queue
-                if (double.TryParse(dequeued, out _)) // 'dequeued' is a number
+                if (double.TryParse(dequeued, NumberStyles.Any, CultureInfo.InvariantCulture, out var _))
                 {
+                    // 'dequeued' is a number
                     stack.Push(dequeued);
                 }
-                else // 'dequeued' is an operator
+                else
                 {
-                    var operands = new List<string>(3); // maximal amount of operators to be popped from the stack
-                    _operatorsDict.TryGetValue(dequeued, out var @operator);
-                    if (@operator != null) // operator is found in '_operatorsDict' (operators dictionary)
+                    // 'dequeued' is an operator
+                    // maximal amount of operators to be popped from the stack
+                    var operands = new List<string>(3);
+
+                    if (_operatorsDict.TryGetValue(dequeued, out var @operator))
                     {
                         for (var i = 0; i < @operator.Operands; i++) // get expected amount of operators from stack
                         {
@@ -550,27 +638,33 @@ namespace SunnyCalc.Maths
                             {
                                 operands.Add(stack.Pop());
                             }
-                            catch (System.InvalidOperationException)
+                            catch (InvalidOperationException)
                             {
-                                if (@operator.Notation == "-" && i == 1) // handling unary '-' and negative numbers in expression
+                                if (@operator.Notation == "-" && i == 1)
                                 {
+                                    // handling unary '-' and negative numbers in expression
                                     operands.Add("0");
                                 }
-                                else // not enough operands for given operator 
+                                else
                                 {
-                                    throw new Maths.ExpressionSolvingException("There are no operands left for given operators to calculate with.");    
+                                    // not enough operands for given operator
+                                    throw new ExpressionSolvingException(expression,
+                                        $"Expected {@operator.Operands} operands for the '{dequeued}' operator.");
                                 }
                             }
                         }
-                        if (dequeued == ",") // push ',' to stack so it can be tested for correct single operation format 
+
+                        // push ',' to stack so it can be tested for correct single operation format 
+                        if (dequeued == ",")
                         {
                             stack.Push(dequeued);
                             continue;
                         }
                     }
-                    else // There is no such operator in _operatorsDict
+                    else
                     {
-                        throw new Maths.ExpressionSolvingException("Given operator is not supported in Sunny-Calc or is not an operator at all.");
+                        // There is no such operator in _operatorsDict
+                        throw new ExpressionSolvingException(expression, $"'{dequeued}' is not a valid operator.");
                     }
 
                     // evaluate single operation
@@ -578,78 +672,106 @@ namespace SunnyCalc.Maths
                     switch (@operator.Name)
                     {
                         case "Add":
-                            result = this.Add(double.Parse(operands[1]), double.Parse(operands[0]));
+                            result = this.Add(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                                double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Subtract":
-                            result = this.Subtract(double.Parse(operands[1]), double.Parse(operands[0]));
+                            result = this.Subtract(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                                double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Multiply":
-                            result = this.Multiply(double.Parse(operands[1]), double.Parse(operands[0]));
+                            result = this.Multiply(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                                double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Divide":
-                            result = this.Divide(double.Parse(operands[1]), double.Parse(operands[0]));
+                            result = this.Divide(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                                double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Factorial":
-                            try
+                            if (!long.TryParse(operands[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var op))
                             {
-                                result = this.Factorial(uint.Parse(operands[0]));
+                                throw new InvalidOperationException(
+                                    "The operand of a factorial is not a valid unsigned integer.");
                             }
-                            catch (System.OverflowException)
+
+                            if (op < 0)
                             {
-                                if (parenthesisBeforeFactorial && double.Parse(operands[0]) < 0) // if number in parenthesis is negative
+                                if (parenthesisBeforeFactorial)
                                 {
-                                    throw new System.InvalidOperationException("Wrong format of factorial expression. Invalid values.");
+                                    throw new InvalidOperationException(
+                                        "Cannot calculate the factorial of a negative number.");
                                 }
 
-                                // for greater values of 'uint' with '-' before it  
-                                var num = Math.Abs(long.Parse(operands[0]));
-                                result = - this.Factorial((uint) num);
+                                op = -op;
+                                if (op <= uint.MaxValue)
+                                {
+                                    result = -this.Factorial((uint) op);
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException(
+                                        "The operand of a factorial is not a valid unsigned integer (it is too large).");
+                                }
                             }
-                            catch
+                            else
                             {
-                                throw new System.InvalidOperationException("Wrong format of factorial expression. Invalid values.");
+                                result = this.Factorial((uint) op);
                             }
 
                             break;
                         case "Power":
-                            result = this.Power(double.Parse(operands[1]), uint.Parse(operands[0]));
+                            result = this.Power(double.Parse(operands[1], CultureInfo.InvariantCulture),
+                                uint.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Sin":
-                            result = this.Sin(double.Parse(operands[0]));
+                            result = this.Sin(double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Cos":
-                            result = this.Cos(double.Parse(operands[0]));
+                            result = this.Cos(double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Tan":
-                            result = this.Tan(double.Parse(operands[0]));
+                            result = this.Tan(double.Parse(operands[0], CultureInfo.InvariantCulture));
                             break;
                         case "Pi":
                             result = Constants.Pi;
                             break;
                         case "SquareRoot":
-                            result = this.Root(double.Parse(operands[0]), 2);
+                            result = this.Root(double.Parse(operands[0], CultureInfo.InvariantCulture), 2);
                             break;
                         case "Root":
-                            // root operation without separating ','
-                            if (operands[0] != ",") throw new Maths.ExpressionSolvingException("Missing ',' in expression.");
+                            if (operands[0] != ",")
+                            {
+                                // root operation without separating ','
+                                throw new ExpressionSolvingException("Missing ',' in expression.");
+                            }
+
                             try
                             {
-                                result = this.Root(double.Parse(operands[2]), uint.Parse(operands[1]));
+                                result = this.Root(double.Parse(operands[2], CultureInfo.InvariantCulture),
+                                    uint.Parse(operands[1], CultureInfo.InvariantCulture));
                             }
-                            catch // any exception is considered as 'InvalidOperationException'
+                            catch (Exception e)
                             {
-                                throw new System.InvalidOperationException("Wrong format of root expression. Invalid values."); 
+                                // any exception is considered as 'InvalidOperationException'
+                                throw new InvalidOperationException(
+                                    "Wrong format of a root expression.", e);
                             }
+
                             break;
                     }
+
                     // push result of single operation to stack
                     stack.Push(result.ToString(CultureInfo.InvariantCulture));
                 }
             }
+
             // get the final result from stack
-            return double.Parse(stack.Pop());
+            return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
         }
+        
+        #endregion
     }
+    
 
     /// <summary>
     /// Constants used in solveExpression and various operation implementations.
@@ -662,28 +784,30 @@ namespace SunnyCalc.Maths
         /// <remarks>
         /// Constant set to a value of System.Math.PI which is considered valid value for Pi number to be used in SunnyCalc calculations.
         /// </remarks>
-        public const double Pi = System.Math.PI;
+        public const double Pi = Math.PI;
 
         /// <summary>
         /// Operators that can be before unary '-'.
         /// </summary>
-        public static readonly string[] AllowedOperatorsBeforeMinus = { "(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", };
-        
+        public static readonly string[] AllowedOperatorsBeforeMinus =
+            {"(", "+", "-", "*", "/", "^", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",",};
+
         /// <summary>
         /// List of all allowed left parenthesis formats.
         /// </summary>
-        public static readonly List<string> LeftParenthesis = new List<string> { "(", "sqrt(", "rt(", "sin(", "cos(", "tan(", };
-        
+        public static readonly List<string> LeftParenthesis = new List<string>
+            {"(", "sqrt(", "rt(", "sin(", "cos(", "tan(",};
+
         /// <summary>
         /// Allowed operators for splitting of expression.
         /// </summary>
-        public static readonly string[] Operators = {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi", };
-        
+        public static readonly string[] Operators =
+            {"(", ")", "+", "-", "*", "/", "^", "!", "sqrt(", "rt(", "sin(", "cos(", "tan(", ",", "pi",};
+
         /// <summary>
         /// Allowed number characters for splitting of expression.
         /// </summary>
-        public static readonly string[] Numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d", };
-        
-        
+        public static readonly string[] Numbers =
+            {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d",};
     }
 }
