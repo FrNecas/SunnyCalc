@@ -8,14 +8,16 @@ namespace SunnyCalc.Maths
     {
         public string Expression { get; }
 
-        public ExpressionSolvingException(string expression) : base("The expression couldn't be solved.")
+        public ExpressionSolvingException(string expression, string message = "The expression couldn't be solved.") :
+            base(message)
         {
-            Expression = expression;
+            this.Expression = expression;
         }
 
-        public ExpressionSolvingException(string expression, Exception innerException) : base("The expression couldn't be solved.", innerException)
+        public ExpressionSolvingException(string expression, Exception innerException,
+            string message = "The expression couldn't be solved.") : base(message, innerException)
         {
-            Expression = expression;
+            this.Expression = expression;
         }
     }
 }

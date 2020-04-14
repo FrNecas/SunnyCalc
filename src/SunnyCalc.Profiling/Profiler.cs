@@ -72,13 +72,13 @@ namespace SunnyCalc.Profiling
         public void UseSummary(Stream stream)
         {
             _outputWriter?.Dispose();
-            
+
             if (stream == null)
             {
                 _outputWriter = null;
                 return;
             }
-            
+
             _outputWriter = new StreamWriter(stream, Encoding.UTF8);
         }
 
@@ -268,6 +268,7 @@ namespace SunnyCalc.Profiling
             var variance = this.ProfileActionTime(() => _mathsService.Divide(top, btm), null, "Divide");
             var deviation = this.ProfileActionTime(() => _mathsService.Root(variance, 2), null, "Root");
 
+            this.Log($"Standard calculation result: {deviation}");
             return deviation;
         }
 
@@ -316,12 +317,17 @@ namespace SunnyCalc.Profiling
             var result = this.ProfileActionTime(() => _mathsService.SolveExpression(expr), "Expression Solving",
                 "Expression Solving");
 
+            this.Log($"Expression solver result: {result}");
             return result;
         }
 
         private void ProfileActionTime(Action action, string name = null, string category = null)
         {
-            this.ProfileActionTime(() => action, name, category);
+            this.ProfileActionTime(() =>
+            {
+                action();
+                return 0;
+            }, name, category);
         }
 
         /// <summary>
