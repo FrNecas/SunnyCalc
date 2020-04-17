@@ -3,15 +3,18 @@
         xmlns:vm="clr-namespace:SunnyCalc.App.ViewModels;assembly=SunnyCalc.App"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:views="clr-namespace:SunnyCalc.App.Views;assembly=SunnyCalc.App"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="600"
         x:Class="SunnyCalc.App.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="SunnyCalc.App">
+        Icon="/Assets/icon.ico"
+        Title="SunnyCalc"
+        Width="350" Height="600"
+        MinWidth="300" MinHeight="400">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+  <views:StandardCalculatorView DataContext="{Binding CalcViewModel}" />
+  
 </Window>
