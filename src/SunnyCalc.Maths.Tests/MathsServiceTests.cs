@@ -635,5 +635,30 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(-6, _service.SolveExpression("-3!"));
             Assert.Throws<InvalidOperationException>(() => _service.SolveExpression("(-5)!"));
         }
+
+        [Test]
+        public void SolveExpressionDecimalPoint()
+        {
+            // usage of decimal point in these expressions is valid
+            Assert.AreEqual(-3, _service.SolveExpression("-3.0"));
+            Assert.AreEqual(3, _service.SolveExpression("+3.0"));
+            Assert.AreEqual(-3.1, _service.SolveExpression("-3.1"));
+            Assert.AreEqual(3.99, _service.SolveExpression("3.99"));
+            Assert.AreEqual(13.99, _service.SolveExpression("3.99 + 10"));
+            Assert.AreEqual(30.0, _service.SolveExpression("+3.0 * 10"));
+            
+            // usage of decimal point in these expressions is invalid
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(".3"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("-.3"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("+.3"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("(.3)"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("3."));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("3. - 2"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("(.3) - .3"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(".3 + 0"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(".3 * .3"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression(".3 * 3"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("3 * .3"));
+        }
     }
 }

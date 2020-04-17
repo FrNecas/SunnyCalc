@@ -230,10 +230,11 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Tan(double a)
         {
-            const double
-                eps = 1e-10d; //  acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception than get a completely inaccurate result
-            var isOdd = Math.Abs(a * 2 / Constants
-                                     .Pi); // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi 
+            // acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception
+            // than get a completely inaccurate result
+            const double eps = 1e-10d;
+            // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi
+            var isOdd = Math.Abs(a * 2 / Constants.Pi); 
             if (Math.Abs(isOdd % 2 - 1) <= eps)
                 throw new System.InvalidOperationException(
                     "Tangent is not defined in given angle equal to pi/2 + k * pi.");
@@ -278,11 +279,11 @@ namespace SunnyCalc.Maths
             Sin,
             Cos,
             Tan,
-            Pi,
+            Pi, // not an operation, but it is processed as one 
             SquareRoot,
             Root,
-            Comma,
-            LeftParenthesis
+            Comma, // not an operation, but it is processed as one
+            LeftParenthesis // not an operation, but it is processed as one
         }
 
         private class Operator
@@ -483,14 +484,49 @@ namespace SunnyCalc.Maths
             var indexOperators = 0;
             // if there is a parenthesis before factorial in expression
             var parenthesisBeforeFactorial = false;
-
+            // if there was a minus in front of number, set to true 
+            var minusBeforeNumber = false;
+            // if there was a plus in front of number, set to true
+            var plusBeforeNumber = false;
+            
             for (var i = 0; i < expression.Length;)
             {
                 // if char is a digit, add whole number to 'listExpression'
                 if (char.IsDigit(expression, i))
                 {
-                    listExpression.Add(listOperands[indexOperands]);
-                    i += listOperands[indexOperands++].Length;
+                    // if there is decimal point in the number, test if there is a valid number after that decimal point 
+                    if (i + 1 < expression.Length && expression[i + 1] == '.')
+                    {
+                        if (i + 2 >= expression.Length || !char.IsDigit(expression[i + 2]))
+                        {
+                            throw new ExpressionSolvingException($"There is no number after '.' at index {i}.");
+                        }    
+                    }
+
+                    // if there was a minus in front of this number
+                    if (minusBeforeNumber)
+                    {
+                        listExpression.Add("-" + listOperands[indexOperands]);
+                        listOperands[indexOperands++] = listExpression.Last();
+                        i += listExpression.Last().Length - 1;
+                        minusBeforeNumber = false;
+                    }
+                    
+                    // if there was a plus in front of this number
+                    else if (plusBeforeNumber)
+                    {
+                        listExpression.Add(listOperands[indexOperands]);
+                        listOperands[indexOperands++] = listExpression.Last();
+                        i += listExpression.Last().Length;
+                        plusBeforeNumber = false;
+                    }
+                    
+                    // just a regular number
+                    else
+                    {
+                        listExpression.Add(listOperands[indexOperands]);
+                        i += listOperands[indexOperands++].Length;    
+                    }
                 }
 
                 // solve negative numbers (with unary '-')
@@ -507,16 +543,18 @@ namespace SunnyCalc.Maths
                             if (nextOperator.Operation != default && nextOperator.RightAssociative)
                             {
                                 listExpression.Add(listSingleOperators[indexOperators]);
-                                i += listSingleOperators[indexOperators++].Length;
+                                i += listSingleOperators[indexOperators].Length;
+                                listSingleOperators.RemoveAt(indexOperators);
+                                continue;
                             }
                         }
                     }
 
-                    // remove unary '-' from operators and append it to the number as a negative number which should be added to 'listExpression'  
+                    // remove unary '-' from operators and append it to the number as a negative number
+                    // which should be added to 'listExpression'  
                     listSingleOperators.RemoveAt(indexOperators);
-                    listExpression.Add("-" + listOperands[indexOperands]);
-                    listOperands[indexOperands++] = listExpression.Last();
-                    i += listExpression.Last().Length;
+                    minusBeforeNumber = true;
+                    i++;
                 }
 
                 // solve positive numbers with additional unary '+'
@@ -525,9 +563,18 @@ namespace SunnyCalc.Maths
                 {
                     // just remove unary '+' from 'listSingleOperators' list
                     listSingleOperators.RemoveAt(indexOperators);
-                    listExpression.Add(listOperands[indexOperands]);
-                    listOperands[indexOperands++] = listExpression.Last();
-                    i += listExpression.Last().Length + 1;
+                    plusBeforeNumber = true;
+                    i++;
+                }
+                
+                // test valid usage of decimal point ('.')
+                else if (expression[i] == '.')
+                {
+                    // test if there is a valid number in front of decimal point
+                    if (i == 0 || !char.IsDigit(expression[i - 1]))
+                    {
+                        throw new ExpressionSolvingException($"There is no number in front of '.' at index {i}.");    
+                    }
                 }
                 else
                 {
@@ -570,7 +617,6 @@ namespace SunnyCalc.Maths
                 if (Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString()))
                 {
                     // 'element' is a number
-
                     if (indexOperands < listOperands.Count && element == listOperands[indexOperands])
                     {
                         // enqueue all valid operands
