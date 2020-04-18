@@ -267,7 +267,19 @@ namespace SunnyCalc.Maths
         /// </summary>
         private static readonly string[] Numbers =
             {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d",};
+        
+        /// <summary>
+        /// Allowed operators after numbers for implicit multiplication.
+        /// </summary>
+        private static readonly char[] OperatorsAfterNumbersMultiplication =
+            {'(', 's', 'r', 'c', 't', 'p',};
 
+        /// <summary>
+        /// Allowed operators after numbers for implicit multiplication.
+        /// </summary>
+        private static readonly char[] OperatorsBeforeNumbersMultiplication =
+            {')', 'i', '!',};
+        
         private enum Operation
         {
             Add,
@@ -488,6 +500,8 @@ namespace SunnyCalc.Maths
             var minusBeforeNumber = false;
             // if there was a plus in front of number, set to true
             var plusBeforeNumber = false;
+            // if there is implicit multiplication epxression
+            var addMultiplication = false;
             
             for (var i = 0; i < expression.Length;)
             {
@@ -503,6 +517,11 @@ namespace SunnyCalc.Maths
                         }    
                     }
 
+                    if (i + 1 < expression.Length && OperatorsAfterNumbersMultiplication.Contains(expression[i + 1]))
+                    {
+                        addMultiplication = true;
+                    }
+                    
                     // if there was a minus in front of this number
                     if (minusBeforeNumber)
                     {
@@ -521,11 +540,26 @@ namespace SunnyCalc.Maths
                         plusBeforeNumber = false;
                     }
                     
+                    // if there should be implicit multiplication in front of number
+                    else if (i - 1 >= 0 && OperatorsBeforeNumbersMultiplication.Contains(expression[i - 1]))
+                    {
+                        listExpression.Add("*");
+                        listExpression.Add(listOperands[indexOperands]);
+                        i += listOperands[indexOperands++].Length; 
+                    }
+                    
                     // just a regular number
                     else
                     {
                         listExpression.Add(listOperands[indexOperands]);
                         i += listOperands[indexOperands++].Length;    
+                    }
+
+                    // if there should be implicit multiplication after number
+                    if (addMultiplication)
+                    {
+                        listExpression.Add("*");
+                        addMultiplication = false;
                     }
                 }
 
