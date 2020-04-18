@@ -11,10 +11,17 @@ namespace SunnyCalc.App.ViewModels
         private readonly IMathsService _service;
 
         private StandardCalculatorViewModel _cvm;
-        public StandardCalculatorViewModel CalcViewModel
+        public StandardCalculatorViewModel StandardCalculatorViewModel
         {
             get => _cvm;
             set => this.RaiseAndSetIfChanged(ref _cvm, value);
+        }
+        
+        private ExtendedCalculatorViewModel _evm;
+        public ExtendedCalculatorViewModel ExtendedCalculatorViewModel
+        {
+            get => _evm;
+            set => this.RaiseAndSetIfChanged(ref _evm, value);
         }
 
         public MainWindowViewModel()
@@ -24,7 +31,8 @@ namespace SunnyCalc.App.ViewModels
         public MainWindowViewModel(IMathsService mathsService)
         {
             _service = mathsService;
-            this.CalcViewModel = new StandardCalculatorViewModel(mathsService);
+            this.StandardCalculatorViewModel = new StandardCalculatorViewModel(mathsService);
+            this.ExtendedCalculatorViewModel = new ExtendedCalculatorViewModel(mathsService);
         }
     }
 }
