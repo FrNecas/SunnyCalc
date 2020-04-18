@@ -71,8 +71,13 @@ namespace SunnyCalc.App.ViewModels
                 }
 
                 if (_curPosCurrent == 0) return;
+                
                 this.CurrentState = _display.Remove(_curPosCurrent - 1, 1);
-                this.CaretPosition = _curPosCurrent - 1;
+                
+                if (_curPosCurrent != _display.Length)
+                {
+                    this.CaretPosition = _curPosCurrent - 1;
+                }
             }
             else if (op == "=")
             {
