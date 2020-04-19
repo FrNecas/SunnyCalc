@@ -6,6 +6,15 @@ matrix:
         - stage: build
           os: windows
           before_script:
+              - export LC_ALL=en_US.UTF-8
+              - choco install dotnetcore-sdk
+          script:
+              - cd src && dotnet test --nologo
+
+        - stage: build
+          os: windows
+          before_script:
+              - export LC_ALL=cs_CZ.UTF-8
               - choco install dotnetcore-sdk
           script:
               - cd src && dotnet test --nologo
@@ -16,3 +25,15 @@ matrix:
           dotnet: 3.1
           script:
               - cd src && make test
+          env:
+              - LC_ALL=en_US.UTF-8
+
+        - stage: build
+          os: linux
+          dist: xenial
+          dotnet: 3.1
+          script:
+              - cd src && make test
+          env:
+              - LC_ALL=cs_CZ.UTF-8
+
