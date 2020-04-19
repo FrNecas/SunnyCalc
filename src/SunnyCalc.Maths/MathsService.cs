@@ -343,14 +343,14 @@ namespace SunnyCalc.Maths
                 ["/"] = new Operator(Operation.Divide, "/", 2, false, 2),
                 ["^"] = new Operator(Operation.Power, "^", 4, true, 2),
                 ["!"] = new Operator(Operation.Factorial, "!", 5, false, 1),
-                ["sin("] = new Operator(Operation.Sin, "sin(", 3, false, 1),
-                ["cos("] = new Operator(Operation.Cos, "cos(", 3, false, 1),
-                ["tan("] = new Operator(Operation.Tan, "tan(", 3, false, 1),
-                ["pi"] = new Operator(Operation.Pi, "pi", 6, false, 0),
-                ["sqrt("] = new Operator(Operation.SquareRoot, "sqrt(", 3, false, 1),
-                ["rt("] = new Operator(Operation.Root, "rt(", 3, false, 3),
+                ["sin("] = new Operator(Operation.Sin, "sin(", 6, false, 1),
+                ["cos("] = new Operator(Operation.Cos, "cos(", 6, false, 1),
+                ["tan("] = new Operator(Operation.Tan, "tan(", 6, false, 1),
+                ["pi"] = new Operator(Operation.Pi, "pi", 7, false, 0),
+                ["sqrt("] = new Operator(Operation.SquareRoot, "sqrt(", 6, false, 1),
+                ["rt("] = new Operator(Operation.Root, "rt(", 6, false, 3),
                 [","] = new Operator(Operation.Comma, ",", 0, false, 0),
-                ["("] = new Operator(Operation.LeftParenthesis, "(", 3, false, 0)
+                ["("] = new Operator(Operation.LeftParenthesis, "(", 6, false, 0)
             };
 
         /// <inheritdoc/>
