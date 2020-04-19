@@ -394,6 +394,14 @@ namespace SunnyCalc.Maths
             // get rid of all whitespaces in expression
             expression = expression.Replace(" ", string.Empty);
 
+            for (var i = 0; i < expression.Length; i++)
+            {
+                if (expression[i] == '(' && i < expression.Length - 1 && expression[i + 1] == '-')
+                {
+                    expression = expression.Insert(i + 1, "0");
+                }
+            }
+            
             // get all numbers in expression
             // string array of operators-only characters
             var strOperands = expression.Split(Operators, StringSplitOptions.RemoveEmptyEntries);
@@ -588,7 +596,8 @@ namespace SunnyCalc.Maths
                 }
 
                 // solve negative numbers (with unary '-')
-                else if (expression[i] == '-' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
+                else if (expression[i] == '-' && i + 1 < expression.Length && (char.IsDigit(expression[i + 1]) ||
+                                                                               expression[i + 1] == 'p') &&
                          (i == 0 || AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
                 {
                     if (listSingleOperators.Count > indexOperators + 1)
@@ -597,6 +606,18 @@ namespace SunnyCalc.Maths
                         // test what next operator is, if there's one
                         if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator))
                         {
+                            if (nextOperator.Operation == Operation.Pi)
+                            {
+                                listExpression.Add("-" + Constants.Pi);
+                                i += 3;
+                                listSingleOperators.RemoveAt(indexOperators);
+                                listSingleOperators.RemoveAt(indexOperators);
+                                listOperands.Insert(indexOperands, listExpression.Last());
+                                indexOperands++;
+                                continue;
+                            }
+                            
+                            
                             // depending on 'RightAssociative' decide if you should add current '-' to 'listExpression' or not
                             if (nextOperator.Operation != default && nextOperator.RightAssociative)
                             {
