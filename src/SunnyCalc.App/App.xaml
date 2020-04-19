@@ -16,6 +16,7 @@
   <Application.Styles>
     <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
     <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+    <StyleInclude Source="resm:SunnyCalc.App.Controls.DisplayTextBoxTheme.xaml?assembly=SunnyCalc.App" />
 
     <Style Selector=":is(ContentControl)">
      <Setter Property="FontFamily" Value="resm:SunnyCalc.App.Assets.Fonts?assembly=SunnyCalc.App#Roboto" />

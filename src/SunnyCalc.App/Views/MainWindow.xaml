@@ -6,15 +6,37 @@
         xmlns:views="clr-namespace:SunnyCalc.App.Views;assembly=SunnyCalc.App"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="600"
         x:Class="SunnyCalc.App.Views.MainWindow"
+        x:Name="mainWindow"
         Icon="/Assets/icon.ico"
         Title="SunnyCalc"
         Width="350" Height="600"
         MinWidth="300" MinHeight="400">
 
-  <Design.DataContext>
-    <vm:MainWindowViewModel/>
-  </Design.DataContext>
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    
+    <Canvas>
+        <ContentControl Width="{Binding ElementName=mainWindow,Path=Width}"
+                        Height="{Binding ElementName=mainWindow,Path=Height}"
+                        Content="{Binding CurrentViewModel}" />
+        <Button Canvas.Top="5" Canvas.Left="12" Width="20" Height="20" Background="Transparent" BorderThickness="0"
+                Command="{Binding SwapViews}">
+            <DrawingPresenter Clip="M0,0 V459 H459 V0 H0 Z">
+                <DrawingPresenter.Drawing>
+                    <DrawingGroup>
+                        <DrawingGroup Opacity="1">
+                            <DrawingGroup Opacity="1">
+                                <GeometryDrawing Brush="#FF000000"
+                                                 Geometry="F1 M459,459z M0,0z M102,204L0,306 102,408 102,331.5 280.5,331.5 280.5,280.5 102,280.5 102,204z M459,153L357,51 357,127.5 178.5,127.5 178.5,178.5 357,178.5 357,255 459,153z" />
+                            </DrawingGroup>
+                        </DrawingGroup>
+                    </DrawingGroup>
+                </DrawingPresenter.Drawing>
+            </DrawingPresenter>
+        </Button>
+        
+        <Button Canvas.Top="5" Canvas.Left="37" Width="20" Height="20" Background="Transparent" BorderThickness="0">?</Button>
+    </Canvas>
 
-  <views:StandardCalculatorView DataContext="{Binding CalcViewModel}" />
-  
 </Window>

@@ -15,6 +15,10 @@
   </ItemGroup>
   
   <ItemGroup>
+    <AvaloniaResource Remove="Controls\DisplayTextBoxTheme.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
@@ -24,6 +28,7 @@
     <EmbeddedResource Include="Assets\Fonts\Roboto-Light.ttf" />
     <EmbeddedResource Include="Assets\Fonts\Roboto-Medium.ttf" />
     <EmbeddedResource Include="Assets\Fonts\Roboto-Regular.ttf" />
+    <EmbeddedResource Include="Controls\DisplayTextBoxTheme.xaml" />
   </ItemGroup>
   
   <ItemGroup>

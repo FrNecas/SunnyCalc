@@ -27,12 +27,12 @@
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Viewbox Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center">
-            <TextBlock 
-                       FontSize="60" Text="{Binding CurrentState}" />
+            <TextBlock
+                FontSize="60" Text="{Binding CurrentState}" />
         </Viewbox>
-        
+
         <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*" RowDefinitions="*">
             <Grid.Styles>
                 <Style Selector="c|DoubleButton">
@@ -104,8 +104,6 @@
                 <DrawingPresenter MaxWidth="25" MinWidth="25">
                     <DrawingPresenter.Drawing>
                         <DrawingGroup>
-
-
                             <GeometryDrawing Brush="#FF000000"
                                              Geometry="F1 M640,512z M0,0z M576,64L205.26,64A63.97,63.97,0,0,0,160,82.75L9.37,233.37C-3.13,245.87,-3.13,266.13,9.37,278.62L160,429.25C172,441.25,188.28,448,205.25,448L576,448C611.35,448,640,419.35,640,384L640,128C640,92.65,611.35,64,576,64z M491.31,318.06C497.56,324.31,497.56,334.44,491.31,340.69L468.69,363.31C462.44,369.56,452.31,369.56,446.06,363.31L384,301.25 321.94,363.31C315.69,369.56,305.56,369.56,299.31,363.31L276.69,340.69C270.44,334.44,270.44,324.31,276.69,318.06L338.75,256 276.69,193.94C270.44,187.69,270.44,177.56,276.69,171.31L299.31,148.69C305.56,142.44,315.69,142.44,321.94,148.69L384,210.75 446.06,148.69C452.31,142.44,462.44,142.44,468.69,148.69L491.31,171.31C497.56,177.56,497.56,187.69,491.31,193.94L429.25,256 491.31,318.06z" />
                         </DrawingGroup>

@@ -1,0 +1,172 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
+             xmlns:views="clr-namespace:SunnyCalc.App.Views;assembly=SunnyCalc.App"
+             xmlns:c="clr-namespace:SunnyCalc.App.Controls;assembly=SunnyCalc.App"
+             x:Class="SunnyCalc.App.Views.ExtendedCalculatorView">
+    <Grid Margin="10, 0, 10, 10">
+        <Grid.Styles>
+            <Style Selector="Button:not(.doubleBtnInner)">
+                <Setter Property="BorderBrush" Value="{StaticResource CalcButtonBorder}" />
+                <Setter Property="Margin" Value="2" />
+            </Style>
+            <Style Selector="c|DoubleButton">
+                <Setter Property="Margin" Value="2" />
+            </Style>
+        </Grid.Styles>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Viewbox Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center">
+            <c:DisplayTextBox FontSize="25" Text="{Binding CurrentState}" BorderThickness="0" Name="displayTextBox"
+                              NewLine="" KeyDown="InputKeyPressedHandler"
+                              CaretIndex="{Binding Path=CaretPosition,Mode=TwoWay}" />
+        </Viewbox>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*,*" RowDefinitions="*">
+            <Grid.Styles>
+                <Style Selector="c|DoubleButton">
+                    <Setter Property="Margin" Value="2" />
+                    <Setter Property="FirstButtonClasses" Value="operatorLongBtn" />
+                    <Setter Property="SecondButtonClasses" Value="operatorLongBtn" />
+                </Style>
+            </Grid.Styles>
+
+            <Button Grid.Column="0" Command="{Binding InputCommand}" CommandParameter="_sin"
+                    Classes="operatorLongBtn">
+                sin
+            </Button>
+            <Button Grid.Column="1" Command="{Binding InputCommand}" CommandParameter="_cos"
+                    Classes="operatorLongBtn">
+                cos
+            </Button>
+            <Button Grid.Column="2" Command="{Binding InputCommand}" CommandParameter="_tan"
+                    Classes="operatorLongBtn">
+                tan
+            </Button>
+
+            <c:DoubleButton Grid.Column="3"
+                            FirstButtonCommand="{Binding InputCommand}"
+                            SecondButtonCommand="{Binding InputCommand}"
+                            FirstButtonCommandParameter="pi" SecondButtonCommandParameter="!">
+                <c:DoubleButton.FirstButton>
+                    π
+                </c:DoubleButton.FirstButton>
+
+                <c:DoubleButton.SecondButton>
+                    x!
+                </c:DoubleButton.SecondButton>
+            </c:DoubleButton>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*,*" RowDefinitions="*">
+            <Button Grid.Column="0" Command="{Binding InputCommand}" CommandParameter="^2"
+                    Classes="operatorLongBtn">
+                x²
+            </Button>
+            <Button Grid.Column="1" Command="{Binding InputCommand}" CommandParameter="^"
+                    Classes="operatorLongBtn">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="x" />
+                    <TextBlock FontSize="9" Text="n" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="2" Command="{Binding InputCommand}" CommandParameter="_sqrt"
+                    Classes="operatorLongBtn">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="7" Text="2" Margin="0,0,-5,0" />
+                    <TextBlock Text="√x" />
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" Command="{Binding InputCommand}" CommandParameter="_rt"
+                    Classes="operatorLongBtn">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="9" Text="n" Margin="0,-2,-5,0" />
+                    <TextBlock Text="√x" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*" RowDefinitions="*,*,*,*" Classes="opBtnContainer">
+            <Grid.Styles>
+                <Style Selector="c|DoubleButton">
+                    <Setter Property="Margin" Value="2" />
+                    <Setter Property="FirstButtonClasses" Value="operatorSmallBtn" />
+                    <Setter Property="SecondButtonClasses" Value="operatorSmallBtn" />
+                </Style>
+            </Grid.Styles>
+
+            <c:DoubleButton Grid.Row="0"
+                            FirstButtonCommand="{Binding ControlCommand}" FirstButtonCommandParameter="backspace"
+                            SecondButtonCommand="{Binding ControlCommand}" SecondButtonCommandParameter="clear">
+                <c:DoubleButton.FirstButton>
+                    <DrawingPresenter MaxWidth="20" MinWidth="20">
+                        <DrawingPresenter.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="#FF000000"
+                                                 Geometry="F1 M640,512z M0,0z M576,64L205.26,64A63.97,63.97,0,0,0,160,82.75L9.37,233.37C-3.13,245.87,-3.13,266.13,9.37,278.62L160,429.25C172,441.25,188.28,448,205.25,448L576,448C611.35,448,640,419.35,640,384L640,128C640,92.65,611.35,64,576,64z M491.31,318.06C497.56,324.31,497.56,334.44,491.31,340.69L468.69,363.31C462.44,369.56,452.31,369.56,446.06,363.31L384,301.25 321.94,363.31C315.69,369.56,305.56,369.56,299.31,363.31L276.69,340.69C270.44,334.44,270.44,324.31,276.69,318.06L338.75,256 276.69,193.94C270.44,187.69,270.44,177.56,276.69,171.31L299.31,148.69C305.56,142.44,315.69,142.44,321.94,148.69L384,210.75 446.06,148.69C452.31,142.44,462.44,142.44,468.69,148.69L491.31,171.31C497.56,177.56,497.56,187.69,491.31,193.94L429.25,256 491.31,318.06z" />
+                            </DrawingGroup>
+                        </DrawingPresenter.Drawing>
+                    </DrawingPresenter>
+                </c:DoubleButton.FirstButton>
+
+                <c:DoubleButton.SecondButton>
+                    C
+                </c:DoubleButton.SecondButton>
+            </c:DoubleButton>
+
+            <c:DoubleButton Grid.Row="1" FirstButtonCommand="{Binding InputCommand}"
+                            SecondButtonCommand="{Binding InputCommand}">
+                <c:DoubleButton.FirstButton>
+                    ×
+                </c:DoubleButton.FirstButton>
+
+                <c:DoubleButton.SecondButton>
+                    ÷
+                </c:DoubleButton.SecondButton>
+            </c:DoubleButton>
+
+            <c:DoubleButton Grid.Row="2" FirstButtonCommand="{Binding InputCommand}"
+                            SecondButtonCommand="{Binding InputCommand}">
+                <c:DoubleButton.FirstButton>
+                    +
+                </c:DoubleButton.FirstButton>
+
+                <c:DoubleButton.SecondButton>
+                    -
+                </c:DoubleButton.SecondButton>
+            </c:DoubleButton>
+
+            <Button Grid.Row="3" Classes="operatorSmallBtn" Command="{Binding ControlCommand}" CommandParameter="=">=</Button>
+        </Grid>
+
+        <Grid x:Name="numpad" ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*" Grid.Row="3">
+
+            <c:DoubleButton Grid.Column="0" Grid.Row="3"
+                            FirstButtonCommand="{Binding InputCommand}" SecondButtonCommand="{Binding InputCommand}"
+                            FirstButton="(" SecondButton=")"
+                            FirstButtonClasses="numBtn operatorSmallBtn" SecondButtonClasses="numBtn operatorSmallBtn" />
+
+            <Button Grid.Column="1" Grid.Row="3" Classes="numBtn"
+                    Command="{Binding InputCommand}" CommandParameter="0">
+                0
+            </Button>
+            <Button Grid.Column="2" Grid.Row="3" Classes="numBtn operatorSmallBtn"
+                    Command="{Binding InputCommand}" CommandParameter=".">
+                ,
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>
