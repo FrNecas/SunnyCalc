@@ -218,13 +218,29 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Sin(double a)
         {
-            return Math.Sin(a);
+            var result = Math.Sin(a);
+
+            // return 0 for values too close to 0 (closer than 1e-13)
+            if (Math.Abs(result) < 1e-13)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         /// <inheritdoc/>
         public double Cos(double a)
         {
-            return Math.Cos(a);
+            var result = Math.Cos(a);
+
+            // return 0 for values too close to 0 (closer than 1e-13)
+            if (Math.Abs(result) < 1e-13)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         /// <inheritdoc/>
@@ -239,7 +255,15 @@ namespace SunnyCalc.Maths
                 throw new System.InvalidOperationException(
                     "Tangent is not defined in given angle equal to pi/2 + k * pi.");
 
-            return Math.Tan(a);
+            var result = Math.Tan(a);
+
+            // return 0 for values too close to 0 (closer than 1e-13)
+            if (Math.Abs(result) < 1e-13)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         #region Expression Solver
