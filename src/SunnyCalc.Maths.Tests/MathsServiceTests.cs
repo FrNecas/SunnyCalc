@@ -515,6 +515,20 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(-16, _service.SolveExpression("-(2^4)"));
             Assert.AreEqual(-6, _service.SolveExpression("-(2+4)"));
             
+            Assert.AreEqual(25, _service.SolveExpression("5 * (3 + 2)"));
+            Assert.AreEqual(2, _service.SolveExpression("10 / (3 + 2)"));
+            Assert.AreEqual(25, _service.SolveExpression("(3+2) * (2 + 3)"));
+            Assert.AreEqual(1, _service.SolveExpression("(3+2) / (2+ 3)"));
+            
+            Assert.AreEqual(5, _service.SolveExpression("(((((5)))))"));
+            Assert.AreEqual(25, _service.SolveExpression("(((((5) * (2+3)))))"));
+            Assert.AreEqual(5, _service.SolveExpression("(((2 + 3) / (2+3)) * 5)"));
+            Assert.AreEqual(5, _service.SolveExpression("rt(5 * 5, 2)")); 
+            Assert.AreEqual(5, _service.SolveExpression("rt(5 * (2 + 3), 2"));
+            
+            Assert.AreEqual(120, _service.SolveExpression("(2 + 3)!"));
+            Assert.AreEqual(5, _service.SolveExpression("5 * (sin(2 * pi) + cos(2 * pi))"), 1e-10);
+            Assert.AreEqual(100000, _service.SolveExpression("10 * (10 * (10 * (10 * (5 + 5))))"));
         }
 
         [Test]
@@ -570,6 +584,11 @@ namespace SunnyCalc.Maths.Tests
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("sin()"));
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("cos()"));
             Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("tan()"));
+
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("(5))"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("((5)"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("(((((5))))"));
+            Assert.Throws<ExpressionSolvingException>(() => _service.SolveExpression("(((((5))))))))"));
 
             // Invalid operations
             Assert.Throws<DivideByZeroException>(() => _service.SolveExpression("5/0"));
