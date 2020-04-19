@@ -678,7 +678,16 @@ namespace SunnyCalc.Maths
                     if (element == ")")
                     {
                         // element to be popped from the stack
-                        var popped = stack.Pop();
+                        string popped;
+                        try
+                        {
+                            popped = stack.Pop();
+                        } 
+                        catch (InvalidOperationException)
+                        {
+                            throw new ExpressionSolvingException("An expression's stack is empty. Couldn't evaluate the expression.");
+                        }
+
                         // enqueue everything if 'popped' is NOT an opening parenthesis
                         while (!LeftParenthesis.Contains(popped))
                         {
@@ -778,8 +787,15 @@ namespace SunnyCalc.Maths
                     }
 
                     // evaluate single operation
-                    var result = this.EvaluateOperation(@operator, operands, parenthesisBeforeFactorial);
-
+                    double result;
+                    try
+                    {
+                        result = this.EvaluateOperation(@operator, operands, parenthesisBeforeFactorial);
+                    }
+                    catch (ArgumentException)
+                    {
+                        throw new ExpressionSolvingException("Couldn't evaluate single operation.");
+                    }
 
                     // push result of single operation to stack
                     stack.Push(result.ToString(CultureInfo.InvariantCulture));
@@ -787,7 +803,14 @@ namespace SunnyCalc.Maths
             }
 
             // get the final result from stack
-            return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
+            }
+            catch (ArgumentException)
+            {
+                throw new ExpressionSolvingException("Couldn't evaluate the expression.");
+            }
         }
 
         private double EvaluateOperation(Operator oper, List<string> operands, bool parenthesisBeforeFactorial)
