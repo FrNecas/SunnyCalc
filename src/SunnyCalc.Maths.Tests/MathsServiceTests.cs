@@ -529,6 +529,14 @@ namespace SunnyCalc.Maths.Tests
             Assert.AreEqual(120, _service.SolveExpression("(2 + 3)!"));
             Assert.AreEqual(5, _service.SolveExpression("5 * (sin(2 * pi) + cos(2 * pi))"), 1e-10);
             Assert.AreEqual(100000, _service.SolveExpression("10 * (10 * (10 * (10 * (5 + 5))))"));
+            
+            Assert.AreEqual(125, _service.SolveExpression("5^(2+1)"));
+            Assert.AreEqual(625, _service.SolveExpression("5^(2^(1+1))"));
+            Assert.AreEqual(9, _service.SolveExpression("3^(2!)"));
+            Assert.AreEqual(5, _service.SolveExpression("5^(cos(2pi))"));
+            Assert.AreEqual(1, _service.SolveExpression("5^(cos(-pi/2))"));
+            Assert.AreEqual(1, _service.SolveExpression("5^(-cos(-pi/2))"));
+            Assert.AreEqual(25, _service.SolveExpression("5^rt(4, 2"));
         }
 
         [Test]
