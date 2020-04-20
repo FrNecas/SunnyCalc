@@ -218,27 +218,52 @@ namespace SunnyCalc.Maths
         /// <inheritdoc/>
         public double Sin(double a)
         {
-            return Math.Sin(a);
+            var result = Math.Sin(a);
+
+            // return 0 for values too close to 0 (closer than 1e-13)
+            if (Math.Abs(result) < 1e-13)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         /// <inheritdoc/>
         public double Cos(double a)
         {
-            return Math.Cos(a);
+            var result = Math.Cos(a);
+
+            // return 0 for values too close to 0 (closer than 1e-13)
+            if (Math.Abs(result) < 1e-13)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         /// <inheritdoc/>
         public double Tan(double a)
         {
-            const double
-                eps = 1e-10d; //  acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception than get a completely inaccurate result
-            var isOdd = Math.Abs(a * 2 / Constants
-                                     .Pi); // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi 
+            // acceptable epsilon for testing for undefined angles of tangent, where is better to throw exception
+            // than get a completely inaccurate result
+            const double eps = 1e-10d;
+            // isOdd must be odd number in order to parameter a being equal to pi/2 + k*pi
+            var isOdd = Math.Abs(a * 2 / Constants.Pi); 
             if (Math.Abs(isOdd % 2 - 1) <= eps)
                 throw new System.InvalidOperationException(
                     "Tangent is not defined in given angle equal to pi/2 + k * pi.");
 
-            return Math.Tan(a);
+            var result = Math.Tan(a);
+
+            // return 0 for values too close to 0 (closer than 1e-13)
+            if (Math.Abs(result) < 1e-13)
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         #region Expression Solver
@@ -266,7 +291,19 @@ namespace SunnyCalc.Maths
         /// </summary>
         private static readonly string[] Numbers =
             {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "m", "d",};
+        
+        /// <summary>
+        /// Allowed operators after numbers for implicit multiplication.
+        /// </summary>
+        private static readonly char[] OperatorsAfterNumbersMultiplication =
+            {'(', 's', 'r', 'c', 't', 'p',};
 
+        /// <summary>
+        /// Allowed operators after numbers for implicit multiplication.
+        /// </summary>
+        private static readonly char[] OperatorsBeforeNumbersMultiplication =
+            {')', 'i', '!',};
+        
         private enum Operation
         {
             Add,
@@ -278,11 +315,11 @@ namespace SunnyCalc.Maths
             Sin,
             Cos,
             Tan,
-            Pi,
+            Pi, // not an operation, but it is processed as one 
             SquareRoot,
             Root,
-            Comma,
-            LeftParenthesis
+            Comma, // not an operation, but it is processed as one
+            LeftParenthesis // not an operation, but it is processed as one
         }
 
         private class Operator
@@ -330,14 +367,14 @@ namespace SunnyCalc.Maths
                 ["/"] = new Operator(Operation.Divide, "/", 2, false, 2),
                 ["^"] = new Operator(Operation.Power, "^", 4, true, 2),
                 ["!"] = new Operator(Operation.Factorial, "!", 5, false, 1),
-                ["sin("] = new Operator(Operation.Sin, "sin(", 3, false, 1),
-                ["cos("] = new Operator(Operation.Cos, "cos(", 3, false, 1),
-                ["tan("] = new Operator(Operation.Tan, "tan(", 3, false, 1),
-                ["pi"] = new Operator(Operation.Pi, "pi", 6, false, 0),
-                ["sqrt("] = new Operator(Operation.SquareRoot, "sqrt(", 3, false, 1),
-                ["rt("] = new Operator(Operation.Root, "rt(", 3, false, 3),
+                ["sin("] = new Operator(Operation.Sin, "sin(", 6, false, 1),
+                ["cos("] = new Operator(Operation.Cos, "cos(", 6, false, 1),
+                ["tan("] = new Operator(Operation.Tan, "tan(", 6, false, 1),
+                ["pi"] = new Operator(Operation.Pi, "pi", 7, false, 0),
+                ["sqrt("] = new Operator(Operation.SquareRoot, "sqrt(", 6, false, 1),
+                ["rt("] = new Operator(Operation.Root, "rt(", 6, false, 3),
                 [","] = new Operator(Operation.Comma, ",", 0, false, 0),
-                ["("] = new Operator(Operation.LeftParenthesis, "(", 3, false, 0)
+                ["("] = new Operator(Operation.LeftParenthesis, "(", 6, false, 0)
             };
 
         /// <inheritdoc/>
@@ -357,6 +394,14 @@ namespace SunnyCalc.Maths
             // get rid of all whitespaces in expression
             expression = expression.Replace(" ", string.Empty);
 
+            for (var i = 0; i < expression.Length; i++)
+            {
+                if (expression[i] == '(' && i < expression.Length - 1 && expression[i + 1] == '-')
+                {
+                    expression = expression.Insert(i + 1, "0");
+                }
+            }
+            
             // get all numbers in expression
             // string array of operators-only characters
             var strOperands = expression.Split(Operators, StringSplitOptions.RemoveEmptyEntries);
@@ -483,18 +528,76 @@ namespace SunnyCalc.Maths
             var indexOperators = 0;
             // if there is a parenthesis before factorial in expression
             var parenthesisBeforeFactorial = false;
-
+            // if there was a minus in front of number, set to true 
+            var minusBeforeNumber = false;
+            // if there was a plus in front of number, set to true
+            var plusBeforeNumber = false;
+            // if there is implicit multiplication epxression
+            var addMultiplication = false;
+            
             for (var i = 0; i < expression.Length;)
             {
                 // if char is a digit, add whole number to 'listExpression'
                 if (char.IsDigit(expression, i))
                 {
-                    listExpression.Add(listOperands[indexOperands]);
-                    i += listOperands[indexOperands++].Length;
+                    // if there is decimal point in the number, test if there is a valid number after that decimal point 
+                    if (i + 1 < expression.Length && expression[i + 1] == '.')
+                    {
+                        if (i + 2 >= expression.Length || !char.IsDigit(expression[i + 2]))
+                        {
+                            throw new ExpressionSolvingException($"There is no number after '.' at index {i}.");
+                        }    
+                    }
+
+                    if (i + 1 < expression.Length && OperatorsAfterNumbersMultiplication.Contains(expression[i + 1]))
+                    {
+                        addMultiplication = true;
+                    }
+                    
+                    // if there was a minus in front of this number
+                    if (minusBeforeNumber)
+                    {
+                        listExpression.Add("-" + listOperands[indexOperands]);
+                        listOperands[indexOperands++] = listExpression.Last();
+                        i += listExpression.Last().Length - 1;
+                        minusBeforeNumber = false;
+                    }
+                    
+                    // if there was a plus in front of this number
+                    else if (plusBeforeNumber)
+                    {
+                        listExpression.Add(listOperands[indexOperands]);
+                        listOperands[indexOperands++] = listExpression.Last();
+                        i += listExpression.Last().Length;
+                        plusBeforeNumber = false;
+                    }
+                    
+                    // if there should be implicit multiplication in front of number
+                    else if (i - 1 >= 0 && OperatorsBeforeNumbersMultiplication.Contains(expression[i - 1]))
+                    {
+                        listExpression.Add("*");
+                        listExpression.Add(listOperands[indexOperands]);
+                        i += listOperands[indexOperands++].Length; 
+                    }
+                    
+                    // just a regular number
+                    else
+                    {
+                        listExpression.Add(listOperands[indexOperands]);
+                        i += listOperands[indexOperands++].Length;    
+                    }
+
+                    // if there should be implicit multiplication after number
+                    if (addMultiplication)
+                    {
+                        listExpression.Add("*");
+                        addMultiplication = false;
+                    }
                 }
 
                 // solve negative numbers (with unary '-')
-                else if (expression[i] == '-' && i + 1 < expression.Length && char.IsDigit(expression[i + 1]) &&
+                else if (expression[i] == '-' && i + 1 < expression.Length && (char.IsDigit(expression[i + 1]) ||
+                                                                               expression[i + 1] == 'p') &&
                          (i == 0 || AllowedOperatorsBeforeMinus.Contains(expression[i - 1].ToString())))
                 {
                     if (listSingleOperators.Count > indexOperators + 1)
@@ -503,20 +606,34 @@ namespace SunnyCalc.Maths
                         // test what next operator is, if there's one
                         if (_operatorsDict.TryGetValue(listSingleOperators[indexOperators + 1], out var nextOperator))
                         {
+                            if (nextOperator.Operation == Operation.Pi)
+                            {
+                                listExpression.Add("-" + Constants.Pi);
+                                i += 3;
+                                listSingleOperators.RemoveAt(indexOperators);
+                                listSingleOperators.RemoveAt(indexOperators);
+                                listOperands.Insert(indexOperands, listExpression.Last());
+                                indexOperands++;
+                                continue;
+                            }
+                            
+                            
                             // depending on 'RightAssociative' decide if you should add current '-' to 'listExpression' or not
                             if (nextOperator.Operation != default && nextOperator.RightAssociative)
                             {
                                 listExpression.Add(listSingleOperators[indexOperators]);
-                                i += listSingleOperators[indexOperators++].Length;
+                                i += listSingleOperators[indexOperators].Length;
+                                listSingleOperators.RemoveAt(indexOperators);
+                                continue;
                             }
                         }
                     }
 
-                    // remove unary '-' from operators and append it to the number as a negative number which should be added to 'listExpression'  
+                    // remove unary '-' from operators and append it to the number as a negative number
+                    // which should be added to 'listExpression'  
                     listSingleOperators.RemoveAt(indexOperators);
-                    listExpression.Add("-" + listOperands[indexOperands]);
-                    listOperands[indexOperands++] = listExpression.Last();
-                    i += listExpression.Last().Length;
+                    minusBeforeNumber = true;
+                    i++;
                 }
 
                 // solve positive numbers with additional unary '+'
@@ -525,9 +642,18 @@ namespace SunnyCalc.Maths
                 {
                     // just remove unary '+' from 'listSingleOperators' list
                     listSingleOperators.RemoveAt(indexOperators);
-                    listExpression.Add(listOperands[indexOperands]);
-                    listOperands[indexOperands++] = listExpression.Last();
-                    i += listExpression.Last().Length + 1;
+                    plusBeforeNumber = true;
+                    i++;
+                }
+                
+                // test valid usage of decimal point ('.')
+                else if (expression[i] == '.')
+                {
+                    // test if there is a valid number in front of decimal point
+                    if (i == 0 || !char.IsDigit(expression[i - 1]))
+                    {
+                        throw new ExpressionSolvingException($"There is no number in front of '.' at index {i}.");    
+                    }
                 }
                 else
                 {
@@ -570,7 +696,6 @@ namespace SunnyCalc.Maths
                 if (Numbers.Contains(element[element.Length > 1 ? 1 : 0].ToString()))
                 {
                     // 'element' is a number
-
                     if (indexOperands < listOperands.Count && element == listOperands[indexOperands])
                     {
                         // enqueue all valid operands
@@ -598,7 +723,16 @@ namespace SunnyCalc.Maths
                     if (element == ")")
                     {
                         // element to be popped from the stack
-                        var popped = stack.Pop();
+                        string popped;
+                        try
+                        {
+                            popped = stack.Pop();
+                        } 
+                        catch (InvalidOperationException)
+                        {
+                            throw new ExpressionSolvingException("An expression's stack is empty. Couldn't evaluate the expression.");
+                        }
+
                         // enqueue everything if 'popped' is NOT an opening parenthesis
                         while (!LeftParenthesis.Contains(popped))
                         {
@@ -698,8 +832,15 @@ namespace SunnyCalc.Maths
                     }
 
                     // evaluate single operation
-                    var result = this.EvaluateOperation(@operator, operands, parenthesisBeforeFactorial);
-
+                    double result;
+                    try
+                    {
+                        result = this.EvaluateOperation(@operator, operands, parenthesisBeforeFactorial);
+                    }
+                    catch (ArgumentException)
+                    {
+                        throw new ExpressionSolvingException("Couldn't evaluate single operation.");
+                    }
 
                     // push result of single operation to stack
                     stack.Push(result.ToString(CultureInfo.InvariantCulture));
@@ -707,7 +848,14 @@ namespace SunnyCalc.Maths
             }
 
             // get the final result from stack
-            return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(stack.Pop(), CultureInfo.InvariantCulture);
+            }
+            catch (ArgumentException)
+            {
+                throw new ExpressionSolvingException("Couldn't evaluate the expression.");
+            }
         }
 
         private double EvaluateOperation(Operator oper, List<string> operands, bool parenthesisBeforeFactorial)
