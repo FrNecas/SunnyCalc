@@ -20,9 +20,13 @@ Then it calculates the variance of the input numbers and outputs it to _stdout_ 
  
 If the program is run with a `-s [file]` argument, the integrated profiler is enabled.
 It will output the profiling results to the specified file, or to _stderr_ if `-` is used as the file name.
+Both using the operation methods directly (the default calculation mode) and the expression solver are run and measured.
+
+If the program is run with a `-e` argument, the calculation is performed using the expression solver, instead of using the operation methods
+directly. The `-e` flag cannot be combined with the `-s` flag, as the `-s` flag measures the expression solver time anyway.
 
 In both cases, the program will read its input from a file instead of reading from _stdin_ when a file name
-is supplied as the last argument.
+is supplied as the _last_ argument.
 
 ## Authors
 #### Pracovní skupina Sluníčka
