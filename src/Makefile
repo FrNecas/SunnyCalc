@@ -22,7 +22,7 @@ RUNTIME_DEP_EXE_FLAGS_LINUX = --runtime linux-x64 --self-contained false --nolog
 SELF_CONTAINED_SP_FLAGS_WINDOWS = --runtime win-x64 --self-contained true --nologo -v m /p:PublishSingleFile=true /p:PublishTrimmed=true
 SELF_CONTAINED_SP_FLAGS_LINUX = --runtime linux-x64 --self-contained true --nologo -v m /p:PublishSingleFile=true /p:PublishTrimmed=true
 
-.PHONY: all test run pack doc installer clean clean_src clean_pack clean_publish profile app
+.PHONY: all test run pack doc installer clean clean_src clean_doc clean_pack clean_publish profile app
 
 all: profile app doc
 
@@ -39,16 +39,16 @@ pack: doc installer
 	rm -rf ${REPO_DIR}/ ${DOCS_OUTPUT} ${INSTALL_OUTPUT} ${BUILD_OUTPUT} ${PUBLISH_OUTPUT}
 
 doc:
-	echo "TODO: Generate docs"
 	mkdir -p ${DOCS_OUTPUT}
-	touch ${DOCS_OUTPUT}/docs_will_be_here
+	doxygen Doxyfile_app
+	doxygen Doxyfile_lmath
 
 installer: app
 	echo "TODO: Installers"
 	mkdir -p ${INSTALL_OUTPUT}
 	cp ${PUBLISH_SELF_CONTAINED_SP_OUTPUT}/linux/${PROFILING_DIR}/* ${INSTALL_OUTPUT}/
 	
-clean: clean_pack clean_publish clean_src
+clean: clean_pack clean_publish clean_src clean_doc
 	
 clean_src:
 	rm -rf */bin/
@@ -58,7 +58,10 @@ clean_publish:
 	rm -rf ${BUILD_OUTPUT} ${PUBLISH_OUTPUT}
 	
 clean_pack:
-	rm -rf ${REPO_DIR} ${DOCS_OUTPUT} ${INSTALL_OUTPUT} ${PACK_OUTPUT}
+	rm -rf ${REPO_DIR} ${INSTALL_OUTPUT} ${PACK_OUTPUT}
+
+clean_doc:
+	rm -rf ${DOCS_OUTPUT}
 
 profile: SunnyCalc.Profiling/SunnyCalc.Profiling.csproj
 	dotnet build ${BUILD_FLAGS} -o ${BUILD_OUTPUT}/${PROFILING_DIR}/ $<
