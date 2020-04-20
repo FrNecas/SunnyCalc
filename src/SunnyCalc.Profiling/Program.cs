@@ -13,19 +13,29 @@ namespace SunnyCalc.Profiling
             using var profiler = new Profiler(mathsService);
 
             var ac = 0;
+            bool useExprSolver = false;
 
-            if (args.Length >= 2 && args[0] == "-s" && !string.IsNullOrWhiteSpace(args[1]))
+            if (args.Length >= 2)
             {
-                if (args[1] == "-")
+                if (args[0] == "-s" && !string.IsNullOrWhiteSpace(args[1]))
                 {
-                    profiler.UseSummary(Console.OpenStandardError());
-                }
-                else
-                {
-                    profiler.UseSummary(args[1]);
+                    if (args[1] == "-")
+                    {
+                        profiler.UseSummary(Console.OpenStandardError());
+                    }
+                    else
+                    {
+                        profiler.UseSummary(args[1]);
+                    }
+
+                    ac = 2;
                 }
 
-                ac = 2;
+                if (args[0] == "-e")
+                {
+                    useExprSolver = true;
+                    ac = 1;
+                }
             }
 
             if (args.Length >= (ac + 1) && !string.IsNullOrWhiteSpace(args[ac]))
@@ -37,7 +47,7 @@ namespace SunnyCalc.Profiling
                 profiler.UseInput(Console.In);
             }
 
-            Console.WriteLine(profiler.Run());
+            Console.WriteLine(profiler.Run(useExprSolver));
 
             return 0;
         }

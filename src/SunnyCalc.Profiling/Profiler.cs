@@ -29,7 +29,7 @@ namespace SunnyCalc.Profiling
             public override string ToString()
             {
                 return
-                    $"{TotalMilliseconds / (double) Samples} ms | {TotalTicks / (Samples * TicksPerUs)} μs, used {Samples} samples";
+                    $"{TotalMilliseconds / (double)Samples} ms | {TotalTicks / (Samples * TicksPerUs)} μs, used {Samples} samples";
             }
         }
 
@@ -131,7 +131,7 @@ namespace SunnyCalc.Profiling
         /// If it is not, only <see cref="CalculateDoubles"/> is called and the standard deviation value is returned.
         /// </remarks>
         /// <returns>A standard deviation value. -1 if the values source is empty.</returns>
-        public double Run()
+        public double Run(bool useExprSolver = false)
         {
             if (!this.ReadInput())
             {
@@ -163,7 +163,7 @@ namespace SunnyCalc.Profiling
                 return result;
             }
 
-            return this.CalculateDoubles();
+            return useExprSolver ? this.CalculateExpression() : this.CalculateDoubles();
         }
 
         /// <summary>
@@ -270,6 +270,38 @@ namespace SunnyCalc.Profiling
 
             this.Log($"Standard calculation result: {deviation}");
             return deviation;
+        }
+
+        /// <summary>
+        /// Assembles a mathematical expression used for calculating the deviation using the values currently
+        /// kept by this <see cref="Profiler"/> instance and performs the calculation using <see cref="IMathsService.SolveExpression"/>,
+        /// without measuring the time it takes.
+        /// </summary>
+        /// <returns>The standard deviation.</returns>
+        private double CalculateExpression()
+        {
+            var avgSb = new StringBuilder();
+            var sqSumSb = new StringBuilder();
+
+            avgSb.Append('(');
+            foreach (var x in _doubleValues)
+            {
+                avgSb.Append(x);
+                avgSb.Append('+');
+                sqSumSb.Append(x);
+                sqSumSb.Append("^2+");
+            }
+
+            avgSb.Length--; // Remove the last +
+            sqSumSb.Length -= 3; // Remove the last ^2+
+
+            avgSb.Append(")/");
+            avgSb.Append(_doubleValues.Count);
+
+            var expr = $"sqrt(({sqSumSb}-{_doubleValues.Count}*({avgSb})^2)/({_doubleValues.Count}-1))";
+            var result = _mathsService.SolveExpression(expr);
+
+            return result;
         }
 
         /// <summary>
