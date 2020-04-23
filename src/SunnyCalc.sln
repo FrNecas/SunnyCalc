@@ -1,24 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.App", "SunnyCalc.App\SunnyCalc.App.csproj", "{8D6B5DF8-E67C-44FD-8D4F-4CB746230439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunnyCalc.App", "SunnyCalc.App\SunnyCalc.App.csproj", "{8D6B5DF8-E67C-44FD-8D4F-4CB746230439}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Maths", "SunnyCalc.Maths\SunnyCalc.Maths.csproj", "{25E9A36F-89A5-46EE-9B71-0F5E98A66F4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunnyCalc.Maths", "SunnyCalc.Maths\SunnyCalc.Maths.csproj", "{25E9A36F-89A5-46EE-9B71-0F5E98A66F4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Maths.Tests", "SunnyCalc.Maths.Tests\SunnyCalc.Maths.Tests.csproj", "{F5126EFD-C72E-40E3-B479-ADA1369F019B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunnyCalc.Maths.Tests", "SunnyCalc.Maths.Tests\SunnyCalc.Maths.Tests.csproj", "{F5126EFD-C72E-40E3-B479-ADA1369F019B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BE8B5F65-53C8-4482-BB34-337F1AA38FA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9BDEC4CD-EB3C-4EB8-B98A-C78B47D363BC}"
-ProjectSection(SolutionItems) = preProject
-	..\README.md = ..\README.md
-	.\Makefile = .\Makefile
-	..\.gitignore = ..\.gitignore
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		Makefile = Makefile
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunnyCalc.Profiling", "SunnyCalc.Profiling\SunnyCalc.Profiling.csproj", "{533636F6-9610-4232-844D-F745243DD3E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunnyCalc.Profiling", "SunnyCalc.Profiling\SunnyCalc.Profiling.csproj", "{533636F6-9610-4232-844D-F745243DD3E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,9 +28,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8D6B5DF8-E67C-44FD-8D4F-4CB746230439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -82,10 +79,16 @@ Global
 		{533636F6-9610-4232-844D-F745243DD3E0}.Release|x86.ActiveCfg = Release|Any CPU
 		{533636F6-9610-4232-844D-F745243DD3E0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8D6B5DF8-E67C-44FD-8D4F-4CB746230439} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
 		{25E9A36F-89A5-46EE-9B71-0F5E98A66F4A} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
 		{F5126EFD-C72E-40E3-B479-ADA1369F019B} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
 		{533636F6-9610-4232-844D-F745243DD3E0} = {BE8B5F65-53C8-4482-BB34-337F1AA38FA9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31C255C6-8915-4DAA-8AE2-3FF64C9D197D}
 	EndGlobalSection
 EndGlobal
