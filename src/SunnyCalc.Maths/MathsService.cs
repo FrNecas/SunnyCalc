@@ -549,7 +549,8 @@ namespace SunnyCalc.Maths
                         }    
                     }
 
-                    if (i + 1 < expression.Length && OperatorsAfterNumbersMultiplication.Contains(expression[i + 1]))
+                    if (i + listOperands[indexOperands].Length < expression.Length &&
+                        OperatorsAfterNumbersMultiplication.Contains(expression[i + listOperands[indexOperands].Length]))
                     {
                         addMultiplication = true;
                     }

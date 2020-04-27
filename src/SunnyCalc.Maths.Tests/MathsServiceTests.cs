@@ -667,12 +667,14 @@ namespace SunnyCalc.Maths.Tests
         {
             // implicit multiplication after a number
             Assert.AreEqual(_service.SolveExpression("3 * pi"), _service.SolveExpression("3pi"));
+            Assert.AreEqual(_service.SolveExpression("100 * pi"), _service.SolveExpression("100pi"));
             Assert.AreEqual(_service.SolveExpression("6"), _service.SolveExpression("3rt(4,2)"));
             Assert.AreEqual(_service.SolveExpression("-3"), _service.SolveExpression("3cos(pi)"));
             Assert.AreEqual(_service.SolveExpression("6"), _service.SolveExpression("3(2)"));
             
             // implicit multiplication in front of a number
             Assert.AreEqual(_service.SolveExpression("3 * pi"), _service.SolveExpression("pi3"));
+            Assert.AreEqual(_service.SolveExpression("pi * 100"), _service.SolveExpression("pi100"));
             Assert.AreEqual(_service.SolveExpression("6"), _service.SolveExpression("rt(4,2)3"));
             Assert.AreEqual(_service.SolveExpression("-3"), _service.SolveExpression("cos(pi)3"));
             Assert.AreEqual(_service.SolveExpression("6"), _service.SolveExpression("(2)3"));
