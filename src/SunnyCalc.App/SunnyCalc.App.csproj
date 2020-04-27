@@ -35,4 +35,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SunnyCalc.Maths\SunnyCalc.Maths.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="..\Help.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

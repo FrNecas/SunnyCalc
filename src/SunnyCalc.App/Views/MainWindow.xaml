@@ -36,7 +36,7 @@
             </DrawingPresenter>
         </Button>
         
-        <Button Canvas.Top="5" Canvas.Left="37" Width="20" Height="20" Background="Transparent" BorderThickness="0">?</Button>
+        <Button Canvas.Top="5" Canvas.Left="37" Width="20" Height="20" Background="Transparent" BorderThickness="0" Command="{Binding OpenHelp}" IsVisible="{Binding HelpAvailable}">?</Button>
     </Canvas>
 
 </Window>
