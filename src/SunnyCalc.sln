@@ -14,8 +14,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9BDEC4CD-EB3C-4EB8-B98A-C78B47D363BC}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
+		Doxyfile_app = Doxyfile_app
+		Doxyfile_lmath = Doxyfile_lmath
+		Help.html = Help.html
+		InstallerLicense.txt = InstallerLicense.txt
 		Makefile = Makefile
 		..\README.md = ..\README.md
+		WindowsInstaller.iss = WindowsInstaller.iss
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunnyCalc.Profiling", "SunnyCalc.Profiling\SunnyCalc.Profiling.csproj", "{533636F6-9610-4232-844D-F745243DD3E0}"

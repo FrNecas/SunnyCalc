@@ -38,6 +38,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "{#SourcesBaseDir}\src\publish\selfContainedPackages\windows\SunnyCalc.App.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Help.html"; DestDir: "{app}"; DestName: "Help.html"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
