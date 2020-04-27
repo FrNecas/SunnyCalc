@@ -12,6 +12,8 @@ namespace SunnyCalc.App.ViewModels
 {
     public class ExtendedCalculatorViewModel : ViewModelBase
     {
+        private const string ErrorMessage = "Chyba";
+
         public ICommand InputCommand { get; }
         public ICommand ControlCommand { get; }
 
@@ -63,7 +65,7 @@ namespace SunnyCalc.App.ViewModels
             }
             else if (op == "backspace")
             {
-                if (_display == "Error" || (_display.Length == 1 && _curPosCurrent == 1))
+                if (_display == ErrorMessage || (_display.Length == 1 && _curPosCurrent == 1))
                 {
                     this.CurrentState = "0";
                     this.CaretPosition = 1;
@@ -91,7 +93,7 @@ namespace SunnyCalc.App.ViewModels
                 }
                 catch
                 {
-                    this.CurrentState = "Error";
+                    this.CurrentState = ErrorMessage;
                     this.CaretPosition = _display.Length;
                 }
             }
@@ -114,7 +116,7 @@ namespace SunnyCalc.App.ViewModels
             }
 
             // Clear the display if only zero or Error is currently displayed.
-            if (_display == "0" || _display == "Error")
+            if (_display == "0" || _display == ErrorMessage)
             {
                 _display = "";
                 curPos = 0;
