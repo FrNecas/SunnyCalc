@@ -58,6 +58,11 @@ directly. The `-e` flag cannot be combined with the `-s` flag, as the `-s` flag 
 In both cases, the program will read its input from a file instead of reading from _stdin_ when a file name
 is supplied as the _last_ argument.
 
+## Supported platforms
+
+- Ubuntu 64bit
+- Windows 64bit
+
 ## Authors
 #### Pracovní skupina Sluníčka
 František Nečas (xnecas27) \
