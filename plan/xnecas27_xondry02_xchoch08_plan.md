@@ -1,4 +1,4 @@
-# IVS týmový projekt (kalkulačka) | 2020
+﻿# IVS týmový projekt (kalkulačka) | 2020
 
 ## Pracovní skupina Sluníčka | Sunny-Calc 
 Členové: František Nečas (**xnecas27**), Ondřej Ondryáš (**xondry02**), David Chocholatý (**xchoch08**) \

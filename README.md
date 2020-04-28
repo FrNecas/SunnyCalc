@@ -1,4 +1,4 @@
-# IVS-proj2 | SunnyCalc
+﻿# IVS-proj2 | SunnyCalc
 
 A calculator created for the [second project](http://ivs.fit.vutbr.cz/projekt-2_tymova_spoluprace2019-20.html) in the [IVS course](https://www.fit.vut.cz/study/course/13372/.en).
 

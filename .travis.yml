@@ -1,4 +1,4 @@
-language: csharp
+﻿language: csharp
 solution: src/SunnyCalc.sln
 mono: none
 matrix:
