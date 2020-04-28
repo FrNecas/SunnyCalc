@@ -1,6 +1,10 @@
 # IVS-proj2 | SunnyCalc
 
-A calculator created for the [second project](http://ivs.fit.vutbr.cz/projekt-2_tymova_spoluprace2019-20.html) in the [IVS course](https://www.fit.vut.cz/study/course/13372/.en)
+A calculator created for the [second project](http://ivs.fit.vutbr.cz/projekt-2_tymova_spoluprace2019-20.html) in the [IVS course](https://www.fit.vut.cz/study/course/13372/.en).
+
+<p align="center">
+  <img src="screenshot.png"/>
+</p>
 
 ## Project structure
 
@@ -57,6 +61,11 @@ directly. The `-e` flag cannot be combined with the `-s` flag, as the `-s` flag 
 
 In both cases, the program will read its input from a file instead of reading from _stdin_ when a file name
 is supplied as the _last_ argument.
+
+## Supported platforms
+
+- Ubuntu 64bit
+- Windows 64bit
 
 ## Authors
 #### Pracovní skupina Sluníčka
