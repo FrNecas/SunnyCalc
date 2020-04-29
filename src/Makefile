@@ -52,7 +52,7 @@ doc:
 	doxygen Doxyfile_lmath
 
 install:
-	mkdir -p ${DESTDIR}
+	mkdir -p ${DESTDIR}/usr/bin
 	install ${INSFLAGS} ${PUBLISH_SELF_CONTAINED_SP_OUTPUT}/linux/${APP_DIR}/SunnyCalc.App ${DESTDIR}/usr/bin/SunnyCalc
 
 installer: app
