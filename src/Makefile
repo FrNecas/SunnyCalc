@@ -1,9 +1,14 @@
 ﻿BUILD_OUTPUT = build
+TEAM_NAME = xnecas27_xondry02_xchoch08
+BUILD_OUTPUT = build
 PUBLISH_OUTPUT = publish
-PACK_OUTPUT = project.zip
+PACK_OUTPUT = ${TEAM_NAME}.zip
 DOCS_OUTPUT = doc
 INSTALL_OUTPUT = install
 REPO_DIR = repo
+
+DEB_PKG = *.deb
+WIN_INST = SunnyCalcInstaller.exe
 
 PUBLISH_RUNTIME_DEP_EXE_OUTPUT = ${PUBLISH_OUTPUT}/runtimeDependent/executable
 PUBLISH_RUNTIME_DEP_OUTPUT = ${PUBLISH_OUTPUT}/runtimeDependent/binary
@@ -24,7 +29,7 @@ SELF_CONTAINED_SP_FLAGS_LINUX = --runtime linux-x64 --self-contained true --nolo
 
 .PHONY: all test run pack doc installer clean clean_src clean_doc clean_pack clean_publish profile app
 
-all: profile app doc
+all: profile app
 
 test: SunnyCalc.Maths.Tests/SunnyCalc.Maths.Tests.csproj
 	dotnet test --nologo $<
@@ -35,8 +40,11 @@ run: SunnyCalc.App/SunnyCalc.App.csproj
 pack: doc installer	
 	git clone ../ ${REPO_DIR}
 	rm -f ${PACK_OUTPUT}
-	zip -r ${PACK_OUTPUT} ${REPO_DIR}/ ${DOCS_OUTPUT}/ ${INSTALL_OUTPUT}/
-	rm -rf ${REPO_DIR}/ ${DOCS_OUTPUT} ${INSTALL_OUTPUT} ${BUILD_OUTPUT} ${PUBLISH_OUTPUT}
+	mkdir -p ${TEAM_NAME}
+	rm -f ${DOCS_OUTPUT}/*warning*
+	cp -r ${REPO_DIR} ${DOCS_OUTPUT} ${INSTALL_OUTPUT} ${TEAM_NAME}
+	zip -r ${PACK_OUTPUT} ${TEAM_NAME}
+	rm -rf ${REPO_DIR}/ ${DOCS_OUTPUT} ${INSTALL_OUTPUT} ${BUILD_OUTPUT} ${PUBLISH_OUTPUT} ${TEAM_NAME}
 
 doc:
 	mkdir -p ${DOCS_OUTPUT}
@@ -44,9 +52,9 @@ doc:
 	doxygen Doxyfile_lmath
 
 installer: app
-	echo "TODO: Installers"
 	mkdir -p ${INSTALL_OUTPUT}
-	cp ${PUBLISH_SELF_CONTAINED_SP_OUTPUT}/linux/${PROFILING_DIR}/* ${INSTALL_OUTPUT}/
+	cp ${DEB_PKG} ${INSTALL_OUTPUT}
+	cp ${WIN_INST} ${INSTALL_OUTPUT}
 	
 clean: clean_pack clean_publish clean_src clean_doc
 	
