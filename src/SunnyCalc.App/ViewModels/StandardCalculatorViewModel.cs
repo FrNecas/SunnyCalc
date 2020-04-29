@@ -11,6 +11,7 @@ namespace SunnyCalc.App.ViewModels
 {
     public class StandardCalculatorViewModel : ViewModelBase
     {
+        private const string ErrorMessage = "Chyba";
         private enum Operation
         {
             Add,
@@ -146,7 +147,7 @@ namespace SunnyCalc.App.ViewModels
         /// </summary>
         private void DisplayError()
         {
-            this.CurrentState = "Error";
+            this.CurrentState = ErrorMessage;
             this.DecimalPointEnabled = false;
             _initialState = true;
             _lastResult = 0;
