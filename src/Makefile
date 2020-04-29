@@ -14,13 +14,13 @@ PROFILING_DIR = Profiling
 
 BUILD_FLAGS = -c Release --nologo
 # Runtime-dependent binaries (have to be invoked using dotnet run)
-RUNTIME_DEP_FLAGS = --nologo -v m
+RUNTIME_DEP_FLAGS = -c Release --nologo -v m
 # Runtime-dependent single-file executables (need the runtime installed but can be executed on their own)
-RUNTIME_DEP_EXE_FLAGS_WINDOWS = --runtime win-x64 --self-contained false --nologo -v m /p:PublishSingleFile=true
-RUNTIME_DEP_EXE_FLAGS_LINUX = --runtime linux-x64 --self-contained false --nologo -v m /p:PublishSingleFile=true
+RUNTIME_DEP_EXE_FLAGS_WINDOWS = -c Release --runtime win-x64 --self-contained false --nologo -v m /p:PublishSingleFile=true
+RUNTIME_DEP_EXE_FLAGS_LINUX = -c Release --runtime linux-x64 --self-contained false --nologo -v m /p:PublishSingleFile=true
 # Self-contained single-file executables (contain the runtime packed in them)
-SELF_CONTAINED_SP_FLAGS_WINDOWS = --runtime win-x64 --self-contained true --nologo -v m /p:PublishSingleFile=true /p:PublishTrimmed=true
-SELF_CONTAINED_SP_FLAGS_LINUX = --runtime linux-x64 --self-contained true --nologo -v m /p:PublishSingleFile=true /p:PublishTrimmed=true
+SELF_CONTAINED_SP_FLAGS_WINDOWS = -c Release --runtime win-x64 --self-contained true --nologo -v m /p:PublishSingleFile=true /p:PublishTrimmed=true
+SELF_CONTAINED_SP_FLAGS_LINUX = -c Release --runtime linux-x64 --self-contained true --nologo -v m /p:PublishSingleFile=true /p:PublishTrimmed=true
 
 .PHONY: all test run pack doc installer clean clean_src clean_doc clean_pack clean_publish profile app
 
