@@ -1,0 +1,12 @@
+Source: sunny-calc
+Section: math
+Priority: extra
+Maintainer: Frantisek Necas <xnecas27@stud.fit.vutbr.cz>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.1.2
+
+Package: sunny-calc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A simple calculator with expression solving capabilities
+
