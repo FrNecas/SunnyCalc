@@ -51,6 +51,10 @@ doc:
 	doxygen Doxyfile_app
 	doxygen Doxyfile_lmath
 
+install:
+	mkdir -p ${DESTDIR}
+	install ${INSFLAGS} ${PUBLISH_SELF_CONTAINED_SP_OUTPUT}/linux/${APP_DIR}/SunnyCalc.App ${DESTDIR}/usr/bin/SunnyCalc
+
 installer: app
 	mkdir -p ${INSTALL_OUTPUT}
 	cp ${DEB_PKG} ${INSTALL_OUTPUT}
