@@ -1,0 +1,3 @@
+﻿xnecas27 100 (správa GitHub repozitáře, testy matematické knihovny, Makefile, Linux instalátor, Doxyfile, dokumentace, mockup)
+xondry02 100 (správa Discord serveru, kostra repozitáře, profiling, GUI, Windows instalátor, Makefile, dokumentace, mockup, uživatelská příručka)
+xchoch08 100 (kontrola průběhu vývoje, plán, matematická knihovna, Doxyfile, nápověda, dokumentace, mockup)

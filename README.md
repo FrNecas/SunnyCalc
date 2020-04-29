@@ -40,7 +40,7 @@ The `make app` target generates self-contained executables that can be run with 
 
 The Windows installer can be built using InnoSetup and the `WindowsInstaller.iss` script in the `src` directory. Executing the created binary will run the step-by-step installer, which is self-explanatory.
 
-## Usage
+The application can be also installed on Linux distributions such as Ubuntu using Debian package `sunny-calc_x.x.x_amd64.deb`.
 
 ## Profiling
 

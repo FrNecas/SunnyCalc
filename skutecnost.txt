@@ -1,0 +1,26 @@
+﻿Sestavení týmu, vytvoření plánu i rozdělení práce proběhlo bez problémů. Plán byl odevzdán podle předpokladů.
+Následné plnění plánu se přibližně dařilo dodržet a s následováním dohodnutých pravidel v zásadě nebyl problém.
+
+Kvůli nepočítané situaci s pandemií koronaviru jsme byli nuceni až na první informativní schůzku všechny následující porady konat vzdáleně přes Discord server na připraveném Voice channelu. Ovšem i tak jsme byli schopni se bez větších obtíží domlouvat a zdárně postupovat kupředu.
+
+K zdržení oproti plánu došlo na přelomu měsíce března a dubna, kdy jsme kvůli externím okolnostem byli nuceni pozastavit vývoj zhruba o 5 dnů oproti původnímu plánu. Na tomto zdržení jsme víceméně zůstali až do konce práce na projektu, ale díky předpřipraveným volným dnům v plánu jsme byli schopni vývoj ukončit podle plánu.
+
+Pár dní před ukončením však byl posunut konečný deadline projektu daný zákazníkem, pročež jsme se rozhodli zvolnit ve vývoji a využít přidaný čas k pečlivějšímu zpracování kritických částí projektu a zaměření se na důkladnější testování celého projektu i jeho částí.
+
+Jako mezeru v plánu spatřujeme nedostatečný čas pro opravy chyb v projektu po testování. Na Beta testování jsme si vyhradili přibližně dva dny a na průběžné testování dohromady několik dní po čas vývoje, ale už jsme v plánu nepočítali s časem potřebným k opravování chyb a bugů v projektu. Zde tedy došlo k mírnému zdržení oproti plánu, které jsme občas mírně stáhli, občas zase mírně narostlo. Celkově jsme se ale drželi v rámci týdenního zpozdění i za předpokladu rozvolnění plánu kvůli přesunu deadlinu.
+
+Jako možné zlepšení efektivity práce bychom viděli dynamičtější upravování GitHub issues a milníků, které jsme sice spravovali dobře, ale většinu isssues jsme uzavírali až s PR do mastera, což způsobilo občas až více než týdenní zpoždění oproti původnímu plánu (podle data uzavření kontrétní issue), přestože samotný úkol byl dokončen včas nebo jen s minimálním zpozděním. Což vedlo také k tomu, že až v závěru vývoje první verze projektu jsme byli schopni připravené issues hromadně uzavírat.
+
+Došli jsme k závěru, že nebyl zcela nejlepší nápad používat GitHub issues jako kontrolu dodržování časového rozvrhu vývoje projektu, neboť nám neposkytovaly dostatečný přehled o nejbližších termínech a orientace v nadcházejících úkolech úplně příjemná. Pro budoucí vývoj aplikace bychom určitě zvolili jiný, externí nástroj pro organizaci vývoje projektu.
+
+V návaznosti na nevhodnost GitHub issues ke kontrole časového plánu jsme také příliš nevyužili Milestones k jendotlivým issues, protože jsme milníky uzavírali vždy s mergem do mastera, nikoliv v době vytvoření dané části projektu.
+
+Přestože jsme podle plánu hodlali dodat do naší aplikace podporu pouze pro česý jazyk, v průběhu vývoje jsme si uvědomili, že pokud chceme dosáhnout lepších výsledků v oblasti použitelnosti naší aplikace, měli bychom přidat podporu i pro anglickou verzi aplikace a jejího rozhraní včetně nápovědy nebo uživatelské příručky. Toto zůstává náplní dalších verzí aplikace.
+
+Původně jsme plánovali provést rozsáhlejší Beta testování zahrnující více sociálních skupin. Bohužel, z tohoto nápadu také sešlo a museli jsme se spokojit se členy úzkého kruhu rodinného. 
+
+Zpětně si uvědomujeme, že jsme se dokonale nedomluvili na jazyce používaném Na GitHubu pro PR a komentáře. Určitě by pro příště neuškodilo se předem dohodnout nejen na jazyce pro aplikaci, ale i na jazyce dorozumívání se mezi vývojáři.
+
+Při přípravě plánu nebylo jisté, jestli zvolíme kalkulačku s možností výpočtu výrazu včetně podpory uzávorkování ap. Nakonec jsme ovšem přesáhli původní očekávání a kromě základního režimu výpočtu jsme přidali i rozšířený režim s podporou výpočtu výrazu a mnoha specifickými pravidly pro jednodušší úpravu výrazu, jako je již zmiňované uzávorkování částí výrazu, implicitní násobení, unární mínus a plus, vnořené výrazy a mnoho dalšího. V další verzi projektu SunnyCalc plánujeme podporu věděckého režimu s rozšířenými funkcemi, oknem pro zobrazování grafů funkcí a přiloženou BMI kalkulačkou pro ověření zdravotního stavu uživatele. Věříme, že tyto dodané i plánované možnosti zlepší uživatelskou zkušenost s naším produktem a uživatelé tato drobná vylepšení ocení.
+
+Posledních několik dnů před odevzdáním projektu jsme již jen ladili detaily a upravovali projekt podle specifických požadavků zákazníka. Zde již nedošlo k žádným nepředpokládaným situacím a projekt jsme úspěšně dodali v domluvené době.
