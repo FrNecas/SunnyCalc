@@ -3,3 +3,6 @@ build/
 publish/
 doc/
 install/
+*.zip
+*.exe
+*.deb
