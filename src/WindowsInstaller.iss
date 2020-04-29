@@ -1,6 +1,6 @@
-#define MyAppName "SunnyCalc"
+ï»¿#define MyAppName "SunnyCalc"
 #define MyAppVersion "1.0"
-#define MyAppPublisher "Pracovní skupina Sluníèka"
+#define MyAppPublisher "PracovnÃ­ skupina SlunÃ­Äka"
 #define MyAppURL "https://github.com/FrNecas/IVS-proj2"
 #define MyAppExeName "SunnyCalc.App.exe"
 #define SourcesBaseDir ".."

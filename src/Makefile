@@ -1,4 +1,4 @@
-BUILD_OUTPUT = build
+﻿BUILD_OUTPUT = build
 PUBLISH_OUTPUT = publish
 PACK_OUTPUT = project.zip
 DOCS_OUTPUT = doc
